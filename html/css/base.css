@@ -51,6 +51,9 @@ input{border-radius: 0;outline: none;vertical-align: middle;}
 .font15{font-size: 1.5em !important}
 .font18{font-size: 1.8em !important;}
 .hide{display: none !important}
+/*浮动*/
+.f_l{float: left;}
+.f_r{float: right;}
 /*浮层框*/
 #fix_box{
 	position: fixed;

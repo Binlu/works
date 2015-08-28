@@ -217,7 +217,7 @@ a.del_btn{
 	float: right;
 	margin-left: 0.5em;
 	display: inline-block;
-	width: 2em;
+	width: 1.8em;
 	padding: 0.5em;
 	margin-top: 0.5em;
 }
@@ -235,7 +235,7 @@ h2 a.btn_type6{
 	padding-left: 0.3em
 }
 .share_btn{
-	width: 1.5em;
+	width: 1.3em;
 	margin-top: 0.6em;
 }
 .btn_type4{
@@ -346,6 +346,62 @@ li.current_li>a{
 	background-color: #f15b81;
 	padding: 0.2em 1em !important;
 	color: #fff;
+}
+/*p_13*/
+.review_h3{
+	font-size: 1.2em;
+	padding-bottom: 0.2em;
+	border-bottom: 1px solid #aaa;
+}
+.btn_type8{
+	display: inline-block;
+	padding: 0.1em 0.6em;
+	border-radius: 0.3em;
+	vertical-align: bottom;
+	background-color: #2d3;
+}
+.btn_type9{
+	float: right;
+	margin-left: 0.5em;
+	display: inline-block;
+	padding: 0.5em;
+	margin-top: 0.5em;
+}
+.btn_type9>img{
+	width: 1.5em;
+	vertical-align: middle;
+}
+.btn_type9>span{
+	margin-left: 0.5em;
+	vertical-align: middle;
+}
+.personnel_detail>h1{
+	margin: 0.5em 0em;
+}
+.review_list{font-size: 0.8em;width: 100%;}
+.review_list>li{padding: 0.8em 0.2em 0.5em 0.2em;border-bottom: 1px solid #666;}
+.pic_div1{float: left;overflow: hidden;}
+.pic_div1>img{width: 4em;height: 4em;border-radius: 50%;margin-top: 0.2em;}
+.txt_div{width: 79%;float: left;line-height: 1.6em;margin-left:4%}
+.input_box{position: fixed;bottom: 0.5em;left: 0;width: 100%;padding-top: 0.5em;text-align: center;background-color: #fff;display: none;}
+.content_input{font-size: 0.9em;padding: 0.2em 0.5em;width: 60%;border-style: none;margin-bottom: 0.5em;}
+.submit_btn{font-size: 0.9em;padding: 0.3em 0.5em;margin-left: 1em;border-radius: 0;}
+.sty_div{position: absolute;bottom: 0.2em;left: 5.5%;width: 70%;height: 0.6em;border: 1px solid #f15b81;border-top: none}
+.name_spn,.to_name{color:#000;}
+.review_spn{float: right;display: inline-block;cursor: pointer;padding: 0.2em 0.5em 0.2em 0.5em;margin-top: -0.5em}
+.review_spn>img{width: 2em;}
+.chase_review{width: 100%;float: left;margin-top: 1em;}
+.chase_review>li{padding: 0.5em 0;}
+.review_date_spn{font-size: 0.8em;color: #777;}
+.add_more{width: 100%;text-align: center;margin-top: 1em;margin-bottom: 1em;}
+.reviewer{
+	width: 80%;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+	border-radius: 0.3em;
+	color: #777;
+	border: 1px solid #999;
 }
 /*浮层*/
 .bg_div{
