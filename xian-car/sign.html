@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta author="lut000"/>
+	<meta name="robots" content="all"/>
+	<meta name="keywords" content="出行,物流,商城,劳务"/>
+	<meta name="description" content="山西置安为民汽车租凭"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<style type="text/css">
+
+	</style>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<!-- 内容 -->
+	<div class="sign_box">
+		<div class="s_head clear">
+			<img src="images/logo1.png" alt="logo">
+			<a class="btn3" href="javascript:;" title="返回首页">返回首页>></a>
+		</div>
+		<div class="form_box">
+			<!-- 注册 -->
+			<div class="register_area">
+				<label>手机号：</label><input type="text"/><br/>
+				<label>姓名：</label><input type="text"/><br/>
+				<label>密码：</label><input type="password"/><br/>
+				<label>验证码：</label><input type="text"/><br/>
+				<p>提示：点击注册表示您已经同意此服务协议！</p>
+				<label>验证码：</label><a class="btn2" href="javascript:;" title="马上注册">马上注册>></a><br/>
+				<span>已有账号，点击</span>
+				<a class="btn4" href="javascript:;" title="登录">登录</a>
+				>>
+			</div>
+			<!-- 登录 -->
+			<div class="sign_area">
+				<input type="text" placeholder="在此输入手机号"/><br/>
+				<input type="password" placeholder="请输入密码"/><a class="btn4" href="javascript:;" title="忘记密码？">忘记密码？</a><br/>
+				<a class="btn2" href="javascript:;" title="登录">登录>></a><br/>
+				<a class="btn3" href="javascript:;" title="没有账号，免费注册">没有账号，免费注册>></a>
+				>>
+			</div>
+		</div>
+		<div class="s_foot">
+			<p class="p1">太原市城际出行网络科技有限公司</p>
+			<p class="p2">TAIYUANCHENGJICHUXINGWANGLUOKEJIYOUXIANGONGSI</p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//获得链接属性 
+		var link_obj=GetRequest();
+		var l_type=link_obj["type"]?link_obj["type"]:1;
+		$(function(){
+			if(l_type==2){
+				document.title="注册";
+			}
+		});
+		// 获取页面url数据
+		function GetRequest(){ 
+		    var url = location.search; //获取url中"?"符后的字串 
+		    var theRequest = new Object(); 
+		    if (url.indexOf("?") != -1) { 
+		        var str = url.substr(1); 
+		        strs = str.split("&"); 
+		        for(var i = 0; i < strs.length; i ++) { 
+		            theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+		        }
+		    } 
+		    return theRequest; 
+		};
+	</script>
+</body>
+</html>
