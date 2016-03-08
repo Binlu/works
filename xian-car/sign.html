@@ -10,29 +10,96 @@
 	<title>登录</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	<style type="text/css">
-
+		.s_head{
+			padding: 20px 0;
+			position: relative;
+		}
+		.s_head>a{
+			position: absolute;
+			right: 0;
+			bottom: 20px;
+			font-size: 16px;
+			z-index: 10;
+		}
+		.s_head>img{
+			width: 160px;
+		}
+		.form_box{
+			padding: 50px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+		}
+		.register_area{
+			text-align: center;
+		}
+		.input_area{
+			font-size: 16px;
+			padding: 10px 5px;
+			width: 45%;
+			margin: 15px 0;
+			vertical-align: middle;
+		}
+		.register_area>label{
+			width: 10%;
+			font-size: 16px;
+			text-align: right;
+			margin-right: 20px;
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.register_area>p{
+			display: inline-block;
+			width: 46%;
+			color: #cc0000;
+			text-align: left;
+		}
+		.code{
+			width: 30%;
+		}
+		.register_area>.btn_type2{
+			padding: 10px 22px;
+			margin-left: 15px;
+			vertical-align: middle;
+		}
+		.register_area>.btn_type3{
+			width: 40%;
+			padding: 12px 30px;
+			margin: 30px 0;
+			font-weight: bold;
+		}
+		.b_div{
+			display: inline-block;
+			width: 46.5%;
+		}
+		.s_foot{
+			padding: 20px 0;
+			text-align: center;
+		}
+		.s_foot .p2{
+			font-size: 12px;
+		}
 	</style>
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 </head>
-<body>
+<body class="bg_color3">
 	<!-- 内容 -->
-	<div class="sign_box">
+	<div class="w1024">
 		<div class="s_head clear">
 			<img src="images/logo1.png" alt="logo">
-			<a class="btn3" href="javascript:;" title="返回首页">返回首页>></a>
+			<a class="btn3 f_r" href="javascript:;" title="返回首页">返回首页>></a>
 		</div>
 		<div class="form_box">
 			<!-- 注册 -->
 			<div class="register_area">
-				<label>手机号：</label><input type="text"/><br/>
-				<label>姓名：</label><input type="text"/><br/>
-				<label>密码：</label><input type="password"/><br/>
-				<label>验证码：</label><input type="text"/><br/>
-				<p>提示：点击注册表示您已经同意此服务协议！</p>
-				<label>验证码：</label><a class="btn2" href="javascript:;" title="马上注册">马上注册>></a><br/>
-				<span>已有账号，点击</span>
+				<label>手机号：</label><input class="input_area" type="text"/><br/>
+				<label>姓&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input class="input_area" type="text"/><br/>
+				<label>密&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input class="input_area" type="password"/><br/>
+				<label>验证码：</label><input class="input_area code" type="text"/><a class="btn2 btn_type2" href="javascript:;" title="获取验证码">获取验证码</a><br/>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;</label><p>提示：点击注册表示您已经同意此服务协议！</p><br>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;</label><a class="btn2 btn_type3" href="javascript:;" title="马上注册">马上注册</a><br/>
+				<label>&nbsp;&nbsp;&nbsp;&nbsp;</label><div class="b_div"><span>已有账号，点击</span>
 				<a class="btn4" href="javascript:;" title="登录">登录</a>
-				>>
+				>></div>
 			</div>
 			<!-- 登录 -->
 			<div class="sign_area">

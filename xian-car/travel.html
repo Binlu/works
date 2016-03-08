@@ -145,6 +145,89 @@
 			border: 1px solid #ddd;
 			display: none;
 		}
+		.h_time_lab{
+			margin-left: 10px;
+		}
+		.time_spn{
+			margin-left: 10px;
+			cursor: pointer;
+
+		}
+
+		.line_box{
+			padding: 20px 0;
+			background-color: 
+		}
+		.left_div{
+			box-sizing:border-box;
+			-moz-box-sizing:border-box; /* Firefox */
+			-webkit-box-sizing:border-box; /* Safari */
+			width: 25%;
+			padding: 30px 10px;
+			border: 1px solid #999999;
+			background-color: #fff58a;
+		}
+		.left_div>h3{
+			font-size: 16px;
+			margin-bottom: 12px;
+			text-align: center;
+		}
+		.left_div>p{
+			margin: 10px 0;
+		}
+		.left_div .p1{
+			color: #f82828;
+			font-size: 16px;
+			margin-bottom: 0;
+			text-align: center;
+		}
+		.right_div{
+			box-sizing:border-box;
+			-moz-box-sizing:border-box; /* Firefox */
+			-webkit-box-sizing:border-box; /* Safari */
+			width: 72%;
+			padding: 0 20px;
+			margin-left: 2%;
+			border: 1px solid #999999;
+		}
+		.right_div>h3{
+			padding: 15px 0;
+			
+		}
+		.line_list>li{
+			padding: 20px 0;
+			border-top: 1px solid #b3b3b3;
+		}
+		.line_list>li:after{
+			clear: both;
+			display: block;
+			content: "";
+		}
+		.line_list>li>img{
+			width: 107px;
+			float: left;
+		}
+		.line_txt_div{
+			float: left;
+			width: 565px;
+			margin-left: 20px;
+		}
+		.line_txt_div>h4{
+			font-size: 20px;
+			padding: 2px 0;
+		}
+		.detail_list>li>label{
+			display: inline-block;
+			width: 72px;
+			margin-top: 5px;
+			vertical-align: top;
+		}
+		.detail_list>li>span{
+			margin-top: 5px;
+			display: inline-block;
+			width: 490px;
+			vertical-align: top;
+		}
 	</style>
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BQtrC7t3SWOnelZPBWPMSSZi"></script>
@@ -230,14 +313,14 @@
 				<img src="images/3.jpg" alt="出现说明图片"/>
 			</div>
 			<!-- 详细选择 -->
-			<div class="detail_box">
+			<div class="detail_box hide">
 				<ul class="type_list">
 					<li><a class="btn1 choice_now" href="javascript:;" title="本人">本人</a></li>
 					<li><a class="btn1" href="javascript:;" title="帮人约车">帮人约车</a></li>
 				</ul>
 				<div class="detail_div">
 					<label>日期：</label><input class="input_area" type="text" id="datepicker-theme">
-					<label>时间</label><span>16:45</span>
+					<label class="h_time_lab">时间</label><span class="time_spn">16:45</span>
 					<ul class="pos_list">
 						<li>
 							<label>上车地点：</label>
@@ -281,6 +364,68 @@
 				</div>
 			</div>
 			<!-- 选择路线 -->
+			<div class="line_box clear">
+				<div class="left_div f_l">
+					<h3>预约说明</h3>
+					<p>1、郑州、南阳三环以内免费接送，超出范围需支付相应燃油费。</p>
+					<p>2、婴儿、儿童即使不占用座位也需计入乘车数量,按半价收费。请您在预约时如实提供乘车人数及行李携带情况。</p>
+					<p>3、为确保及时安排车辆，建议您提前2小时预约。</p>
+					<p>4、如有疑问请致电：</p>
+					<p class="p1">400096021011</p>
+				</div>
+				<div class="right_div f_l">
+					<h3 class="clear">推荐路线
+						<a class="btn4 f_r" href="javascript:;" title="直接下单">直接下单>></a>
+					</h3>
+					<ul class="line_list clear">
+						<li>
+							<img src="images/3.png" alt="路线">
+							<div class="line_txt_div">
+								<h4 class="clear">
+									<span>郑州-南阳</span>
+									<a class="btn2 btn_type2 f_r" href="javascript:;" title="我要下单">我要下单</a>
+								</h4>
+								<ul class="detail_list">
+									<li><label>高速时长：</label><span>2.5小时</span></li>
+									<li><label>全程：</label><span>3-4个小时左右（视客户位置和交通情况而定）4个小时左右（视客户位置和交通情况而定）4个小时左右（视客户位置和交通情况而定）4个小时左右（视客户位置和交通情况而定）</span></li>
+									<li><label>单程价格：</label><span>成人150元/人，儿童75元/人（身高1.3米以下）</span></li>
+									<li><label>郑州范围：</label><span>东至新107国道；南至南三环；北至三全路；西至西三环</span></li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<img src="images/3.png" alt="路线">
+							<div class="line_txt_div">
+								<h4 class="clear">
+									<span>郑州-南阳</span>
+									<a class="btn2 btn_type2 f_r" href="javascript:;" title="我要下单">我要下单</a>
+								</h4>
+								<ul class="detail_list">
+									<li><label>高速时长：</label><span>2.5小时</span></li>
+									<li><label>全程：</label><span>3-4个小时左右（视客户位置和交通情况而定）</span></li>
+									<li><label>单程价格：</label><span>成人150元/人，儿童75元/人（身高1.3米以下）</span></li>
+									<li><label>郑州范围：</label><span>东至新107国道；南至南三环；北至三全路；西至西三环</span></li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<img src="images/3.png" alt="路线">
+							<div class="line_txt_div">
+								<h4 class="clear">
+									<span>郑州-南阳</span>
+									<a class="btn2 btn_type2 f_r" href="javascript:;" title="我要下单">我要下单</a>
+								</h4>
+								<ul class="detail_list">
+									<li><label>高速时长：</label><span>2.5小时</span></li>
+									<li><label>全程：</label><span>3-4个小时左右（视客户位置和交通情况而定）</span></li>
+									<li><label>单程价格：</label><span>成人150元/人，儿童75元/人（身高1.3米以下）</span></li>
+									<li><label>郑州范围：</label><span>东至新107国道；南至南三环；北至三全路；西至西三环</span></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		
 	</div>
@@ -326,7 +471,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="js/pikaday.js"></script>
+	<script type="text/javascript" src="js/pikaday.min.js"></script>
 	<script type="text/javascript">
 		var $m={
 			// 居中
@@ -367,11 +512,15 @@
 		// 百度地图
 		var map1=null,map2=null;
 		$(function(){
-			var pickerTheme = new Pikaday(
-            {
-                "field": document.getElementById('datepicker-theme'),
-                "theme": 'dark-theme'
-            },0);
+
+            var picker = new Pikaday({
+		        field: document.getElementById('datepicker-theme'),
+		        firstDay: 1,
+		        minDate: new Date('2000-01-01'),
+		        maxDate: new Date('2020-12-31'),
+		        yearRange: [2000,2020],
+		        "theme": 'dark-theme'
+		    });
             // 移入效果
 			$(".js_about").on("mouseenter",function(){
 				$(this).children(".about_nav").stop(true).slideDown(200);
