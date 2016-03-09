@@ -6,8 +6,8 @@ table{border-collapse:collapse;}
 li {list-style: none;}
 img{border: none;}
 input{outline: none;border-radius: 0;}
-html,body{width: 100%;overflow-x: hidden;}
-body{font-size: 14px;font-family: "黑体"}
+body{font-size: 14px;font-family: "黑体";overflow-x:auto;min-width: 1024px;}
+html,body{width: 100%;}
 /****************公用样式**************/
 .w1024{width: 1024px;margin: auto;}
 h3{font-size: 16px;}

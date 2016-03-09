@@ -68,6 +68,7 @@
 		}
 		.type_list{
 			text-align: center;
+			margin-bottom: 20px;
 		}
 		.type_list>li{
 			display: inline-block;
@@ -291,25 +292,25 @@
 						<li><a class="btn1" href="javascript:;" title="线路预约">线路预约</a></li>
 					</ul>
 					<label>出发地：</label>
-					<select>
-						<option>太原市</option>
+					<select id="city_s">
+						<option>请选择省份</option>
 						<option>太原市</option>
 						<option>太原市</option>
 					</select>
 					<label>目的地：</label>
-					<select>
-						<option>太原市</option>
+					<select id="city_e">
+						<option>请选择市</option>
 						<option>太原市</option>
 						<option>太原市</option>
 					</select>
-					<a class="btn2 btn_type1" href="javascript:;" title="下一步">下一步</a>
+					<a class="btn2 btn_type1 js_to_next" href="javascript:;" title="下一步">下一步</a>
 				</div><br/>
 				<img class="pic1" src="images/txt1.png" alt="车载四海宾客，心交八方朋友。城际快客，您永远的朋友">
 			</div>
 		</div>
 		<div class="w1024">
 			<!-- 功能介绍 -->
-			<div class="introduce_box hide">
+			<div class="introduce_box">
 				<img src="images/3.jpg" alt="出现说明图片"/>
 			</div>
 			<!-- 详细选择 -->
@@ -324,9 +325,9 @@
 					<ul class="pos_list">
 						<li>
 							<label>上车地点：</label>
-							<span class="pos_spn1">山西省</span>
-							<span>太原市</span>
-							<select>
+							<span class="pos_spn1 js_prov_s">山西省</span>
+							<span class="js_city_s">太原市</span>
+							<select id='area_sel_s'>
 								<option>请选择区</option>
 							</select><br/><br/>
 							<input class="input_area js_input_pos1" type="text" placeholder="在此输入详细地址">
@@ -338,9 +339,9 @@
 						</li>
 						<li>
 							<label>下车地点：</label>
-							<span class="pos_spn1">山西省</span>
-							<span>太原市</span>
-							<select>
+							<span class="pos_spn1 js_prov_e">山西省</span>
+							<span class="js_city_e">太原市</span>
+							<select id="area_sel_e">
 								<option>请选择区</option>
 							</select><br/><br/>
 							<input class="input_area js_input_pos2" type="text" placeholder="在此输入详细地址">
@@ -359,12 +360,12 @@
 								<option>请选择代金券</option>
 							</select>
 						</li>
-						<li class="txt_c"><a class="btn2 btn_type2" href="javascript:;" title="提交">提&nbsp;&nbsp;&nbsp;交</a></li>
+						<li class="txt_c"><a class="btn2 btn_type2 js_sub_btn" href="javascript:;" title="提交">提&nbsp;&nbsp;&nbsp;交</a></li>
 					</ul>
 				</div>
 			</div>
 			<!-- 选择路线 -->
-			<div class="line_box clear">
+			<div class="line_box clear hide">
 				<div class="left_div f_l">
 					<h3>预约说明</h3>
 					<p>1、郑州、南阳三环以内免费接送，超出范围需支付相应燃油费。</p>
@@ -472,6 +473,8 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="js/pikaday.min.js"></script>
+	<script src="http://api.map.baidu.com/api?v=2.0&ak=5ZmIO6bXbDtdllzdMZwfXmFm"></script>
+	<script type="text/javascript" src="js/city.js"></script>
 	<script type="text/javascript">
 		var $m={
 			// 居中
@@ -508,11 +511,15 @@
 			hasSet: false,
 			// 
 			hasSetH:false,
+			// 当前位置信息
+			now_pos:null,
 		}
+		var city_obj=null;
 		// 百度地图
 		var map1=null,map2=null;
 		$(function(){
-
+			// 获取地理位置
+			getPos();
             var picker = new Pikaday({
 		        field: document.getElementById('datepicker-theme'),
 		        firstDay: 1,
@@ -527,12 +534,21 @@
 			}).on("mouseleave",function(){
 				$(this).children(".about_nav").stop(true).delay(300).slideUp(200);
 			});
-			(function(){
+			// 下一步
+			$(".js_to_next").on("click",function(){
+				setInfo();
+				$(".introduce_box").hide();
+				$(".detail_box").show();
 				var b=$(".map_div");
 				b.show();
 				$m.setHeight(b,0.5,320);
-				setMap("上海闵行区","西安雁塔区");
-			})()
+				b.hide();
+			});
+			// 切换类型
+			$(".type_list>li").on("click",function(){
+				$(this).siblings("li").children("a").removeClass("choice_now");
+				$(this).children("a").addClass("choice_now");
+			});
 			// 点击显示地图
 			$(".js_show_map1").on("click",function(){
 				var a=$(this);
@@ -543,6 +559,18 @@
 				var a=$(this);
 				dropFunc(a,$("#map_div2"));
 			});
+			// 切换地区
+			$("#area_sel_s").on("change",function(){
+				$m.hasSetH=false;
+			});
+			$("#area_sel_e").on("change",function(){
+				$m.hasSetH=false;
+			});
+			// 提交订单
+			$(".js_sub_btn").on("click",function(){
+				$(".detail_box").hide();
+				$(".line_box").show();
+			});
 		});
 		// 生成地图
 		function setMap(txt1,txt2){
@@ -550,12 +578,14 @@
 			map2= new BMap.Map("map_div2");
 			map1.centerAndZoom(txt1,15);
 			map2.centerAndZoom(txt2,15);
+			$m.hasSetH=true;
 			// 配置控件
 			setTool(map1);
 			setTool(map2);
-			$(".map_div").hide();
+			// $(".map_div").hide();
 			getPosDetail(map1,$(".js_input_pos1"));
 			getPosDetail(map2,$(".js_input_pos2"));
+
 		}
 		// 获取坐标定位街道
 		function getPosDetail(obj,tar){
@@ -571,6 +601,7 @@
 				});
 			},false);
 		}
+
 		// 设置地图控件
 		function setTool(map){
 			map.enableScrollWheelZoom(true);
@@ -583,12 +614,15 @@
 				a.addClass("js_now");
 				b.stop(true).slideDown(300,function(){
 					if(!$m.hasSetH){
-						$m.hasSetH=true;
-						map1.reset();
-					}
-					if(!$m.hasSet){
-						$m.hasSet=true;
-						map2.reset();
+						var p1_1=$(".js_prov_s").text()?$(".js_prov_s").text():"";
+						var p1_2=$(".js_city_s").text()?$(".js_city_s").text():"";
+						var p1_3=$("#area_sel_s").val()?$("#area_sel_s").val():"";
+						var p2_1=$(".js_prov_e").text()?$(".js_prov_e").text():"";
+						var p2_2=$(".js_city_e").text()?$(".js_city_e").text():"";
+						var p2_3=$("#area_sel_e").val()?$("#area_sel_e").val():"";
+						var txt1=p1_1+p1_2+p1_3;
+						var txt2=p2_1+p2_2+p2_3;
+						setMap(txt1,txt2);
 					}
 					a.text("收起地图");
 				});
@@ -598,6 +632,24 @@
 					a.text("查看地图");
 				});
 			}
+		}
+		// 更新地址信息
+		function setInfo(){
+			// 获取数据
+			var start_p1=$("#city_s").children("option:checked").attr("data-prov");
+			var start_p2=$("#city_s").children("option:checked").attr("data-prov");
+			var txt1=$("#city_s").val();
+			var txt2=$("#city_e").val();
+			$(".js_city_s").text(txt1);
+			$(".js_city_e").text(txt2);
+			$(".js_prov_s").text(start_p1);
+			$(".js_prov_e").text(start_p2);
+			// 生成对应的区
+			var osele1=document.getElementById("area_sel_s");
+			var osele2=document.getElementById("area_sel_e");
+			var pos=$m.now_pos["district"];
+			city_obj.setArea(osele1,ctArr,txt1,pos);
+			city_obj.setArea(osele2,ctArr,txt2,pos);
 		}
 	</script>
 </body>
