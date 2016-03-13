@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="author" content="lut"/>
-        <meta name="keywords" content="keywords"/>
-        <meta name="description" content="description"/>
+        <meta name="keywords" content="城际快客,出行,约车"/>
+        <meta name="description" content="线上拼车平台"/>
         <meta name="format-detection" content="telephone=no"/>
         <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-        <title>悦诗风吟雪耳霜</title>
+        <title>快客出行</title>
         <link rel="stylesheet" type="text/css" href="css/weui.min.css">
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/member_center.css">
@@ -22,7 +22,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 get_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
                         <span>个人中心</span>
                     </h3>
                     <!-- 内容 -->
@@ -153,7 +153,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 get_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                         <span>我的行程</span>
                     </h3>
                     <!-- 内容 -->
@@ -261,25 +261,218 @@
                 
             </div>
             <!-- 订单详情 -->
-            <div class="page page3">
+            <div class="page page3 hide">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 get_btn js_back" href="javascript:;" title="返回" data-return="page2"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page2"><img src="images/icon10.png" alt="返回"></a>
                         <span>订单详情</span>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="driver_info">
                             <img class="head_pic" src="images/1.jpg" alt="头像"/>
-                            div.
+                            <div>
+                                <span>陕A8888</span><span class="color4">王师傅</span><br/>
+                                <ul class="star_list">
+                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                </ul>
+                                <!-- 服务信息 -->
+                                <div class="driver_rank">
+                                    <label>服务次数：</label><span>200</span>
+                                    <label>司机排名：</label><span>10</span>
+                                </div>
+                            </div>
+                            <a class="btn2" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
                         </div>  
-                        
-
+                        <div class="p3_close_div hide">
+                            <p class="color5">订单已取消！</p>
+                            <label>取消原因：</label>
+                            <span>应为临时有事所以取消订单</span>
+                        </div>
+                        <div class="p3_detail_div">
+                            <div class="trip_box">
+                                <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
+                                <ul class="trip_de_list">
+                                    <li>
+                                        <img src="images/icon12.png" alt="icon"/>
+                                        <span>20:25</span>
+                                        <div class="f_r">
+                                            <label>包车天数：</label><span class="color5">1</span><span>天</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img src="images/icon12.png" alt="icon"/>
+                                        <span>神木</span>
+                                    </li>
+                                    <li>
+                                        <img src="images/icon13.png" alt="icon"/>
+                                        <span>需要捎一件行李</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="trip_box txt_c">
+                                <h3><label class="f_l">&nbsp;</label><span class="color6">微信支付</span><label class="f_r">&nbsp;</label></h3>
+                                <span class="color5 font18">25</span><label>元</label>
+                            </div>
+                            <div class="trip_box txt_c">
+                                <h3><label class="f_l">&nbsp;</label><span class="color6">评价司机</span><label class="f_r">&nbsp;</label></h3>
+                                <ul class="star_list assess_star">
+                                    <li><img src="images/icon17.png" alt="星星"></li>
+                                    <li><img src="images/icon17.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                </ul>
+                                <ul class="assess_list">
+                                    <li class="now_choice">车技好(<span>6</span>)</li>
+                                    <li>空气新鲜(<span>6</span>)</li>
+                                    <li>干净卫生(<span>6</span>)</li>
+                                    <li class="now_choice">贴心(<span>6</span>)</li>
+                                    <li>态度好(<span>6</span>)</li>
+                                    <li>聊得来(<span>6</span>)</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
+            </div>
+            <div class="page page4 hide">
+                <div class="scroll b_color2">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <span>我的钱包</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <div class="weui_cells weui_cells_access">
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>钱包余额</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <span>200</span><label>元</label>
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>优惠券</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <span>3</span><label>张</label>
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>开户发票</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <!-- <span>3</span><label>张</label> -->
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 钱包余额 -->
+            <div class="page page5 hide">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page4"><img src="images/icon10.png" alt="返回"></a>
+                        <span>钱包余额</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box txt_c">
+                        <div class="circular_div bg_gradient1">
+                            <span>余额</span><br/>
+                            <span class="font15 color1">￥5200</span>
+                        </div>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="充值">充值</a>
+                        <a href="javascript:;" class="weui_btn weui_btn_default" title="提现">提现</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 我的优惠券 -->
+            <div class="page page6 hide">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page4"><img src="images/icon10.png" alt="返回"></a>
+                        <span>我的优惠券</span>
+                        <a class="btn2 r_btn" href="javascript:;" title="添加" data-return="page4">添加</a>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <ul class="coupon_list">
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加优惠券 -->
+            <div class="page page7">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page6"><img src="images/icon10.png" alt="返回"></a>
+                        <span>添加优惠券</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <div class="weui_cells weui_cells_form">
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd">
+                                    <label class="weui_label">编号：</label>
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="tel" placeholder="请输入qq号">
+                                </div>
+                            </div>
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd">
+                                    <label class="weui_label">密码：</label>
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="tel" placeholder="请输入qq号">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="txt_r">
+                            <a href="javascript:;" class="btn2" title="扫一扫添加">扫一扫添加</a>
+                        </div>
+                        <br/>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="确定">确定</a>
+                    </div>
+                </div>
             </div>
             <!-- 例子 -->
             <div class="page page22 hide">
@@ -287,7 +480,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 get_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                         <span>例子</span>
                     </h3>
                     <!-- 内容 -->
@@ -311,7 +504,7 @@
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript">
             // 滚动变量
-            var myScroll1,myScroll2,myScroll3,myScroll4;
+            var myScroll1,myScroll2,myScroll3,myScroll4,myScroll5,myScroll6,myScroll7;
             // 自定义方法
             var $m={
                 // 分享链接
@@ -330,8 +523,15 @@
                     if(dw>limit){
                         $(".center_box").css({"left":(dw-limit)/2+"px"});
                     };
+                    this.setHeight($(".circular_div"),1)
+                    $(".circular_div").width();
                     myScroll1.refresh();
                     myScroll2.refresh();
+                    myScroll3.refresh();
+                    myScroll4.refresh();
+                    myScroll5.refresh();
+                    myScroll6.refresh();
+                    myScroll7.refresh();
                 },
                 // ajax 请求地址
                 ajax_link: ["deal_info","is_set_info"],
@@ -363,13 +563,22 @@
                     "images/txt_pic7.png",
                     "images/txt_pic8.png",
                 ],
-                // 接触时长
-                timeLen: 0,
+                // 设置宽高
+                setHeight:function(obj,k){
+                    var ow=obj.width();
+                    var num=parseInt(ow*k);
+                    obj.height(num+"px");
+                }
             }
             $(function(){
                 // 绑定滚动
                 myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,});
                 myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click: true,});
                 $m.rs();
                 $(window).on("resize",function(){$m.rs()});
             });

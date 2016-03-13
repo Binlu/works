@@ -2,7 +2,8 @@
 *{margin: 0;padding: 0;word-break: break-all;}
 html,body{height: 100%;overflow: hidden;}
 body{font-family: "Adobe 黑体 Std";background-color: #fff;color: #323232}
-img{width:100%;border:none;margin: 0;padding: 0}
+img{width:100%;border:none;margin: 0;padding: 0;vertical-align: middle;}
+span{vertical-align: middle;}
 a{text-decoration: none;}
 li{list-style: none;}
 
@@ -15,7 +16,7 @@ li{list-style: none;}
 	overflow: hidden;
     position: relative;
 }
-#scroll{position: relative;min-height: 100%}
+.scroll{position: relative;min-height: 100%}
 .page{
     position: absolute;
     width: 100%;
@@ -33,17 +34,22 @@ li{list-style: none;}
 }
 .head_tit>a{
     position: absolute;
-    left: 0em;
     top: 0em;
     padding: 0.5em 1em;
     z-index: 10;
+}
+.r_btn{
+    right: 0;
+}
+.return_btn{
+    left: 0;
 }
 .head_tit>a>img{
     width: 0.5em;
 }
 .content_box{
     font-size: 0.9em;
-    padding: 0 0.6em;
+    padding: 0 1em;
 }
 .weui_cells{
     font-size: 1em;
@@ -57,11 +63,16 @@ li{list-style: none;}
     padding-right: 0.5em;
     border-bottom: 1px solid #aaa;
 }
+.weui_btn{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
 /*头像*/
 .head_pic{
     width: 5em;
     height: 5em;
     border-radius: 50%;
+    vertical-align: middle;
 }
 /*图片加载*/
 .loadimg{position:absolute;width:1px;height:1px;font-size:0;opacity:0}
@@ -106,10 +117,33 @@ li{list-style: none;}
 .color1{color: #fff;}
 .color2{color: #323232;}
 .color3{color: #005CE7;}
+.color4{color: #0a65ee;}
+.color5{color: #F86300;}
+.color6{color: #F82828;}
 .b_color1{background-color: #f5f5f5}
+.b_color2{background-color: #f0f0f0}
+.b_color3{background-color: #166ef2}
+.bg_gradient1{
+    background: -webkit-linear-gradient(top, #fff 0%,#f83030 100%);
+    background: -o-linear-gradient(top, #fff 0%,#f83030 100%);
+    background: -ms-linear-gradient(top, #fff 0%,#f83030 100%);
+    background: linear-gradient(to bottom, #fff 0%,#f83030 100%);
+}
+
+.font08{font-size: 0.8em;}
+.font12{font-size: 1.2em;}
+.font15{font-size: 1.5em;}
+.font18{font-size: 1.8em;}
 /*浮动类型*/
 .f_l{float: left;}
 .f_r{float: right;}
+.txt_c{text-align: center;}
+.txt_l{text-align: left;}
+.txt_r{text-align: right;}
+.v_m{vertical-align: middle !important;}
+.v_t{vertical-align: top !important;}
+.v_b{vertical-align: bottom !important;}
+.v_base{vertical-align: baseline !important;}
 .clear:after{display: block;content: "";visibility: hidden;clear: both;}
 .hide{display: none;}
 

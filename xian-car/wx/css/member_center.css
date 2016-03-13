@@ -8,6 +8,9 @@
     top: 0;
     z-index: 100;
 }
+.page1 .content_box{
+    padding: 0 0.6em;
+}
 .user_box{
     padding: 1em 0;
     background-color: #0a7cbf;
@@ -66,7 +69,140 @@
 }
 .trip_de_list>li>img{
     width: 0.5em;
+    vertical-align: middle;
 }
 .trip_de_list>li{
     margin: 0.2em 0;
+}
+/*page3*/
+.page3 .content_box{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+.driver_info{
+    padding: 0.5em 0;
+}
+.driver_info>div{
+    display: inline-block;
+    margin-left: 1em;
+    vertical-align: middle;
+}
+.driver_info>div>span{
+    margin-right: 0.5em;
+}
+.driver_info>a{
+    display: inline-block;
+    width: 1.5em;
+    margin-top: 8%;
+    float: right;
+}
+.page3 .star_list{
+    margin-left: 0;
+    float: none;
+}
+.driver_rank{
+    font-size: 0.8em;
+    margin-top: 0.5em;
+}
+.driver_rank>span{
+    margin-right: 1em;
+}
+.p3_close_div{
+    margin-top: 30%;
+    text-align: center;
+}
+.p3_close_div>p{
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+.page3 .trip_de_list{
+    padding-left: 1em;
+    line-height: 2em;
+}
+.page3 .trip_box>span{
+    display: inline-block;
+    vertical-align: baseline;
+}
+.page3 .trip_box>label{
+    display: inline-block;
+    vertical-align: baseline;
+}
+.assess_star>li>img{
+    width: 2em;
+}
+.assess_list{
+    margin-top: 1em;
+}
+.assess_list>li{
+    display: inline-block;
+    width: 30%;
+    margin: 0.2em 1%;
+    padding: 0.2em 0;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+}
+.assess_list .now_choice{
+    color: #F82828;
+    border: 1px solid #F82828;
+}
+/*page4*/
+.page4 .weui_cells{
+    border: none;
+    margin-bottom: 1em;
+    background-color: #f0f0f0;
+}
+.page4 .weui_cell{
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+    background-color: #fff;
+    border: 1px solid #aaa;
+}
+.page4 .weui_cell_ft>label{
+    display: inline-block;
+    vertical-align: middle;
+}
+.page4 .weui_cell_ft>span{
+    display: inline-block;
+    vertical-align: middle;
+}
+/*page5*/
+.circular_div{
+    display: inline-block;
+    padding: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    text-align: center;
+    border-radius: 50%;
+}
+.page5 .weui_btn{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    letter-spacing: 0.3em;
+}
+/*page6*/
+.page6 .content_box{
+    padding-top: 0.5em;
+    padding-bottom: 1em;
+}
+.coupon_list>li{
+    padding: 0.4em 1em;
+    margin-top: 0.5em;
+    border: 1px solid #aaa;
+    border-radius: 0.2em;
+    background-color: #edecec;
+}
+.coupon_list>li span{
+    display: inline-block;
+    vertical-align: middle;
+}
+.coupon_list>li label{
+    display: inline-block;
+    vertical-align: baseline;
+}
+/*page7*/
+.page7 .weui_cell{
+    padding-left: 0.5em;
+    margin-bottom: 0.5em;
+    border: 1px solid #aaa;
+    border-radius: 0.2em;
 }
