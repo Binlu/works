@@ -10,6 +10,14 @@
 }
 .page1 .content_box{
     padding: 0 0.6em;
+    background-color: #fff;
+}
+.page1 .weui_cells{
+    margin-top: 0.8em;
+    background-color: #dbdbdb;
+}
+.page1 .weui_cell{
+    background-color: #fff;
 }
 .user_box{
     padding: 1em 0;
@@ -64,6 +72,7 @@
     padding: 0.5em;
     border: 1px solid #aaa;
     border-radius: 0.4em;
+    background-color: #fff;
 }
 .trip_de_list{
 }
@@ -79,18 +88,18 @@
     padding-top: 1em;
     padding-bottom: 1em;
 }
-.driver_info{
+.header_info{
     padding: 0.5em 0;
 }
-.driver_info>div{
+.header_info>div{
     display: inline-block;
     margin-left: 1em;
     vertical-align: middle;
 }
-.driver_info>div>span{
+.header_info>div>span{
     margin-right: 0.5em;
 }
-.driver_info>a{
+.header_info>a{
     display: inline-block;
     width: 1.5em;
     margin-top: 8%;
@@ -205,4 +214,263 @@
     margin-bottom: 0.5em;
     border: 1px solid #aaa;
     border-radius: 0.2em;
+}
+/*page8*/
+.page8 .content_box>h3{
+    font-size: 1em;
+    margin-top: 1em;
+    font-weight: normal;
+}
+.page8 .content_box>ul{
+    margin-left: 0.5em;
+    margin-top: 1em;
+}
+/*page9*/
+.page9 .content_box{
+    padding-top: 0.5em;
+    padding-bottom: 7em;
+}
+.page9 .trip_list{
+    padding: 0;
+}
+.page9 .trip_list span,.page9 .trip_list label{
+    display: inline-block;
+    vertical-align: middle;
+}
+.page9 .trip_list>li{
+    padding: 0em 0.5em;
+}
+.btn_type1{
+    display: inline-block;
+    padding-left: 1.6em;
+    background-image: url(../images/icon20.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 1.2em;
+    vertical-align: middle;
+}
+.all_chocie_btn{
+    margin-right: 3em;
+    background-image: url(../images/icon19.png),url(../images/icon20.png);
+    background-repeat: no-repeat;
+    background-position: 0.2em center,left center;
+    background-size: 0.8em,1.2em;
+    vertical-align: middle;
+}
+.page9 .weui_btn_my1{
+    margin-top: 1em;
+    letter-spacing: 0.2em;
+}
+/*page10*/
+.page10 .scroll{
+    padding-bottom: 2em;
+}
+.page10 .weui_cells{
+    margin-top: 0;
+    background-color: #fff;
+}
+.page10 .weui_cell{
+    padding: 0.5em 1em;
+}
+.page10 .weui_label{
+    width: 5em;
+}
+.page10 .weui_cell_ft{
+    font-size: 1em;
+}
+.page10 .weui_cell_ft>img{
+    width: 1em;
+
+}
+.type_div{
+    padding: 1em 0;
+    text-align: center;
+    border-bottom: 1px solid #aaa;
+}
+.type_div>a{
+    display: inline-block;
+    padding: 0.4em 1em;
+    margin-right: 0.5em;
+    border: 1px solid #999;
+    border-radius: 0.3em;
+}
+/*page11*/
+.page11 .circular_div{
+    padding: 2em;
+    color: #fff;
+}
+.page11 .circular_div>span{
+    display: inline-block;
+    vertical-align: baseline;
+}
+/*page12*/
+.page12 .detail_div{
+}
+.weui_media_box.weui_media_appmsg{
+    padding: 0.6em 0.8em;
+    border-bottom: 1px solid #aaa;
+}
+.page12 .head_pic{
+    margin-right: 0.5em;
+}
+.page12 .weui_media_desc{
+    line-height: 1.3em;
+}
+.page12 .weui_bar_item_on{
+    color: #ff4e00;
+}
+.btn_type3{
+    display: inline-block;
+    padding: 0.3em 2.5em;
+}
+.p12_div{
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+.p12_div>span{
+    display: inline-block;
+    vertical-align: baseline;
+}
+a.share_btn{
+    padding: 0.2em;
+}
+a.share_btn>img{
+    width: 2.2em;
+}
+/*page13*/
+.logo_div{
+    text-align: center;
+}
+.logo_div>img{
+    padding: 2em 0;
+    width: 22%;
+}
+.page13 .content_box>p{
+    text-indent: 2em;
+}
+/*page14*/
+.page14 .sub_btn{
+    font-weight: normal;
+    top: 0.2em;
+}
+.page14 .content_box{
+    padding-top: 1em;
+}
+.text_area{
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;
+    width: 100%;
+    font-size: 1em;
+    padding: 0.5em;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+}
+/*page15*/
+.page15 .weui_btn_my1{
+    margin-top: 2em;
+}
+#head_div{
+    width: 5em;
+    height: 5em;
+    margin: 2.5em auto 2em;
+    border-radius: 0.5em;
+    border: 1px solid #fff;
+    overflow: hidden;
+}
+#head_div>img{
+    width: 100%;
+    height: 100%;
+}
+/* page1 */
+.user_info{
+    padding-left: 1.8em;
+    border: 1px solid #aaa;
+}
+.inp1{
+    background-image: url(../images/icon24.png);
+    background-repeat: no-repeat;
+    background-position: 2% center;
+    background-size: 1em;
+}
+.inp2{
+    background-image: url(../images/icon26.png);
+    background-repeat: no-repeat;
+    background-position: 2% center;
+    background-size: 1em;
+}
+.inp3{
+    margin-top: 1em;
+    background-image: url(../images/icon24.png);
+    background-repeat: no-repeat;
+    background-position: 2% center;
+    background-size: 1em;
+}
+.inp4{
+    background-image: url(../images/icon25.png);
+    background-repeat: no-repeat;
+    background-position: 2% center;
+    background-size: 1em;
+}
+.code_box{
+    position: relative;
+    background-color: #fff;
+    margin-top: 0.7em;
+}
+.p1_bom{
+    text-align: left;
+}
+#getPass{
+    display: inline-block;
+    font-size: 0.9em;
+    padding: 1em 1.2em;
+}
+#setNew{
+    float: right;
+    display: inline-block;
+    font-size: 0.9em;
+    padding: 1em 1.2em;
+}
+#new{
+    margin-left: -0.3em;
+    vertical-align: middle;
+}
+/*page3*/
+.p2_inp{
+    position: relative;
+}
+.p2_bom{
+    padding-left: 1.2em;
+    padding-top: 1em;
+    text-align: left;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+.p2_bom>label{
+    vertical-align: middle;
+}
+#checkbut{
+    width: auto;
+    font-size: 0.9em;
+    position: absolute;
+    right: 0.8em;
+    top: 1.5em;
+    padding: 0.3em 0.5em;
+    margin: 0;
+    color: #fff;
+    background-color: #f82828;
+    border: 1px solid #aaa;
+    border-radius: 0.5em;
+    cursor: pointer;
+    outline: none;
+}
+.check_rule{
+    width: 15px;
+    margin-right: 0.5em;
+    vertical-align: middle;
+}
+/*page16*/
+.page16 .weui_btn_my1{
+    margin-top: 1em;
+}
+.p2_bom>img{
+    width: 1em;
 }
