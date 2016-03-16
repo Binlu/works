@@ -17,7 +17,7 @@
         <!-- 模拟屏幕 -->
         <section id="container">
             <!-- 个人中心 -->
-            <div class="page page1 hide">
+            <div class="page page1">
                 <div class="scroll b_color5">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -946,7 +946,7 @@
                 </div>
             </div>
             <!-- 注册 -->
-            <div class="page page16">
+            <div class="page page16 hide">
                 <div class="scroll b_color6">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -974,6 +974,22 @@
                     </div>
                 </div>
             </div>
+            <!-- 找回密码 -->
+            <div class="page page17 hide">
+                <div class="scroll b_color6">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page15"><img src="images/icon10.png" alt="返回"></a>
+                        <span>找回密码</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box txt_c">
+                        <input class="inp3 user_info input_area" type="text" name="number" placeholder="请输入需要找回的手机号码" maxlength="11" pattern="[0-9]*"/>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="找回密码">找回密码</a>
+                    </div>
+                </div>
+            </div>
             <!-- 页面 -->
         </section>
         <!-- 提示信息 -->
@@ -985,7 +1001,6 @@
             <p class="p3">对不起，<br> 本次活动已经结束了，<br>请继续关注悦诗风吟的其他活动。</p>
         </section>
         <section id="bg_div" class="center_box"></section>
-        <script type="text/javascript" src="http://js.miaozhen.com/wx.1.0.js"></script>
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript">
             // 滚动变量
@@ -998,6 +1013,8 @@
                 init_arr:{},
                 // 图片地址前缀
                 img_url:"images/",
+                // 当前页面
+                active_scroll:1,
                 // 重新布局
                 rs: function(){
                     var a=this;
@@ -1014,16 +1031,39 @@
                     });
                     
                     
-                    myScroll1.refresh();
-                    myScroll2.refresh();
-                    myScroll3.refresh();
-                    myScroll4.refresh();
-                    myScroll5.refresh();
-                    myScroll6.refresh();
-                    myScroll7.refresh();
-                    myScroll8.refresh();
-                    myScroll9.refresh();
-                    myScroll10.refresh();
+                    a.refreshPage(a.active_scroll);
+                },
+                // 刷新scroll
+                refreshPage: function(type){
+                    if(type==1){
+                        myScroll1.refresh();
+                    }else if(type==2){
+                        myScroll2.refresh();
+                    }else if(type==3){
+                        myScroll3.refresh();
+                    }else if(type==4){
+                        myScroll4.refresh();
+                    }else if(type==5){
+                        myScroll5.refresh();
+                    }else if(type==6){
+                        myScroll6.refresh();
+                    }else if(type==7){
+                        myScroll7.refresh();
+                    }else if(type==8){
+                        myScroll8.refresh();
+                    }else if(type==9){
+                        myScroll9.refresh();
+                    }else if(type==10){
+                        myScroll10.refresh();
+                    }else if(type==11){
+                        myScroll11.refresh();
+                    }else if(type==12){
+                        myScroll12.refresh();
+                    }else if(type==13){
+                        myScroll13.refresh();
+                    }else if(type==14){
+                        myScroll14.refresh();
+                    }
                 },
                 // ajax 请求地址
                 ajax_link: ["deal_info","is_set_info"],
@@ -1065,16 +1105,16 @@
             }
             $(function(){
                 // 绑定滚动
-                myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true,});
-                myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true,});
+                myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+                myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
                 $m.rs();
                 $(window).on("resize",function(){$m.rs()});
             });
