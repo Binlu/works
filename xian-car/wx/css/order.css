@@ -1,57 +1,53 @@
 @charset "utf-8";
 /*page1*/
-.page1{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 100;
-}
-.page1 .content_box{
-    padding: 0 1em;
-}
-.page1 .weui_cells{
-    margin-top: 0.8em;
-}
-.page1 .weui_cell:before{
-    border: none;
-}
-.page1 .weui_cell{
+.order_box{
+    width: 80%;
+    margin: 2em auto;
     padding: 0.5em;
-    background-color: #fff;
     border: 1px solid #aaa;
-    border-top: none;
+    border-radius: 0.5em;
+    box-shadow: 0em 0em 1em #ccc;
 }
-.page1 .weui_cell_hd>img{
-    width: 0.7em;
-    margin-right: 0.3em;
-    vertical-align: middle;
+.order_box>h3{
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #aaa;
 }
-.page1 .weui_cell_ft:after{
-    border-color: #fff;
+.order_box ul>li{
+    margin: 0.5em 0;
+    padding: 0 2em;
 }
-.page1 .last_weui_cell_ft:after{
-    border-color: #666;
+.order_box ul>li>img{
+    width: 0.6em;
+    margin-right: 0.5em;
 }
-.page1 .content_box>h3{
-    font-size: 1.5em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    text-align: center;
+.header_info{
+    width: 76%;
+    margin: auto;
+    padding: 0.5em 0;
 }
-.page1 .weui_btn_my1{
-    margin-top: 2em;
+.header_info>span{
+    margin-right: 0.5em;
+}
+.header_info>a{
+    display: inline-block;
+    width: 1.5em;
+    margin-top: 8%;
+    float: right;
 }
 .star_list{
     float: left;
-    margin-left: 2em;
 }
 .star_list>li{
     display: inline-block;
 }
-.star_list>li>img{
+.order_box ul.star_list>li{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+.order_box ul.star_list>li>img{
     width: 1.2em;
+    margin-right: 0;
     vertical-align: middle;
 }
 .star_div>span{
@@ -59,27 +55,78 @@
     margin-right: 2em;
     color: #fff;
 }
+.driver_rank{
+    font-size: 0.8em;
+    margin-top: 0.5em;
+}
+.driver_rank>span{
+    margin-right: 1em;
+}
+.tel_btn{
+    display: inline-block;
+}
+.tel_btn>img{
+    width: 1.8em;
+}
+.page1 .head_pic{
+    width: 4em;
+    height: 4em;
+    margin-top: -2.5em;
+    border: 2px solid #aaa;
+}
+.page1 .content_box>h3{
+    font-weight: normal;
+    margin-bottom: 2em;
+}
 /*page2*/
-.tag{width:94%;padding:0 3%;line-height:2.3em;font-size:0.8em;color:#3b81c6}
-.opt{background:#fff;border-bottom:1px solid #eef;width:90%;padding:0.3em 5%;font-size:0.85em;font-weight:bold;line-height:2.5em}
-.opt>img{width: 3em;height: 3em;border-radius: 1.5em;margin-right: 0.5em;vertical-align: middle;}
-.opt>span{display: inline-block;margin-left: 0.5em;vertical-align: middle;}
-.search{margin-top:0.5em}
-.search input{width:96%;font-size:0.9em;padding:1.1em 2%;border:none;border-radius:0;background-color:#fff;background-image:url(http://bos.bj.baidubce.com/we-sh2/mtravel/images/newfrontend/loclsearch.png);background-position:left;background-repeat:no-repeat;background-size:auto 100%}
-/*.search .c_search{background-image:url(http://bos.bj.baidubce.com/we-sh2/mtravel/images/newfrontend/c_search.jpg);background-position:left;background-repeat:no-repeat;background-size:auto 100%}*/
-.list{position:absolute;top:6.6em;bottom:0em;width: 100%;overflow:hidden}
-.city_list{padding-bottom: 3em;}
-.azban{position:absolute;top:8em;bottom:0;font-size:0.8em;right:0;width:2em;text-align:center;line-height:1em}
-.azban table{height:100%}
-.azban table td{height:4%}
-.date{width:90%;margin-left:4.5%;margin-top:1em}
-.n_list{display: none;text-align: center;font-size: 0.9em}
-.pos_div{position: absolute;top: 0;right: 0em;padding: 0 0.5em}
-.pos_div>img{width: 1em;vertical-align:middle;}
-.pos_div>span{font-size: 0.8em;display: inline-block;min-width: 2em;max-width: 7em;height: 3.3em;line-height: 3.3em;overflow: hidden;vertical-align:middle;}
-.n_pos_div{float: right;display: inline-block;margin-right: 0.5em}
-.n_pos_div>span{display: inline-block;color: #25b3fc;vertical-align: middle;}
-.n_pos_div>img{width: 1em;vertical-align: middle;}
+.page2 .header_info{
+    width: 100%;
+    padding-top:1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #aaa;
+}
+.page2 .header_info>img{
+    vertical-align: middle;
+}
+.page2 .header_info>div{
+    display: inline-block;
+    width: 72%;
+    margin-left: 4%;
+    vertical-align: middle;
+}
+.evaluate_box{
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid #aaa;
+}
+.evaluate_box>h3{
+    font-size: 1em;
+    font-weight: normal;
+}
+.evaluate_box>ul{
+    margin-left: 4em;
+}
+.evaluate_box>ul>li{
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    margin: 0.5em 0.1em;
+    color: #f82828;
+    border: 1px solid #f82828;
+    border-radius: 0.3em;
+    text-align: center;
+    background-color: #fff;
+}
+.line_info{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.line_info>li{
+    margin: 0.2em 0;
+}
+.line_info>li>label,.line_info>li>span{
+    display: inline-block;
+    vertical-align: baseline;
+}
 /*page3*/
 .page3 .content_box{
     padding-top: 1em;
