@@ -22,9 +22,6 @@ var $m={
         if(dw>limit){
             $(".center_box").css({"left":(dw-limit)/2+"px"});
         };
-        $(".circular_div").each(function(){
-            a.setHeight($(this),1)
-        });
         
         
         a.refreshPage(a.active_scroll);
@@ -100,13 +97,14 @@ var $m={
     }
 }
 $(function(){
+    $m.rs();
 	// 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
     myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll2=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true});
     
 
-    $m.rs();
+    
     
 	$(window).on("resize",function(){$m.rs()});
 });

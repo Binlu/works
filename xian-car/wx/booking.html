@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="author" content="lut"/>
+        <meta name="keywords" content="城际快客,出行,约车"/>
+        <meta name="description" content="线上拼车平台"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+        <title>weui测试</title>
+        <link rel="stylesheet" type="text/css" href="css/weui.min.css">
+        <link rel="stylesheet" href="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="css/booking.css">
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    </head>
+    <body>
+        <!-- 模拟屏幕 -->
+        <section id="container">
+            <!-- 预约包车 -->
+            <div class="page page1">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
+                        <span>预约包车</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <h3>想去哪里呢？<br/>    
+                            <span class="font08">您附近有12辆出租车</span>
+                        </h3>
+                        <ul class="nav_list clear">
+                            <li><a class="now_choice_a" href="javascript:;" title="线路预约">线路预约</a></li>
+                            <li><a href="javascript:;" title="包天预约">包天预约</a></li>
+                        </ul>
+                        <div class="weui_cells weui_cells_access hide">
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>出发时间<span class="v_base" style="margin-left:4em;">今天 10:00</span></p>
+                                </div>
+                                <div class="weui_cell_ft color3 nafter">
+                                    有话说？
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_hd">
+                                    <img src="images/icon12.png" alt="icon">
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>神木</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <!-- 说明文字 -->
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_hd">
+                                    <img src="images/icon13.png" alt="icon">
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>大柳塔</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <!-- 说明文字 -->
+                                </div>
+                            </a>
+                            
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary" style="margin-left:4em;">
+                                    预交费用<span class="font15 color5 v_base">35.5</span>元
+                                </div>
+                                <div class="weui_cell_ft last_weui_cell_ft">
+                                    资费详情
+                                </div>
+                            </a>
+                        </div>
+                        <div class="weui_cells weui_cells_access">
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>出发时间<span class="v_base" style="margin-left:4em;">今天 10:00</span></p>
+                                </div>
+                                <div class="weui_cell_ft color3 nafter">
+                                    有话说？
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_hd">
+                                    <img src="images/icon12.png" alt="icon">
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>神木</p>
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <!-- 说明文字 -->
+                                </div>
+                            </a>
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>用车天数</p>
+                                </div>
+                                <div class="weui_cell_ft add_box">
+                                    <span><img src="images/icon39.png" alt="加"></span>
+                                    <input type="text" value="1">
+                                    <span><img src="images/icon40.png" alt="减"></span>
+                                </div>
+                            </a>
+                            
+                            <a class="weui_cell" href="#">
+                                <div class="weui_cell_bd weui_cell_primary" style="margin-left:4em;">
+                                    预交费用<span class="font15 color5 v_base">35.5</span>元
+                                </div>
+                                <div class="weui_cell_ft last_weui_cell_ft">
+                                    资费详情
+                                </div>
+                            </a>
+                        </div>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="叫车">叫车</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 城市选择 -->
+            <div class="page page2 b_color2 hide">
+                <!-- 标题 -->
+                <h3 class="head_tit">
+                    <!-- 返回前页 -->
+                    <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                    <span>城市选择</span>
+                    <div class="pos_div js_pos_div"><span class="pos_name js_pos_spn"></span><img src="images/icon29.png"/></div>
+                </h3>
+                <div class="search"><input class="mysel c_search js_city_search" data-id="[{'name':'江浙沪','list':['0001@@上海','0002@@南京','0003@@杭州']},{'name':'东三省','list':['0004@@哈尔滨','0005@@黑龙江','0006@@吉林']},{'name':'a-z','list':['0001@@上海','0002@@南京','0003@@杭州','0004@@哈尔滨','0005@@黑龙江','0006@@吉林']}]"/></div>
+                <div class="list list_tar">
+                    <div class="list_main list_tar_main js_c_list">
+                        <!-- 国家列表 -->
+                        <ul class="city_list"></ul>
+                        <!-- 没有列表提示 -->
+                        <div class="n_list">
+                            <p class="at1">暂时没有国家列表。</p>
+                            <p class="at2">您搜索的国家暂时不支持此业务！</p>
+                        </div>
+                        <!-- 搜索结果 -->
+                        <ul class="search_list"></ul>
+                    </div>
+                </div>
+                <div class="azban azban_tar">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr><td>A</td></tr>
+                        <tr><td>B</td></tr>
+                        <tr><td>C</td></tr>
+                        <tr><td>D</td></tr>
+                        <tr><td>E</td></tr>
+                        <tr><td>F</td></tr>
+                        <tr><td>G</td></tr>
+                        <tr><td>H</td></tr>
+                        <tr><td>J</td></tr>
+                        <tr><td>K</td></tr>
+                        <tr><td>L</td></tr>
+                        <tr><td>M</td></tr>
+                        <tr><td>N</td></tr>
+                        <tr><td>O</td></tr>
+                        <tr><td>P</td></tr>
+                        <tr><td>Q</td></tr>
+                        <tr><td>R</td></tr>
+                        <tr><td>S</td></tr>
+                        <tr><td>T</td></tr>
+                        <tr><td>W</td></tr>
+                        <tr><td>X</td></tr>
+                        <tr><td>Y</td></tr>
+                        <tr><td>Z</td></tr>
+                    </table>
+                </div>
+                
+            </div>
+            <!-- 留言 -->
+            <div class="page page3 hide">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <span>留言</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <div class="txt_c">
+                            <a class="btn1 voice_btn" href="javascript:;" title="留言"><img src="images/icon30.png" alt="留言"></a><br/>
+                            <span>语音发送</span>
+                        </div>
+                        <textarea class="text_area" placeholder="请在此手动输入" rows="7"></textarea>
+                        <ul class="pic_list clear">
+                            <li><a class="btn2" href="javascript:;" title="添加照片"><img src="images/icon31.png" alt="添加照片"><span>添加照片</span></a></li>
+                        </ul>
+                        <div class="check_box_div">
+                            <a class="btn2 now_choice_a" href="javascript:;" title="是否有行李">是否有行李</a><br/>
+                            <a class="btn2" href="javascript:;" title="是否有小孩">是否有小孩</a>
+                        </div>
+                        <div class="txt_c">
+                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="留言完毕">留言完毕</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- 乘车人 -->
+            <div class="page page4 hide">
+                <div class="scroll b_color2">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <span>乘车人</span>
+                        <a class="btn2 r_btn" href="javascript:;" title="完成" data-return="page4">完成</a>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box">
+                        <div class="weui_cells weui_cells_form">
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd">
+                                    <label class="weui_label" style="width:8em;">请选择乘车人数：</label>
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="tel" placeholder="">
+                                </div>
+                            </div>
+                            <ul class="num_list">
+                                <li>1</li>
+                                <li class="now_choice">2</li>
+                                <li>3</li>
+                                <li>4</li>
+                            </ul>
+                            <div class="weui_cells" style="border: none">
+                                <label class="weui_cell weui_check_label" style="border: 1px solid #aaa">
+                                    <div class="weui_cell_hd">
+                                        帮人约车
+                                    </div>
+                                    <div class="weui_cell_bd weui_cell_primary">
+                                        <p class="color7"></p>
+                                    </div>
+                                    <div class="weui_cell_ft">
+                                        <img src="images/icon32.png" alt="icon">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="weui_cells contact_div">
+                                <div class="weui_cell" style="border-radius: 0.3em 0.3em 0 0">
+                                    <div class="weui_cell_hd">
+                                        <label class="weui_label">乘车人姓名：</label>
+                                    </div>
+                                    <div class="weui_cell_bd weui_cell_primary">
+                                        <input class="weui_input" type="tel" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="weui_cell" style="border-top: none;border-radius: 0 0 0.3em 0.3em">
+                                    <div class="weui_cell_hd">
+                                        <label class="weui_label">乘车人电话：</label>
+                                    </div>
+                                    <div class="weui_cell_bd weui_cell_primary">
+                                        <input class="weui_input" type="tel" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="txt_c">
+                            <a href="javascript:;" class="btn2 btn_type2 b_color1" title="取消">取消</a>
+                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="確定">確定</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 资费详情 -->
+            <div class="page page5 hide">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                        <span>资费详情</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box txt_c">
+                        <h3><label class="f_l">&nbsp;</label><span>合计</span><label class="f_r">&nbsp;</label></h3>
+                        <div class="detail_div">
+                            <span class="font18">25</span>元
+                            <ul>
+                                <li class="clear"><label>基本车费：</label><span class="f_r">20元</span></li>
+                                <li class="clear"><label>接乘客费：</label><span class="f_r">0元</span></li>
+                                <li class="clear"><label>送乘客费：</label><span class="f_r">10元</span></li>
+                            </ul>
+                            <div class="color5 clear">
+                                <label>优惠券抵扣：</label><span class="f_r">5元</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 提示信息 -->
+        <section id="atten_box" class="center_box">
+            <p class="p1">
+                <span class="type3"></span>
+            </p>
+            <p class="p2"><a class="btn1" href="javascript:window.location.reload(true);" title="重新加载页面">加载失败，点击重试！</a></p>
+            <p class="p3">对不起，<br> 本次活动已经结束了，<br>请继续关注悦诗风吟的其他活动。</p>
+        </section>
+        <section id="bg_div" class="center_box"></section>
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=5ZmIO6bXbDtdllzdMZwfXmFm"></script>
+        <script src="js/pinyin.js"></script>
+        <script type="text/javascript" src="js/iscroll.js"></script>
+        <script type="text/javascript" src="js/booking.js"></script>
+    </body>
+   
+</html>
+
+ 

@@ -195,7 +195,8 @@ a.r_btn{
 .clear:after{display: block;content: "";visibility: hidden;clear: both;}
 .hide{display: none;}
 
-
+.nafter:after{content: none !important;}
+.nbefore:before{content: none !important;}
 
 /*css3动画*/
 

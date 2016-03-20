@@ -17,7 +17,7 @@
         <!-- 模拟屏幕 -->
         <section id="container">
             <!-- 系统派单中 -->
-            <div class="page page1 hide">
+            <div class="page page1">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <!-- 车辆支付 -->
-            <div class="page page3">
+            <div class="page page3 hide">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -129,7 +129,7 @@
                         <div class="header_info">
                             <img class="head_pic" src="images/1.jpg" alt="头像"/>
                             <div>
-                                <span>陕A8888</span><span class="color4">王师傅</span><br/>
+                                <span style="margin-right: 0.5em">陕A8888</span><span class="color4">王师傅</span><br/>
                                 <div class="clear">
                                     <ul class="star_list">
                                         <li><img src="images/icon11.png" alt="星星"></li>
@@ -148,120 +148,56 @@
                             </div>
                         </div>
                         <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
-                        <ul>
-                            <li><img src="images/icon12.png" alt="icon"><span>今天</span><span>22:00</span></li>
+                        <ul class="detail_list">
+                            <li class="clear"><img src="images/icon12.png" alt="icon"><span>今天</span><span>22:00</span><div class="f_r">乘车人数<span class="color5">1</span>人</div></li>
                             <li><img src="images/icon12.png" alt="icon"><span>神木</span></li>
                             <li><img src="images/icon13.png" alt="icon"><span>大柳塔</span></li>
                             <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li>
                         </ul>
                         <div class="txt_c"><span>预计司机</span><span>15min</span><span>后到达</span></div>
-                        <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
-                        <a class="weui_cell" href="#">
-                            <div class="weui_cell_bd weui_cell_primary">
-                                <p>优惠券</p>
-                                已使用<span class="color5">5</span>元
+                        <h3><label class="f_l">&nbsp;</label><span class="color6">车费支付</span><label class="f_r">&nbsp;</label></h3>
+                        <div class="pay_box">
+                            <a class="btn2" href="javascript:;" title="优惠券">
+                                <label>优惠券</label>
+                                已使用<span class="color6 font12 v_base">5</span>元
+                            </a>
+                            <div class="txt_c">
+                                还需支付 <span class="font18 color6 v_base">25</span> 元
                             </div>
-                            <div class="weui_cell_ft">
-                                <!-- 说明文字 -->
-                            </div>
-                        </a>
-                        <div class="txt_c">
-                            还需支付<span class="font18 color6">25</span>元
-                        </div>
-                        <ul class="pay_type_list">
-                            <li><a href="javascript:;" title="微信支付"><img src="images/"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- 乘车人 -->
-            <div class="page page4 hide">
-                <div class="scroll b_color2">
-                    <!-- 标题 -->
-                    <h3 class="head_tit">
-                        <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
-                        <span>乘车人</span>
-                        <a class="btn2 r_btn" href="javascript:;" title="完成" data-return="page4">完成</a>
-                    </h3>
-                    <!-- 内容 -->
-                    <div class="content_box">
-                        <div class="weui_cells weui_cells_form">
-                            <div class="weui_cell">
-                                <div class="weui_cell_hd">
-                                    <label class="weui_label" style="width:8em;">请选择乘车人数：</label>
-                                </div>
-                                <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input" type="tel" placeholder="">
-                                </div>
-                            </div>
-                            <ul class="num_list">
-                                <li>1</li>
-                                <li class="now_choice">2</li>
-                                <li>3</li>
-                                <li>4</li>
+                            <ul class="pay_type_list">
+                                <li>
+                                    <a class="btn2" href="javascript:;" title="微信支付">
+                                        <img src="images/icon33.png" alt="微信"><br/>
+                                        微信<br/>
+                                        <span class="now_choice_spn">&nbsp;</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn2" href="javascript:;" title="支付宝支付">
+                                        <img src="images/icon34.png" alt="支付宝"><br/>
+                                        支付宝<br/>
+                                        <span>&nbsp;</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn2" href="javascript:;" title="银联支付">
+                                        <img src="images/icon35.png" alt="银联"><br/>
+                                        银联<br/>
+                                        <span>&nbsp;</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn2" href="javascript:;" title="余额支付">
+                                        <img src="images/icon36.png" alt="余额"><br/>
+                                        余额<br/>
+                                        <span>&nbsp;</span>
+                                    </a>
+                                </li>
                             </ul>
-                            <div class="weui_cells" style="border: none">
-                                <label class="weui_cell weui_check_label" style="border: 1px solid #aaa">
-                                    <div class="weui_cell_hd">
-                                        帮人约车
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <p class="color7"></p>
-                                    </div>
-                                    <div class="weui_cell_ft">
-                                        <img src="images/icon32.png" alt="icon">
-                                    </div>
-                                </label>
+                            <div class="txt_r">
+                                <label class="color6 font08">提示：微信公众号只有微信余额支付</label>
                             </div>
-                            <div class="weui_cells contact_div">
-                                <div class="weui_cell" style="border-radius: 0.3em 0.3em 0 0">
-                                    <div class="weui_cell_hd">
-                                        <label class="weui_label">乘车人姓名：</label>
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <input class="weui_input" type="tel" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="weui_cell" style="border-top: none;border-radius: 0 0 0.3em 0.3em">
-                                    <div class="weui_cell_hd">
-                                        <label class="weui_label">乘车人电话：</label>
-                                    </div>
-                                    <div class="weui_cell_bd weui_cell_primary">
-                                        <input class="weui_input" type="tel" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="txt_c">
-                            <a href="javascript:;" class="btn2 btn_type2 b_color1" title="取消">取消</a>
-                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="確定">確定</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 资费详情 -->
-            <div class="page page5 hide">
-                <div class="scroll">
-                    <!-- 标题 -->
-                    <h3 class="head_tit">
-                        <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
-                        <span>资费详情</span>
-                    </h3>
-                    <!-- 内容 -->
-                    <div class="content_box txt_c">
-                        <h3><label class="f_l">&nbsp;</label><span>合计</span><label class="f_r">&nbsp;</label></h3>
-                        <div class="detail_div">
-                            <span class="font18">25</span>元
-                            <ul>
-                                <li class="clear"><label>基本车费：</label><span class="f_r">20元</span></li>
-                                <li class="clear"><label>接乘客费：</label><span class="f_r">0元</span></li>
-                                <li class="clear"><label>送乘客费：</label><span class="f_r">10元</span></li>
-                            </ul>
-                            <div class="color5 clear">
-                                <label>优惠券抵扣：</label><span class="f_r">5元</span>
-                            </div>
+                            <div class="btn_div"><a class="btn3 btn_type2" href="javascript:;" title="线下支付">线下支付</a><a class="btn1 btn_type3" href="javascript:;" title="确认支付">确认支付</a></div>
                         </div>
                     </div>
                 </div>
