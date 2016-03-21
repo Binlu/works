@@ -22,7 +22,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
+                        <!-- <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a> -->
                         <span>预约包车</span>
                     </h3>
                     <!-- 内容 -->
@@ -30,43 +30,43 @@
                         <h3>想去哪里呢？<br/>    
                             <span class="font08">您附近有12辆出租车</span>
                         </h3>
-                        <ul class="nav_list clear">
+                        <ul class="nav_list clear js_list">
                             <li><a class="now_choice_a" href="javascript:;" title="线路预约">线路预约</a></li>
                             <li><a href="javascript:;" title="包天预约">包天预约</a></li>
                         </ul>
-                        <div class="weui_cells weui_cells_access hide">
+                        <div class="weui_cells weui_cells_access js_detail_div">
                             <a class="weui_cell" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>出发时间<span class="v_base" style="margin-left:4em;">今天 10:00</span></p>
                                 </div>
-                                <div class="weui_cell_ft color3 nafter">
+                                <div class="weui_cell_ft color3 nafter js_get_words">
                                     有话说？
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_city" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon12.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <p>神木</p>
+                                    <p class="js_add_txt">神木</p>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_city" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon13.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <p>大柳塔</p>
+                                    <p class="js_add_txt">大柳塔</p>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
                             
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_detail" href="#">
                                 <div class="weui_cell_bd weui_cell_primary" style="margin-left:4em;">
                                     预交费用<span class="font15 color5 v_base">35.5</span>元
                                 </div>
@@ -75,21 +75,21 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="weui_cells weui_cells_access">
+                        <div class="weui_cells weui_cells_access js_detail_div hide">
                             <a class="weui_cell" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>出发时间<span class="v_base" style="margin-left:4em;">今天 10:00</span></p>
                                 </div>
-                                <div class="weui_cell_ft color3 nafter">
+                                <div class="weui_cell_ft color3 nafter js_get_words">
                                     有话说？
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_city" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon12.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <p>神木</p>
+                                    <p class="js_add_txt">神木</p>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
@@ -106,7 +106,7 @@
                                 </div>
                             </a>
                             
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_detail" href="#">
                                 <div class="weui_cell_bd weui_cell_primary" style="margin-left:4em;">
                                     预交费用<span class="font15 color5 v_base">35.5</span>元
                                 </div>
@@ -115,12 +115,12 @@
                                 </div>
                             </a>
                         </div>
-                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="叫车">叫车</a>
+                        <a href="order.html?page=booking" class="weui_btn weui_btn_my1 b_color3" title="叫车">叫车</a>
                     </div>
                 </div>
             </div>
             <!-- 城市选择 -->
-            <div class="page page2 b_color2 hide">
+            <div class="page page2 b_color2">
                 <!-- 标题 -->
                 <h3 class="head_tit">
                     <!-- 返回前页 -->
@@ -132,7 +132,7 @@
                 <div class="list list_tar">
                     <div class="list_main list_tar_main js_c_list">
                         <!-- 国家列表 -->
-                        <ul class="city_list"></ul>
+                        <ul class="city_list js_city_list"></ul>
                         <!-- 没有列表提示 -->
                         <div class="n_list">
                             <p class="at1">暂时没有国家列表。</p>
@@ -172,7 +172,7 @@
                 
             </div>
             <!-- 留言 -->
-            <div class="page page3 hide">
+            <div class="page page3">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -202,7 +202,7 @@
                 
             </div>
             <!-- 乘车人 -->
-            <div class="page page4 hide">
+            <div class="page page4">
                 <div class="scroll b_color2">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -268,7 +268,7 @@
                 </div>
             </div>
             <!-- 资费详情 -->
-            <div class="page page5 hide">
+            <div class="page page5">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">

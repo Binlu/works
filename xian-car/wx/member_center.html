@@ -66,7 +66,7 @@
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_integral" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon3.png" alt="icon">
                                 </div>
@@ -81,7 +81,7 @@
                     </div>
                     <div class="content_box">
                         <div class="weui_cells weui_cells_access">
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_share" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon4.png" alt="icon">
                                 </div>
@@ -107,7 +107,7 @@
                     </div>
                     <div class="content_box">
                         <div class="weui_cells weui_cells_access">
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_about" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon6.png" alt="icon">
                                 </div>
@@ -118,7 +118,7 @@
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_feedback" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon7.png" alt="icon">
                                 </div>
@@ -140,7 +140,7 @@
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
-                            <a class="weui_cell n_b" href="#">
+                            <a class="weui_cell n_b js_sign_out" href="#">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon9.png" alt="icon">
                                 </div>
@@ -671,7 +671,7 @@
                 </div>
             </div>
             <!-- 我的积分 -->
-            <div class="page page11 hide">
+            <div class="page page11">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -690,7 +690,7 @@
                 </div>
             </div>
             <!-- 我的分享 -->
-            <div class="page page12 hide">
+            <div class="page page12">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -702,21 +702,21 @@
                     <!-- 内容 -->
                     <div class="weui_tab">
                         <div class="weui_navbar">
-                            <div class="weui_navbar_item weui_bar_item_on">
+                            <div class="weui_navbar_item js_btn_div weui_bar_item_on">
                                 全部会员<br/>
                                 <span>20</span>
                             </div>
-                            <div class="weui_navbar_item">
+                            <div class="weui_navbar_item js_btn_div">
                                 本月新增<br/>
                                 <span>10</span>
                             </div>
-                            <div class="weui_navbar_item">
+                            <div class="weui_navbar_item js_btn_div">
                                 返利金额<br/>
                                 <span>￥20</span>
                             </div>
                         </div>
                         <div class="weui_tab_bd">
-                            <div class="detail_div hide">
+                            <div class="detail_div js_detail_div">
                                 <div class="weui_panel weui_panel_access">
                                     <div class="weui_panel_bd">
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
@@ -737,7 +737,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="detail_div hide">
+                            <div class="detail_div js_detail_div hide">
                                 <div class="weui_panel weui_panel_access">
                                     <div class="weui_panel_bd">
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
@@ -758,7 +758,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="detail_div txt_c">
+                            <div class="detail_div js_detail_div txt_c hide">
                                 <div class="p12_div">
                                     <span>恭喜您得到</span><br/>
                                     <span class="color6 font18">20</span><span>元！</span>
@@ -770,7 +770,7 @@
                 </div>
             </div>
             <!-- 关于我们 -->
-            <div class="page page13 hide">
+            <div class="page page13">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -793,14 +793,14 @@
                 </div>
             </div>
             <!-- 意见反馈 -->
-            <div class="page page14 hide">
+            <div class="page page14">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
                         <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                         <span>意见反馈</span>
-                        <a class="btn2 r_btn font09 sub_btn" href="javascript:;" title="提交" data-return="page4">提交</a>
+                        <a class="btn2 r_btn font09 sub_btn js_sub_feedback" href="javascript:;" title="提交" data-return="page4">提交</a>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
@@ -809,7 +809,7 @@
                 </div>
             </div>
             <!-- 登录 -->
-            <div class="page page15 hide">
+            <div class="page page15">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -822,16 +822,16 @@
                         <div id="head_div"><img src="images/1.jpg" alt="头像"></div>
                         <input class="inp1 user_info input_area" type="text" name="number" placeholder="手机号" maxlength="11" pattern="[0-9]*"/>
                         <input class="inp2 user_info input_area" type="password" name="password" placeholder="输入密码"/>
-                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="登录">登录</a>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_sign_btn" title="登录">登录</a>
                         <div class="p1_bom">
-                            <a id="getPass" class="btn2" href="getPassword.html" title="找回密码">找回密码</a>
-                            <a id="setNew" class="btn2" href="register.html" title="新用户注册">新用户注册</a>
+                            <a id="getPass" class="btn2 js_get_ps" href="javascript:;" title="找回密码">找回密码</a>
+                            <a id="setNew" class="btn2 js_to_register" href="javascript:;" title="新用户注册">新用户注册</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 注册 -->
-            <div class="page page16 hide">
+            <div class="page page16">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -849,7 +849,7 @@
                         <input class="inp4 user_info input_area" type="text" name="code" placeholder="输入验证码"/>
                         <input class="inp2 user_info input_area" type="password" name="password" placeholder="输入密码"/>
                         <!-- 提交 -->
-                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="注册">注册</a>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_register_btn" title="注册">注册</a>
 
                         <div class="p2_bom">
                             <img for="new" src="images/icon27.png" alt="icon">
@@ -860,7 +860,7 @@
                 </div>
             </div>
             <!-- 找回密码 -->
-            <div class="page page17 hide">
+            <div class="page page17">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -871,12 +871,12 @@
                     <!-- 内容 -->
                     <div class="content_box txt_c">
                         <input class="inp3 user_info input_area" type="text" name="number" placeholder="请输入需要找回的手机号码" maxlength="11" pattern="[0-9]*"/>
-                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="找回密码">找回密码</a>
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_get_ps_btn" title="找回密码">找回密码</a>
                     </div>
                 </div>
             </div>
             <!-- 实名认证 -->
-            <div class="page page18 hide">
+            <div class="page page18">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -939,7 +939,7 @@
                 </div>
             </div>
             <!-- 个人信息 -->
-            <div class="page page19 hide">
+            <div class="page page19">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">

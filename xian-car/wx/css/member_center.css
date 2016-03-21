@@ -354,6 +354,9 @@ a.share_btn>img{
 .page13 .content_box>p{
     text-indent: 2em;
 }
+.page13 .content_box{
+    padding-bottom: 1.5em;
+}
 /*page14*/
 .page14 .sub_btn{
     font-weight: normal;

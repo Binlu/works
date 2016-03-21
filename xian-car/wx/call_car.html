@@ -7,7 +7,7 @@
         <meta name="description" content="线上拼车平台"/>
         <meta name="format-detection" content="telephone=no"/>
         <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-        <title>weui测试</title>
+        <title>weui</title>
         <link rel="stylesheet" type="text/css" href="css/weui.min.css">
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/call_car.css">
@@ -16,14 +16,14 @@
     <body>
         <!-- 模拟屏幕 -->
         <section id="container">
-            <!-- 个人中心 -->
+            <!-- 立即交车 -->
             <div class="page page1">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
-                        <span>个人中心</span>
+                        <!-- <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a> -->
+                        <span>立即交车</span>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
@@ -39,51 +39,51 @@
                                     <span>今天 10:00</span> 
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_city" href="#" data-type="start">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon12.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <p>神木</p>
+                                    <p class="js_add_txt">神木</p>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_city" href="#" data-type="end">
                                 <div class="weui_cell_hd">
                                     <img src="images/icon13.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <p>大柳塔</p>
+                                    <p class="js_add_txt">大柳塔</p>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
                                 </div>
                             </a>
                             <a class="weui_cell" href="#">
-                                <div class="weui_cell_bd weui_cell_primary">
+                                <div class="weui_cell_bd weui_cell_primary js_get_words">
                                     <p>有话说？</p>
                                 </div>
-                                <div class="weui_cell_ft">
-                                    <label>乘车人数：</label><span>1</span><label>人</label>
+                                <div class="weui_cell_ft js_member">
+                                    <label>乘车人数：</label><span class="v_base js_person_num">1</span><label>人</label>
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_get_detail" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <span class="font15 color5">35.5</span>元
+                                    <span class="font15 color5 v_base">35.5</span>元
                                 </div>
                                 <div class="weui_cell_ft last_weui_cell_ft">
                                     资费详情
                                 </div>
                             </a>
                         </div>
-                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="叫车">叫车</a>
+                        <a href="order.html?page=call_car" class="weui_btn weui_btn_my1 b_color3" title="叫车">叫车</a>
                     </div>
                 </div>
             </div>
             <!-- 城市选择 -->
-            <div class="page page2 b_color2 hide">
+            <div class="page page2 b_color2">
                 <!-- 标题 -->
                 <h3 class="head_tit">
                     <!-- 返回前页 -->
@@ -95,7 +95,7 @@
                 <div class="list list_tar">
                     <div class="list_main list_tar_main js_c_list">
                         <!-- 国家列表 -->
-                        <ul class="city_list"></ul>
+                        <ul class="city_list js_city_list"></ul>
                         <!-- 没有列表提示 -->
                         <div class="n_list">
                             <p class="at1">暂时没有国家列表。</p>
@@ -135,7 +135,7 @@
                 
             </div>
             <!-- 留言 -->
-            <div class="page page3 hide">
+            <div class="page page3">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -158,21 +158,21 @@
                             <a class="btn2" href="javascript:;" title="是否有小孩">是否有小孩</a>
                         </div>
                         <div class="txt_c">
-                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="留言完毕">留言完毕</a>
+                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3 js_message_btn" title="留言完毕">留言完毕</a>
                         </div>
                     </div>
                 </div>
                 
             </div>
             <!-- 乘车人 -->
-            <div class="page page4 hide">
+            <div class="page page4">
                 <div class="scroll b_color2">
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
                         <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                         <span>乘车人</span>
-                        <a class="btn2 r_btn" href="javascript:;" title="完成" data-return="page4">完成</a>
+                        <a class="btn2 r_btn js_sure_num_btn" href="javascript:;" title="完成" data-return="page4">完成</a>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
@@ -182,12 +182,12 @@
                                     <label class="weui_label" style="width:8em;">请选择乘车人数：</label>
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input" type="tel" placeholder="">
+                                    <input class="weui_input js_num" type="tel" placeholder="" value="1">
                                 </div>
                             </div>
-                            <ul class="num_list">
-                                <li>1</li>
-                                <li class="now_choice">2</li>
+                            <ul class="num_list js_num_list">
+                                <li class="now_choice">1</li>
+                                <li class="">2</li>
                                 <li>3</li>
                                 <li>4</li>
                             </ul>
@@ -204,7 +204,7 @@
                                     </div>
                                 </label>
                             </div>
-                            <div class="weui_cells contact_div">
+                            <div class="weui_cells contact_div hide">
                                 <div class="weui_cell" style="border-radius: 0.3em 0.3em 0 0">
                                     <div class="weui_cell_hd">
                                         <label class="weui_label">乘车人姓名：</label>
@@ -224,14 +224,14 @@
                             </div>
                         </div>
                         <div class="txt_c">
-                            <a href="javascript:;" class="btn2 btn_type2 b_color1" title="取消">取消</a>
-                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="確定">確定</a>
+                            <a href="javascript:;" class="btn2 btn_type2 b_color1 js_cancel" title="取消">取消</a>
+                            <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3 js_sure_num_btn" title="確定">確定</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 资费详情 -->
-            <div class="page page5 hide">
+            <div class="page page5">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -269,6 +269,7 @@
         <script src="http://api.map.baidu.com/api?v=2.0&ak=5ZmIO6bXbDtdllzdMZwfXmFm"></script>
         <script src="js/pinyin.js"></script>
         <script type="text/javascript" src="js/iscroll.js"></script>
+        <script type="text/javascript" src="js/frame.js"></script>
         <script type="text/javascript" src="js/call_car.js"></script>
     </body>
    

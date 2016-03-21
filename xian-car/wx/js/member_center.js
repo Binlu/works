@@ -1,5 +1,5 @@
 // 滚动变量
-var myScroll1,myScroll2,myScroll3,myScroll4,myScroll5,myScroll6,myScroll7,myScroll8,myScroll9,myScroll10,myScroll11,myScroll12,myScroll13,myScroll14,myScroll15,myScroll16,myScroll17,myScroll18,myScroll19;
+var myScroll1,myScroll2,myScroll3,myScroll4,myScroll9,myScroll10,myScroll11,myScroll12,myScroll13,myScroll14,myScroll15,myScroll16,myScroll17,myScroll18,myScroll19;
 // 自定义方法
 var $m={
     // 分享链接
@@ -19,9 +19,6 @@ var $m={
         if(dw>limit){
             $(".center_box").css({"left":(dw-limit)/2+"px"});
         };
-        $(".circular_div").each(function(){
-            a.setHeight($(this),1)
-        });
         a.refreshPage();
     },
     // 刷新scroll
@@ -35,14 +32,6 @@ var $m={
             myScroll3.refresh();
         }else if(type==4){
             myScroll4.refresh();
-        }else if(type==5){
-            myScroll5.refresh();
-        }else if(type==6){
-            myScroll6.refresh();
-        }else if(type==7){
-            myScroll7.refresh();
-        }else if(type==8){
-            myScroll8.refresh();
         }else if(type==9){
             myScroll9.refresh();
         }else if(type==10){
@@ -55,6 +44,16 @@ var $m={
             myScroll13.refresh();
         }else if(type==14){
             myScroll14.refresh();
+        }else if(type==15){
+            myScroll15.refresh();
+        }else if(type==16){
+            myScroll16.refresh();
+        }else if(type==17){
+            myScroll17.refresh();
+        }else if(type==18){
+            myScroll18.refresh();
+        }else if(type==19){
+            myScroll19.refresh();
         }
     },
     // ajax 请求地址
@@ -118,12 +117,21 @@ var link_obj=GetRequest();
 var page=link_obj["page"]?link_obj["page"]:1;
 $(function(){
     // 绑定滚动
-    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
+    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll11=new IScroll('.page11',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll15=new IScroll('.page15',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll16=new IScroll('.page16',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll17=new IScroll('.page17',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll18=new IScroll('.page18',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll19=new IScroll('.page19',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
     
     $m.showPage(function(){
         var a=$(".page"+page);
@@ -189,9 +197,96 @@ $(function(){
                 $m.active_scroll=9;
             });
         },true);
-        
     });
-    
+    // 我的积分
+    $(".js_integral").on("click",function(){
+        $m.toNext($(".page11"),function(){
+            $m.active_scroll=11;
+            $m.setHeight($(".circular_div"),1);
+            $m.refreshPage();
+        });
+    });
+    // 我的分享
+    $(".js_share").on("click",function(){
+        $m.toNext($(".page12"),function(){
+            $m.active_scroll=12;
+            $m.refreshPage();
+        });
+    });
+    // 切换分享
+    $(".js_btn_div").on("click",function(){
+        var _index=$(".js_btn_div").index($(this));
+        $(this).addClass("weui_bar_item_on").siblings(".js_btn_div").removeClass("weui_bar_item_on");
+        $(".js_detail_div").eq(_index).show().siblings(".js_detail_div").hide();
+        myScroll12.refresh();
+    });
+    // 关于我们
+    $(".js_about").on("click",function(){
+        $m.toNext($(".page13"),function(){
+            $m.active_scroll=13;
+            $m.refreshPage();
+        });
+    });
+    // 意见反馈
+    $(".js_feedback").on("click",function(){
+        $m.toNext($(".page14"),function(){
+            $m.active_scroll=14;
+            $m.refreshPage();
+        });
+    });
+    // 提交反馈
+    $(".js_sub_feedback").on("click",function(){
+        msg("您的反馈已经提交成功！","确定",function(){
+            $m.toPrev($(".page14"),function(){
+                $m.active_scroll=1;
+            });
+        },true);
+    });
+    // 退出登录
+    $(".js_sign_out").on("click",function(){
+        $m.toNext($(".page15"),function(){
+            $m.active_scroll=15;
+            $m.refreshPage();
+        });
+    });
+    // 登录
+    $(".js_sign_btn").on("click",function(){
+        msg("登录成功！","确定",function(){
+            $m.toPrev($(".page15"),function(){
+                $m.active_scroll=1;
+            });
+        },true);
+    });
+    // 注册
+    $(".js_to_register").on("click",function(){
+        $m.toNext($(".page16"),function(){
+            $m.active_scroll=16;
+            $m.refreshPage();
+        });
+    });
+    // 提交注册
+    $(".js_register_btn").on("click",function(){
+        msg("注册成功，立即登录。","确定",function(){
+            $m.toPrev($(".page16"),function(){
+                $m.active_scroll=15;
+            });
+        },true);
+    });
+    // 找回密码
+    $(".js_get_ps").on("click",function(){
+        $m.toNext($(".page17"),function(){
+            $m.active_scroll=17;
+            $m.refreshPage();
+        });
+    });
+    // 提交找密码
+    $(".js_get_ps_btn").on("click",function(){
+        msg("密码已经发送到您的手机，请注意查收。","确定",function(){
+            $m.toPrev($(".page17"),function(){
+                $m.active_scroll=15;
+            });
+        },true);
+    });
     $(window).on("resize",function(){$m.rs()});
 });
 // 获取页面url数据

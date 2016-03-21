@@ -22,7 +22,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back_page" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
                         <span>系统派单中</span>
                         <a class="btn2 r_btn" href="javascript:;" title="取消订单" data-return="page4">取消订单</a>
                     </h3>
@@ -38,7 +38,7 @@
                             </ul>
                         </div>
                         <h3 class="txt_c">为您服务的司机师傅</h3>
-                        <div class="order_box">
+                        <div class="order_box js_drver">
                             <h3 class="n_b txt_c"><img class="head_pic" src="images/1.jpg" alt="头像"/></h3>
                             <div class="header_info">
                                 <span>陕A8888</span><span class="color4">王师傅</span><br/>
@@ -60,12 +60,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="txt_c"><a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3" title="立即叫车">立即叫车</a></div>
+                        <div class="txt_c"><a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3 js_called_btn" title="立即叫车">立即叫车</a></div>
                     </div>
                 </div>
             </div>
             <!-- 车辆详情 -->
-            <div class="page page2 hide">
+            <div class="page page2">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <!-- 车辆支付 -->
-            <div class="page page3 hide">
+            <div class="page page3">
                 <div class="scroll">
                     <!-- 标题 -->
                     <h3 class="head_tit">
@@ -164,7 +164,7 @@
                             <div class="txt_c">
                                 还需支付 <span class="font18 color6 v_base">25</span> 元
                             </div>
-                            <ul class="pay_type_list">
+                            <ul class="pay_type_list js_pay_list">
                                 <li>
                                     <a class="btn2" href="javascript:;" title="微信支付">
                                         <img src="images/icon33.png" alt="微信"><br/>
@@ -197,7 +197,7 @@
                             <div class="txt_r">
                                 <label class="color6 font08">提示：微信公众号只有微信余额支付</label>
                             </div>
-                            <div class="btn_div"><a class="btn3 btn_type2" href="javascript:;" title="线下支付">线下支付</a><a class="btn1 btn_type3" href="javascript:;" title="确认支付">确认支付</a></div>
+                            <div class="btn_div"><a class="btn3 btn_type2 js_pay_btn" href="javascript:;" title="线下支付">线下支付</a><a class="btn1 btn_type3 js_pay_btn" href="javascript:;" title="确认支付">确认支付</a></div>
                         </div>
                     </div>
                 </div>
@@ -215,6 +215,7 @@
         <script src="http://api.map.baidu.com/api?v=2.0&ak=5ZmIO6bXbDtdllzdMZwfXmFm"></script>
         <script src="js/pinyin.js"></script>
         <script type="text/javascript" src="js/iscroll.js"></script>
+        <script type="text/javascript" src="js/frame.js"></script>
         <script type="text/javascript" src="js/order.js"></script>
     </body>
    
