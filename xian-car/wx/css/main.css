@@ -21,16 +21,19 @@ li{list-style: none;}
     position: absolute;
     width: 100%;
     height: 100%;
-    left: 0;
+    left: 100%;
     top: 0;
     z-index: 10;
+    display: none;
+    background-color: #f5f5f5;
 }
 .head_tit{
     position: relative;
     text-align: center;
     font-size: 1.1em;
     padding: 0.5em;
-    background-color: #ccc;
+    background-color: #fff;
+    border-bottom: 1px solid #cacaca;
 }
 .head_tit>a{
     position: absolute;
@@ -130,7 +133,7 @@ a.r_btn{
 	padding: 0em 1em;
 	text-align: center;
 	z-index: 1000;
-    display: none;
+    /*display: none;*/
 }
 .p2{display: none;}
 .p3{
@@ -146,9 +149,8 @@ a.r_btn{
     max-width: 720px;
     width: 100%;
     height: 100%;
-    background-color: #000;
-    opacity: 0.5;
-    display: none;
+    background-color: #f5f5f5;
+    /*display: none;*/
 }
 .n_b{border: none !important}
 /*按钮字体*/
@@ -164,7 +166,8 @@ a.r_btn{
 .color5{color: #F86300;}
 .color6{color: #F82828;}
 .color7{color: #0d59e5;}
-.b_color1{background-color: #f5f5f5}
+.b_color0{background-color: #ffffff}
+.b_color1{background-color: #f0f0f0}
 .b_color2{background-color: #f0f0f0}
 .b_color3{background-color: #166ef2}
 .b_color4{background-color: #ff4e00}
@@ -270,7 +273,7 @@ a.r_btn{
     height: 10px;
     padding: 1px;
     border-radius: 50%;
-    box-shadow: 0 -30px 0px 3px #fff,-21px -21px 1px 2px #fff,-30px 0px 1px 1.5px #fff,-21px 21px 1px 1.2px #fff,0px 30px 2px 1px #fff,21px 21px 2px 1px #fff,30px 0px 3px #fff,21px -21px 4px #fff;
+    box-shadow: 0 -30px 0px 3px #44C4E8,-21px -21px 1px 2px #44C4E8,-30px 0px 1px 1.5px #44C4E8,-21px 21px 1px 1.2px #44C4E8,0px 30px 2px 1px #44C4E8,21px 21px 2px 1px #44C4E8,30px 0px 3px #44C4E8,21px -21px 4px #44C4E8;
     animation: loading 1s steps(8, start) infinite;
     -ms-animation: loading 1s steps(8, start) infinite;
     -webkit-animation: loading 1s steps(8, start) infinite;
