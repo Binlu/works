@@ -114,7 +114,11 @@ var $m={
 }
 // 获取连接数据
 var link_obj=GetRequest();
+// 需要跳转到的页面排序
 var page=link_obj["page"]?link_obj["page"]:1;
+// 用户id
+var user_id=link_obj["user_id"]?link_obj["user_id"]:1;
+
 $(function(){
     // 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
@@ -147,6 +151,71 @@ $(function(){
     // 绑定返回事件
     $(".js_back").on("click",function(){
         $m.toPrev($(this).parents(".page"));
+    });
+    // 个人信息
+    $(".js_personal_info").on("click",function(){
+        $m.toNext($(".page19"),function(){
+            $m.active_scroll=19;
+            $m.refreshPage();
+        });
+    });
+    // 修改昵称
+    $(".js_rename").on("click",function(){
+        $(".js_rename_box").show();
+        $(".bg_div").fadeIn(400);
+    });
+    // 确认修改昵称
+    $(".js_rename_btn").on("click",function(){
+        var txt=$(".js_rename_area").val()?$(".js_rename_area").val():"";
+        if(txt==""){
+            msg("昵称不能为空。",800);
+        }else{
+            $(".js_rename_box").fadeOut(200);
+            $(".bg_div").fadeOut(400);
+            $(".js_rename_txt").text(txt);
+            // var arr={"user_nicename":txt,"user_id":user_id};
+            // subAjax(arr,"goModifiedSelfInfo",function(){
+            //     $(".js_rename_txt").text(txt);
+            // });
+        }
+    });
+    // 修改性别
+    $(".js_sex").on("click",function(){
+        $(".js_sex_box").show();
+        $(".bg_div").fadeIn(400);
+    });
+    // 确认修改性别
+    $(".js_sex_div>a").on("click",function(){
+        $(this).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
+        var num=$(this).attr("data-sex")?$(this).attr("data-sex"):0;
+        $(".js_sex_box").fadeOut(200);
+        $(".bg_div").fadeOut(400);
+        var txt=num==2?"女":"男";
+        $(".js_sex_txt").text(txt);
+        // var arr={"sex":txt,"user_id":user_id};
+        // subAjax(arr,"goModifiedSelfInfo",function(){
+        //     $(".js_sex_txt").text(txt);
+        // });
+    });
+    // 修改年龄
+    $('.js_age').date({theme:"datetime"});
+    // 确认修改年龄
+    $(".js_sex_div>a").on("click",function(){
+        $(this).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
+        var num=$(this).attr("data-sex")?$(this).attr("data-sex"):0;
+        $(".js_sex_box").fadeOut(200);
+        $(".bg_div").fadeOut(400);
+        var txt=num==2?"女":"男";
+        $(".js_sex_txt").text(txt);
+        // var arr={"sex":txt,"user_id":user_id};
+        // subAjax(arr,"goModifiedSelfInfo",function(){
+        //     $(".js_sex_txt").text(txt);
+        // });
+    });
+    // 取消修改
+    $(".js_cancel_btn").on("click",function(){
+        $(this).parent().parent().fadeOut(200);
+        $(".bg_div").fadeOut(400);
     });
     // 我的行程
     $(".js_my_trip").on("click",function(){
@@ -302,3 +371,26 @@ function GetRequest(){
     } 
     return theRequest; 
 };
+// 请求数据
+function subAjax(arr,url,func){
+    var return_arr=null;
+    $.ajax({
+        type: "POST",
+        url: url,
+        data:arr,
+        dataType: "json",
+        success: function(data){
+            if(data["status"]==0){
+                msg(data["data"],800);
+            }else if(data["status"]==1){
+                msg(data["data"],800);
+                if(typeof func==="function" && func instanceof Function){
+                    func();
+                }
+            }
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            msg("请求失败，请稍后重试！","确定");
+        }
+    });
+}

@@ -27,7 +27,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="user_box">
-                        <div class="header_div">
+                        <div class="header_div js_personal_info">
                             <img class="head_pic" src="images/1.jpg" alt="头像"/><br/>
                             <span>奔跑吧少年</span>
                         </div>
@@ -39,7 +39,7 @@
                                 <li><img src="images/icon11.png" alt="星星"></li>
                                 <li><img src="images/icon11.png" alt="星星"></li>
                             </ul>
-                            <span>500积分</span>
+                            <span class="js_integral">500积分</span>
                         </div>
                     </div>
                     <div class="content_box">
@@ -898,8 +898,8 @@
                             </div>
                             <div class="choice_sex_box">
                                 <label>性别：</label>
-                                <a class="btn2 now_choice_a" href="iavascript:;" title="男">男</a>
-                                <a class="btn2" href="iavascript:;" title="女" style="margin-left:2em">女</a>
+                                <a class="btn2 now_choice_a" href="javascript:;" title="男">男</a>
+                                <a class="btn2" href="javascript:;" title="女" style="margin-left:2em">女</a>
                             </div>
                             <div class="weui_cell">
                                 <div class="weui_cell_hd">
@@ -954,23 +954,23 @@
                     </div>
                     <div class="content_box">
                         <div class="weui_cells weui_cells_access">
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_rename" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>昵称</p>
                                 </div>
-                                <div class="weui_cell_ft">
+                                <div class="weui_cell_ft js_rename_txt">
                                     死啦死啦
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_sex" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>性别</p>
                                 </div>
-                                <div class="weui_cell_ft">
+                                <div class="weui_cell_ft js_sex_txt">
                                     男
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_age" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>年龄</p>
                                 </div>
@@ -978,7 +978,7 @@
                                     请填写
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_mobile" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>手机号</p>
                                 </div>
@@ -986,7 +986,7 @@
                                     136****2568
                                 </div>
                             </a>
-                            <a class="weui_cell" href="#">
+                            <a class="weui_cell js_autograph" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>我的签名</p>
                                 </div>
@@ -1020,78 +1020,49 @@
                 <!-- 浮层 -->
                 <!-- 修改头像 -->
                 <div class="head_pic_div ab_div hide">
-                    <a class="btn2" href="iavascript:;" title="添加照片">添加照片</a>
-                    <a class="btn2" href="iavascript:;" title="拍照">拍照</a>
-                    <a class="btn2" href="iavascript:;" title="选择照片">选择照片</a>
-                    <a class="btn2" href="iavascript:;" title="取消">取消</a>
+                    <a class="btn2" href="javascript:;" title="添加照片">添加照片</a>
+                    <a class="btn2" href="javascript:;" title="拍照">拍照</a>
+                    <a class="btn2" href="javascript:;" title="选择照片">选择照片</a>
+                    <a class="btn2 js_cancel_btn" href="javascript:;" title="取消">取消</a>
                 </div>
                 <!-- 修改昵称 -->
-                <div class="form_change_div ab_div hide">
+                <div class="form_change_div ab_div js_rename_box hide">
                     <label>请输入昵称：</label><br/>
-                    <input type="text">
+                    <input class="js_rename_area" type="text">
                     <br/>
                     <div class="txt_c">
-                        <a class="btn5 btn_type4" href="iavascript:;" title="取消">取消</a>
-                        <a class="btn1 btn_type5" href="iavascript:;" title="保存">保存</a>
+                        <a class="btn5 btn_type4 js_cancel_btn" href="javascript:;" title="取消">取消</a>
+                        <a class="btn1 btn_type5 js_rename_btn" href="javascript:;" title="保存">保存</a>
                     </div>
                 </div>
                 <!-- 修改性别 -->
-                <div class="sex_choice_box ab_div hide">
+                <div class="sex_choice_box ab_div hide js_sex_box">
                     <label>请选择：</label><br/>
-                    <div class="txt_c choice_sex_box">
-                        <a class="btn2 now_choice_a" href="iavascript:;" title="男">男</a>
-                        <a class="btn2" href="iavascript:;" title="女" style="margin-left:2em">女</a>
+                    <div class="txt_c choice_sex_box js_sex_div">
+                        <a class="btn2 now_choice_a" href="javascript:;" title="男" data-sex="1">男</a>
+                        <a class="btn2" href="javascript:;" title="女" data-sex="2" style="margin-left:2em">女</a>
                     </div>
                 </div>
                 <!-- 日期浮层 -->
-                <div class="date_box ab_div clear hide">
-                    <div class="year_section">
-                        <ul class="year_list">
-                            <li>1990</li>
-                            <li>1991</li>
-                            <li>1992</li>
-                            <li>1993</li>
-                            <li>1994</li>
-                            <li>1995</li>
-                        </ul>
-                    </div>
-                    <div class="month_section">
-                        <ul class="month_list">
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>6</li>
-                            <li>7</li>
-                        </ul>
-                    </div>
-                    <div class="day_section">
-                        <ul class="day_list">
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>6</li>
-                            <li>7</li>
-                        </ul>
-                    </div>
+                <div  class="date_box ab_div clear hide">
+                    
                 </div>
+                <div id="datePlugin"></div>
                 <!-- 修改手机号码 -->
                 <div class="form_change_div ab_div hide">
                     <label>请输入手机号：</label><br/>
                     <input type="text">
                     <br/>
                     <div class="txt_c">
-                        <a class="btn5 btn_type4" href="iavascript:;" title="取消">取消</a>
-                        <a class="btn1 btn_type5" href="iavascript:;" title="保存">保存</a>
+                        <a class="btn5 btn_type4 js_cancel_btn" href="javascript:;" title="取消">取消</a>
+                        <a class="btn1 btn_type5" href="javascript:;" title="保存">保存</a>
                     </div>
                 </div>
                 <!--  -->
                 <!-- 背景 -->
                 <div class="bg_div"></div>
             </div>
+            <!-- <div  class="page page20"></div> -->
             <!-- 页面 -->
         </section>
         <!-- 提示信息 -->
@@ -1105,6 +1076,7 @@
         <section id="bg_div" class="center_box"></section>
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript" src="js/frame.js"></script>
+        <script type="text/javascript" src="js/date.js"></script>
         <script type="text/javascript" src="js/member_center.js"></script>
     </body>
    
