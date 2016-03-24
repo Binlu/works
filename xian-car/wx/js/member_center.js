@@ -131,7 +131,7 @@ var $m={
         "code":"验证码",
         "password":"新密码",
         "autocode":1515
-    }
+    },
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -162,10 +162,9 @@ $(function(){
     myScroll20=new IScroll('.page20',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
     myScroll21=new IScroll('.page21',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
     myScroll22=new IScroll('.page22',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    $m.rs();
     // 显示
-    $m.showPage(function(){
-        $m.rs();
-    });
+    $m.showPage(function(){});
     
     // 绑定返回事件
     $(".js_back").on("click",function(){
@@ -388,12 +387,17 @@ $(function(){
         });
     });
     // 获取验证码
-    $(".js_get_code").on("click",function(){
+    $(".page22 .js_get_code").on("click",function(){
         checkpost($(this),"page22 .js_mobile");
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("click",function(){
-        toSubPass($(this));
+        toSubPass($(this),function(){
+            $m.toPrev($(".page22"),function(){
+                $m.active_scroll=21;
+                $m.refreshPage();
+            });
+        });
     });
     // 手机限制输入字母和汉字
     $(".js_mobile").bind("input propertychange",function(){
@@ -482,12 +486,57 @@ $(function(){
             $m.refreshPage();
         });
     });
+    // 选择发票订单
+    $(".page9").on("click",".js_invoice_list>li",function(){
+        // if(!$(this).hasClass("now_choice_li")){
+        //     $(this).addClass("now_choice_li");
+        // }else{
+        //     $(this).removeClass("now_choice_li");
+        // }
+        $(this).addClass("now_choice_li").siblings("li").removeClass("now_choice_li");
+    });
+    // 全选
+    $(".js_choice_all_invoice").on("click",function(){
+        // if(!$(this).hasClass("all_chocie_btn")){
+        //     $(this).addClass("all_chocie_btn").removeClass("all_nchocie_btn");
+        //     $(".page9 .js_invoice_list>li").addClass("now_choice_li");
+        // }else{
+        //     $(this).addClass("all_nchocie_btn").removeClass("all_chocie_btn");
+        //     $(".page9 .js_invoice_list>li").removeClass("now_choice_li");
+        // }
+
+    });
     // 填写信息
     $(".js_fill_info").on("click",function(){
-        $m.toNext($(".page10"),function(){
-            $m.active_scroll=10;
-            $m.refreshPage();
-        });
+        if($(".js_invoice_list").children("li.now_choice_li").length<1){
+            msg("请先选择订单。",800);
+        }else{
+            var price=$(".js_invoice_price").text()?$(".js_invoice_price").text():0;
+            $(".page10").find(".js_input_area").eq(0).val(price);
+            $m.toNext($(".page10"),function(){
+                $m.active_scroll=10;
+                $m.refreshPage();
+            });
+        }
+    });
+    // 送达服务站
+    $(".js_to_service_station").on("click",function(){
+        $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
+        $(".js_service_station").show();
+        $(".js_address_ele").hide();
+        myScroll10.refresh();
+    });
+    // 选择服务站
+    $(".page10").on("click",".js_choice_service_station",function(){
+        $(this).find(".js_choice_pic").attr("src",$m.img_url+"icon22.png");
+        $(this).siblings(".js_choice_service_station").find(".js_choice_pic").attr("src",$m.img_url+"icon21.png");
+    });
+    // 快递
+    $(".js_to_express").on("click",function(){
+        $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
+        $(".js_service_station").hide();
+        $(".js_address_ele").show();
+        myScroll10.refresh();
     });
     // 提交发票信息
     $(".js_save_info").on("click",function(){
@@ -550,11 +599,13 @@ $(function(){
     });
     // 登录
     $(".js_sign_btn").on("click",function(){
-        msg("登录成功！","确定",function(){
-            $m.toPrev($(".page15"),function(){
-                $m.active_scroll=1;
-            });
-        },true);
+        signInFuc($(this),function(){
+            msg("登录成功！","确定",function(){
+                $m.toPrev($(".page15"),function(){
+                    $m.active_scroll=1;
+                });
+            },true);
+        });
     });
     // 注册
     $(".js_to_register").on("click",function(){
@@ -565,17 +616,25 @@ $(function(){
     });
     // 提交注册
     $(".js_register_btn").on("click",function(){
-        msg("注册成功，立即登录。","确定",function(){
-            $m.toPrev($(".page16"),function(){
-                $m.active_scroll=15;
-            });
-        },true);
+        registerFunc($(this),function(){
+            msg("注册成功，立即登录。","确定",function(){
+                $m.toPrev($(".page16"),function(){
+                    $m.active_scroll=15;
+                });
+            },true);
+        });
+    });
+    // 获取验证码
+    $(".page16 .js_get_code").on("click",function(){
+        checkpost($(this),"page16 .js_mobile");
     });
     // 找回密码
     $(".js_get_ps").on("click",function(){
-        $m.toNext($(".page17"),function(){
-            $m.active_scroll=17;
-            $m.refreshPage();
+        getSignPass($(this),function(){
+            $m.toNext($(".page17"),function(){
+                $m.active_scroll=17;
+                $m.refreshPage();
+            });
         });
     });
     // 提交找密码
@@ -624,8 +683,183 @@ function subAjax(arr,url,func){
         }
     });
 }
+// 登录
+function signInFuc(obj,func){
+    var _this=obj;
+    var input_txt=[];
+    var regx=/1[1-9]+[0-9]{9}/;
+    $(".page15 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt[0].length<11 || !regx.test(input_txt[0])){
+        msg("请填写正确手机号",800);
+    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请输入密码",800);
+    }else{
+        _this.off("click");
+        _this.text("登录中...");
+        // 赋值
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+        return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: "goLogin",
+            dataType: "json",
+            data: {"user_id":user_id,"phone":input_txt[0],"user_pass":input_txt[1]},
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func();
+                    }
+                    _this.text("登录");
+                    _this.on("click",function(){
+                        signInFuc(_this,func);
+                    });
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    _this.text("登录");
+                    _this.on("click",function(){
+                        signInFuc(_this,func);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                _this.text("登录");
+                _this.on("click",function(){
+                    signInFuc(_this,func);
+                });
+            }
+        });
+        
+    }
+}
+// 注册
+function registerFunc(obj,func){
+    var _this=obj;
+    var input_txt=[];
+    var regx=/1[1-9]+[0-9]{9}/;
+    $(".page16 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt[0].length<11 || !regx.test(input_txt[0])){
+        msg("请填写正确手机号",800);
+    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请输入验证码",800);
+    }else if(input_txt[1]!=$m.setPassword["autocode"]){
+        msg("验证码错误",800);
+    }else if(input_txt[2]=="" || input_txt[2]==null || input_txt[2]=="undefined"){
+        msg("请输入密码",800);
+    }else{
+        _this.off("click");
+        _this.text("提交中...");
+        // 赋值
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+        return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: "goRegister",
+            dataType: "json",
+            data: {"user_id":user_id,"phone":input_txt[0],"code":input_txt[1],"user_pass":input_txt[2]},
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func();
+                    }
+                    _this.text("注册");
+                    _this.on("click",function(){
+                        registerFunc(_this,func);
+                    });
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    _this.text("注册");
+                    _this.on("click",function(){
+                        registerFunc(_this,func);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                _this.text("注册");
+                _this.on("click",function(){
+                    registerFunc(_this,func);
+                });
+            }
+        });
+        
+    }
+}
+// 找回密码
+function getSignPass(obj,func){
+    var _this=obj;
+    var input_txt=$(".page17 .js_input_area").val();
+    var regx=/1[1-9]+[0-9]{9}/;
+    if(input_txt=="" || input_txt==null || input_txt=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt.length<11 || !regx.test(input_txt)){
+        msg("请填写正确手机号",800);
+    }else{
+        _this.off("click");
+        _this.text("提交中...");
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+        return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: "goLogin",
+            dataType: "json",
+            data: {"user_id":user_id,"phone":input_txt},
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func();
+                    }
+                    _this.text("找回密码");
+                    _this.on("click",function(){
+                        getSignPass(_this,func);
+                    });
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    _this.text("找回密码");
+                    _this.on("click",function(){
+                        getSignPass(_this,func);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                _this.text("找回密码");
+                _this.on("click",function(){
+                    getSignPass(_this,func);
+                });
+            }
+        });
+        
+    }
+}
+
 // 提交修改密码
-function toSubPass(obj){    
+function toSubPass(obj,func){    
     var _this=obj;
     var input_txt=[];
     var regx=/1[1-9]+[0-9]{9}/;
@@ -659,22 +893,23 @@ function toSubPass(obj){
         $m.setPassword["code"]=input_txt[2];
         $m.setPassword["password"]=input_txt[3];
         $m.setPassword["user_id"]=user_id;
-
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
         console.log($m.setPassword);
-        $m.toPrev($(".page22"),function(){
-            $m.active_scroll=21;
-            $m.refreshPage();
-        });
         return false;
         // 请求开始
         $.ajax({
             type: "POST",
             url: "goFindPwd",
             dataType: "json",
-            data: $m.user_arr,
+            data: $m.setPassword,
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func();
+                    }
                     _this.text("确认修改");
                     _this.on("click",function(){
                         toSub(_this);
@@ -777,4 +1012,79 @@ function checkpost(obj,input_class){
             }
         });
     }
+}
+/*--------------------微信配置-------------------------*/
+// 微信配置接口
+function weSet(arr){
+    wx.config({
+        debug: false,
+        appId: arr["appid"], 
+        timestamp: arr["timestamp"], 
+        nonceStr: arr["nonceStr"], 
+        signature: arr["signature"], 
+        jsApiList:[
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'hideMenuItems',
+            'chooseImage',               //拍照或从手机相册中选图接口
+            'previewImage',              //预览图片接口
+            'uploadImage',               //上传图片接口
+            'downloadImage',             //下载图片接口
+            'scanQRCode',                //调起微信扫一扫接口
+            'chooseWXPay',               //调起微信支付接口
+        ] 
+    });
+    wx.ready(function(){
+
+        wx.onMenuShareTimeline({
+            title: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享标题
+            link: "http://cdn.wemediacn.com/webpage_laneige/api/CoverService.aspx?r_url=http://weapp.wemediacn.com/laneige/applyinfo/201603/index.html", // 分享链接
+            imgUrl: "http://bos.bj.baidubce.com/we-sh2/laneige/applyinfo/yun/201603/images/share.jpg", // 分享图标
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareAppMessage({
+            title: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享标题
+            desc: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享描述
+            link: "http://cdn.wemediacn.com/webpage_laneige/api/CoverService.aspx?r_url=http://weapp.wemediacn.com/laneige/applyinfo/201603/index.html", // 分享链接
+            imgUrl: "http://bos.bj.baidubce.com/we-sh2/laneige/applyinfo/yun/201603/images/share.jpg", // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        // 隐藏按钮
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:readMode', // 阅读模式
+                'menuItem:copyUrl' ,// 复制链接
+                'menuItem:share:qq',//分享qq
+                'menuItem:share:weiboApp',//分享微博
+                'menuItem:share:facebook',//分享到FB
+                'menuItem:jsDebug',//调试
+                'menuItem:editTag',//编辑标签
+                'menuItem:delete',//删除
+                'menuItem:originPage',//原网页
+                'menuItem:openWithQQBrowser',//qq浏览器打开
+                'menuItem:openWithSafari',//safari浏览器打开
+                'menuItem:share:email',//邮件
+                'menuItem:share:brand',//特殊公众号
+            ],
+            success: function (res) {
+                console.log("ok");
+            },
+            fail: function (res) {
+                console.log(JSON.stringify(res));
+            }
+        });
+    });
 }

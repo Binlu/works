@@ -76,16 +76,16 @@
 .tel_btn>img{
     width: 1.8em;
 }
-.page1 .head_pic{
+.page6 .head_pic{
     width: 4em;
     height: 4em;
     margin-top: -2.5em;
     border: 2px solid #aaa;
 }
-.page1 .content_box{
+.page6 .content_box{
     padding-bottom: 1.5em;
 }
-.page1 .content_box>h3{
+.page6 .content_box>h3{
     font-weight: normal;
     margin-bottom: 2em;
 }
@@ -94,17 +94,17 @@
     padding: 0.5em 2em;
     border-radius: 0.2em;
 }
-/*page2*/
-.page2 .header_info{
+/*page7*/
+.page7 .header_info{
     width: 100%;
     padding-top:1em;
     padding-bottom: 1em;
     border-bottom: 1px solid #aaa;
 }
-.page2 .header_info>img{
+.page7 .header_info>img{
     vertical-align: middle;
 }
-.page2 .header_info>div{
+.page7 .header_info>div{
     display: inline-block;
     width: 72%;
     margin-left: 4%;
@@ -143,21 +143,21 @@
     display: inline-block;
     vertical-align: baseline;
 }
-/*page3*/
-.page3 .content_box{
+/*page8*/
+.page8 .content_box{
     padding-top: 1em;
     padding-bottom: 1em;
 }
-.page3 .content_box>h3{
+.page8 .content_box>h3{
     padding: 0.5em 0;
     text-align: center;
     font-weight: normal;
 }
-.page3 .content_box>h3>span{
+.page8 .content_box>h3>span{
     display: inline-block;
     vertical-align: middle;
 }
-.page3 .content_box>h3>label{
+.page8 .content_box>h3>label{
     display: inline-block;
     width: 30%;
     margin-top: -0.7em;
@@ -165,16 +165,16 @@
     border-bottom: 1px solid #aaa;
     vertical-align: middle;
 }
-.page3 .header_info{
+.page8 .header_info{
     width: 100%;
 }
-.page3 .header_info>div{
+.page8 .header_info>div{
     display: inline-block;
     vertical-align: middle;
     width: 72%;
     margin-left: 4%;
 }
-.page3 .header_info>img{
+.page8 .header_info>img{
     vertical-align: middle;
 }
 .detail_list{

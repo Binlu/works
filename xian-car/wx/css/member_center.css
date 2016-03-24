@@ -291,6 +291,7 @@ li.now_choice_li{
 }
 .page9 .trip_list>li{
     padding: 0em 0.5em;
+    background-color: #ECECEC;
 }
 .btn_type1{
     display: inline-block;
@@ -303,10 +304,18 @@ li.now_choice_li{
 }
 .all_chocie_btn{
     margin-right: 3em;
-    background-image: url(../images/icon19.png),url(../images/icon20.png);
+    background-image: url(../images/icon22.png);
     background-repeat: no-repeat;
-    background-position: 0.2em center,left center;
-    background-size: 0.8em,1.2em;
+    background-position: 0.2em center;
+    background-size: 1em;
+    vertical-align: middle;
+}
+.all_nchocie_btn{
+    margin-right: 3em;
+    background-image: url(../images/icon21.png);
+    background-repeat: no-repeat;
+    background-position: 0.2em center;
+    background-size: 1em;
     vertical-align: middle;
 }
 .page9 .weui_btn_my1{
@@ -333,6 +342,10 @@ li.now_choice_li{
 .page10 .weui_cell_ft>img{
     width: 1em;
 
+}
+.page10 .choice_btn{
+    color: #f95353;
+    border: 1px solid #f95353;
 }
 .type_div{
     padding: 1em 0;
@@ -370,6 +383,7 @@ li.now_choice_li{
 }
 .page12 .weui_bar_item_on{
     color: #ff4e00;
+    border: 1px solid #ff4e00;
 }
 .btn_type3{
     display: inline-block;
@@ -528,6 +542,9 @@ a.share_btn>img{
 }
 .p2_bom>img{
     width: 1em;
+}
+.page16 .checkbut{
+    top: 1.3em;
 }
 /*page17*/
 .page17 .weui_btn_my1{
