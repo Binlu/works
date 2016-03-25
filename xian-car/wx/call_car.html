@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/call_car.css">
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=892561bed1fcc4ef0f1b5e5ae031c64b&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
     </head>
     <body>
         <!-- 模拟屏幕 -->
@@ -44,8 +45,8 @@
                                     <img src="images/icon12.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <span class="js_get_city">神木</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_start_address">街道地址</span>
+                                    <span class="js_get_city">出发城市</span><span class="division_spn">&nbsp;</span>
+                                    <span class="js_start_address">出发地址</span>
                                 </div>
                             </a>
                             <a class="weui_cell" href="#" data-type="end">
@@ -53,8 +54,8 @@
                                     <img src="images/icon13.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <span class="js_get_city">神木</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_end_address">街道地址</span>
+                                    <span class="js_get_city">到达城市</span><span class="division_spn">&nbsp;</span>
+                                    <span class="js_end_address">目的地址</span>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
@@ -79,6 +80,8 @@
                         </div>
                         <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_call_btn" title="叫车">叫车</a>
                     </div>
+                    <!-- 地图 -->
+                    <div id="mapContainer" class="hide" style="width: 100%;height:320px;"></div>
                 </div>
             </div>
             <!-- 城市选择 -->
@@ -88,23 +91,23 @@
                     <!-- 返回前页 -->
                     <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                     <span>城市选择</span>
-                    <div class="pos_div js_pos_div"><span class="pos_name js_pos_spn"></span><img src="images/icon29.png"/></div>
+                    <!-- <div class="pos_div js_pos_div"><span class="pos_name js_pos_spn"></span><img src="images/icon29.png"/></div> -->
                 </h3>
                 <div class="search"><input class="mysel c_search js_city_search" data-id="[{'name':'江浙沪','list':['0001@@上海','0002@@南京','0003@@杭州']},{'name':'东三省','list':['0004@@哈尔滨','0005@@黑龙江','0006@@吉林']},{'name':'a-z','list':['0001@@上海','0002@@南京','0003@@杭州','0004@@哈尔滨','0005@@黑龙江','0006@@吉林']}]"/></div>
-                <div class="list list_tar">
-                    <div class="list_main list_tar_main js_c_list">
+                <div class="list js_city_box">
+                    <div>
                         <!-- 国家列表 -->
-                        <ul class="city_list js_city_list"></ul>
+                        <ul class="target_list js_city_list"></ul>
                         <!-- 没有列表提示 -->
                         <div class="n_list">
                             <p class="at1">暂时没有国家列表。</p>
                             <p class="at2">您搜索的国家暂时不支持此业务！</p>
                         </div>
                         <!-- 搜索结果 -->
-                        <ul class="search_list"></ul>
+                        <ul class="search_list js_search_city"></ul>
                     </div>
                 </div>
-                <div class="azban azban_tar">
+                <div class="azban js_azban_city">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr><td>A</td></tr>
                         <tr><td>B</td></tr>
@@ -406,11 +409,11 @@
                                 还需支付 <span class="font18 color6 v_base">25</span> 元
                             </div>
                             <ul class="pay_type_list js_pay_list">
-                                <li data-type="1">
+                                <li>
                                     <a class="btn2" href="javascript:;" title="微信支付">
                                         <img src="images/icon33.png" alt="微信"><br/>
                                         微信<br/>
-                                        <span class="">&nbsp;</span>
+                                        <span class="" data-type="1">&nbsp;</span>
                                     </a>
                                 </li>
                                 <!-- <li>
@@ -427,11 +430,11 @@
                                         <span>&nbsp;</span>
                                     </a>
                                 </li> -->
-                                <li data-type="2">
+                                <li>
                                     <a class="btn2" href="javascript:;" title="余额支付">
                                         <img src="images/icon36.png" alt="余额"><br/>
                                         余额<br/>
-                                        <span class="now_choice_spn">&nbsp;</span>
+                                        <span class="now_choice_spn" data-type="2">&nbsp;</span>
                                     </a>
                                 </li>
                             </ul>
@@ -692,7 +695,7 @@
                             <div class="trip_box evaluate_box txt_c">
                                 <h3><label class="f_l">&nbsp;</label><span class="color6">评价司机</span><label class="f_r">&nbsp;</label></h3>
                                 <label>总评</label>
-                                <ul class="star_list assess_star js_can_star">
+                                <ul class="star_list assess_star js_star_list js_can_star">
                                     <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
@@ -700,7 +703,7 @@
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>车技</label>
-                                <ul class="star_list assess_star js_can_star">
+                                <ul class="star_list assess_star js_star_list js_can_star">
                                     <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
@@ -708,7 +711,7 @@
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>服务</label>
-                                <ul class="star_list assess_star js_can_star">
+                                <ul class="star_list assess_star js_star_list js_can_star">
                                     <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
@@ -716,7 +719,7 @@
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>环境</label>
-                                <ul class="star_list assess_star js_can_star">
+                                <ul class="star_list assess_star js_star_list js_can_star">
                                     <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
@@ -736,6 +739,27 @@
                         <!-- 按钮 -->
                         <div class="p14_btn_div">
                             <a class="btn btn1 b_color3 js_sub_evaluate" href="javascript:;" title="提交评价">提交评价</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 地址选择 -->
+            <div class="page page15 b_color2">
+                <!-- 标题 -->
+                <h3 class="head_tit">
+                    <!-- 返回前页 -->
+                    <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                    <span>地址选择</span>
+                </h3>
+                <div class="search"><input id="tipinput" class="mysel c_search js_detail_search" data-id="[{'name':'江浙沪','list':['0001@@上海','0002@@南京','0003@@杭州']},{'name':'东三省','list':['0004@@哈尔滨','0005@@黑龙江','0006@@吉林']},{'name':'a-z','list':['0001@@上海','0002@@南京','0003@@杭州','0004@@哈尔滨','0005@@黑龙江','0006@@吉林']}]"/></div>
+                <div class="list js_detail_box">
+                    <div>
+                        <!-- 国家列表 -->
+                        <ul class="target_list js_detail_list"></ul>
+                        <!-- 没有列表提示 -->
+                        <div class="n_list js_detail_att">
+                            <p class="at1">暂时没有地区列表。</p>
+                            <p class="at2">您搜索的城市暂时不支持此业务！</p>
                         </div>
                     </div>
                 </div>

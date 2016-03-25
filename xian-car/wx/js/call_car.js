@@ -9,7 +9,7 @@ var $m={
     // 当前页面
     active_scroll:1,
     // 重新布局
-    rs: function(){
+    rs: function(type){
         var a=this;
         var limit=720;
         var dw=document.documentElement.clientWidth;
@@ -19,7 +19,10 @@ var $m={
         if(dw>limit){
             $(".center_box").css({"left":(dw-limit)/2+"px"});
         };
-        a.refreshPage();
+        if(type && type==1){
+            a.refreshPage();
+        }
+        
     },
     // 刷新scroll
     refreshPage: function(){
@@ -46,6 +49,12 @@ var $m={
             myScroll10.refresh();
         }else if(type==11){
             myScroll11.refresh();
+        }else if(type==12){
+            myScroll12.refresh();
+        }else if(type==13){
+            myScroll13.refresh();
+        }else if(type==14){
+            myScroll14.refresh();
         }
     },
     // ajax 请求地址
@@ -124,15 +133,139 @@ var $m={
         "isBag":"",                  //是否有行李
         "isChildren":"",             //是否有小孩
         "orderSource":""             //订单来源
-    }
+    },
+    search_arr:[
+        {
+            citycode:"",
+            city:"",
+            district:"",
+        },
+        {
+            citycode:"",
+            city:"",
+            district:"",
+        }
+    ],
+    s_arr2:[                         //城市数据
+        {
+            "id": "2",
+            "name": "西安市",
+            "level": "2",
+            "keyword": "xa",
+            "code": "A",
+            "servicedesc": "",
+            "addtime": "1456731385",
+            "listorder": "1",
+            "upid": "1",
+            "status": "1"
+        },
+        {
+            "id": "3",
+            "name": "榆林市",
+            "level": "3",
+            "keyword": "wy",
+            "code": "02",
+            "servicedesc": "未央服务站10Km免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "2",
+            "status": "1"
+        },
+        {
+            "id": "4",
+            "name": "宝鸡市",
+            "level": "2",
+            "keyword": "bj",
+            "code": "bj",
+            "servicedesc": "",
+            "addtime": "1456731385",
+            "listorder": "2",
+            "upid": "1",
+            "status": "1"
+        },
+        {
+            "id": "66",
+            "name": "太原市",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+        {
+            "id": "23",
+            "name": "咸阳",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+        {
+            "id": "55",
+            "name": "汉中",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+        {
+            "id": "654",
+            "name": "延安",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+        {
+            "id": "525",
+            "name": "商洛",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+        {
+            "id": "52",
+            "name": "铜川",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
+    ],
+
 }
 // 获取连接数据
 var link_obj=GetRequest();
 var page=link_obj["page"]?link_obj["page"]:1;
 $(function(){
+    $m.rs();
 	// 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll2=new IScroll('.list',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll2=new IScroll('.js_city_box',{mouseWheel: true,hideScrollbar: true,click: true});
     myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true});
     myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true});
     myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true});
@@ -141,35 +274,53 @@ $(function(){
     myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click: true});
     myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true});
     myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll11=new IScroll('.page11',{mouseWheel: true,hideScrollbar: true,click: true});
-
+    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll15=new IScroll('.js_detail_box',{mouseWheel: true,hideScrollbar: true,click: true});
+    $m.rs(1);
     (function(){
         var d=new Date();
         var h=d.getHours();
         var m=d.getMinutes();
         $(".js_time").text(h+":"+m);
     })();
-    $m.rs();
+    // 高德地图
+    var new_city=new ms();
+    //初始化地图对象，加载地图
+    ////初始化加载地图时，若center及level属性缺省，地图默认显示用户当前城市范围
+    var map = new AMap.Map('mapContainer', {
+        zoom:14,
+    });
+    map.getCity(function(re){
+        var city=re.city;
+        var province=re.province;
+        var district=re.district;
+        city=city==""?pcformat(province):pcformat(city);
+        console.log(city);
+        $(".js_get_city").text(city);
+        $m.search_arr[0]["city"]=city;
+        $m.search_arr[0]["district"]=district;
+        $m.search_arr[0]["citycode"]=re.citycode;
+        console.log(re);
+        new_city.init_cs($m.s_arr2,city);
+    });
+    // 点击选择出发地
+    $(".js_start_address").on("click",function(){
+        $m.toNext($(".page15"),function(){
+            $m.active_scroll=15;
+            $m.refreshPage();
+        });
+    });
     // 显示
     $m.showPage(function(){});
     // 绑定返回事件
     $(".js_back").on("click",function(){
         $m.toPrev($(this).parents(".page"));
     });
-	// 存储搜索数据
-	(function(){
-		var arr2=$(".js_city_search").attr("data-id")?$(".js_city_search").attr("data-id"):[];
-		arr2=eval(arr2);
-		if(arr2.length>0){
-			$m.s_arr2=save_search(arr2,2);
-		}
-		
-	})();
+    searchbg1=$(".js_detail_search").css("background-image");
 	searchbg2=$(".js_city_search").css("background-image");
-	var new_city=new ms();
-	new_city.local();
-	console.log(111)
-	new_city.init_cs();
+    // 城市搜索
 	$(".js_city_search").bind("focus",function(event){
 		$(this).css({"background-image":"none"});
 		stopBubble(event);
@@ -180,30 +331,65 @@ $(function(){
 			new_city.init();
 			stopBubble(event);
 		}else{
-			new_city.init2($m.s_arr2,txt,$(".search_list"));
+			new_city.init2($m.s_arr2,txt,$(".js_search_city"));
 		}
 	}).bind("input propertychange",function(event){
 		var txt=$(this).val();
 		if(txt==""){
 			new_city.init();
 		}else{
-			new_city.init2($m.s_arr2,txt,$(".search_list"));
+			new_city.init2($m.s_arr2,txt,$(".js_search_city"));
 		}
 		stopBubble(event);
 	});
-	$(".list_tar").on("click",function(event){
+	$(".js_city_box").on("click",function(event){
 		$(".js_city_search").blur();
 		stopBubble(event);
 	});
-	$(".azban_tar td").unbind().bind("touchstart",function(event){
+	$(".js_azban_city td").unbind().bind("touchstart",function(event){
 		var x=$(this).html();
 		// try{ttscroll1.scrollToElement(".jp_"+x,10);}catch(e){}
-		$(".azban_tar td").css({"color":"grey","font-weight":"normal"});
+		$(".js_azban_city td").css({"color":"grey","font-weight":"normal"});
 		$(this).css({"color":"#3b81c6","font-weight":"bold"});
 		try{myScroll2.scrollToElement(".jp_"+x,10);}catch(e){}
 		stopBubble(event);
 	});
-	
+    // 详情地址选择
+	$(".js_detail_search").bind("focus",function(event){
+        $(this).css({"background-image":"none"});
+        stopBubble(event);
+    }).bind("blur",function(event){
+        var txt=$(this).val();
+        if($(this).val()==""||$(this).val()==null){
+            $(this).css({"background-image":searchbg1});
+            new_city.init();
+            stopBubble(event);
+        }else{
+            getPoiList(map,$m.search_arr[0]["city"],txt);
+            // new_city.init1($m.s_arr2,txt,$(".js_detail_city"));
+        }
+    }).bind("input propertychange",function(event){
+        var txt=$(this).val();
+        if(txt==""){
+            new_city.init();
+        }else{
+            getPoiList(map,$m.search_arr[0]["city"],txt);
+            // new_city.init1($m.s_arr2,txt,$(".js_detail_city"));
+        }
+        stopBubble(event);
+    });
+    $(".js_detail_box").on("click",function(event){
+        $(".js_detail_search").blur();
+        stopBubble(event);
+    });
+    $(".js_azban_detail td").unbind().bind("touchstart",function(event){
+        var x=$(this).html();
+        // try{ttscroll1.scrollToElement(".jp_"+x,10);}catch(e){}
+        $(".js_azban_detail td").css({"color":"grey","font-weight":"normal"});
+        $(this).css({"color":"#3b81c6","font-weight":"bold"});
+        try{myScroll15.scrollToElement(".jp_"+x,10);}catch(e){}
+        stopBubble(event);
+    });
 	// 选择城市
     $(".js_get_city").on("click",function(){
     	$(".js_get_city").removeClass("js_now_address");
@@ -214,7 +400,7 @@ $(function(){
         });
     });
     // 确认选择
-    $(".list_tar").on("click",".js_city_list .opt",function(){
+    $(".js_city_box").on("click",".js_city_list .opt",function(){
     	var txt=$(this).children("span").text()?$(this).children("span").text():"";
     	$(".js_now_address").text(txt);
         $m.toPrev($(".page2"),function(){
@@ -442,8 +628,8 @@ $(function(){
         var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
         if(type==2){
             // 余额支付
-            $m.toNext($(".page21"),function(){
-                $m.active_scroll=21;
+            $m.toNext($(".page12"),function(){
+                $m.active_scroll=12;
                 $m.refreshPage();
             });
         }else{
@@ -460,20 +646,20 @@ $(function(){
     });
     // 找回密码
     $(".js_get_pass").on("click",function(){
-        $m.toNext($(".page22"),function(){
-            $m.active_scroll=22;
+        $m.toNext($(".page13"),function(){
+            $m.active_scroll=13;
             $m.refreshPage();
         });
     });
     // 获取验证码
-    $(".page22 .js_get_code").on("click",function(){
-        checkpost($(this),"page22 .js_mobile");
+    $(".page13 .js_get_code").on("click",function(){
+        checkpost($(this),"page13 .js_mobile");
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("click",function(){
         toSubPass($(this),function(){
-            $m.toPrev($(".page22"),function(){
-                $m.active_scroll=21;
+            $m.toPrev($(".page13"),function(){
+                $m.active_scroll=14;
                 $m.refreshPage();
             });
         });
@@ -491,11 +677,8 @@ $(function(){
             msg("请输入支付密码",800);
         }else{
             msg("支付成功",800);
-            $(".js_can_star").addClass("js_star_list");
-            $(".p3_btn_div").children(".js_to_pay").hide();
-            $(".page20").css({"left":"100%"});
-            $m.toPrev($(".page21"),function(){
-                $m.active_scroll=20;
+            $m.toNext($(".page14"),function(){
+                $m.active_scroll=14;
                 $m.refreshPage();
             });
             // 开始提交
@@ -508,7 +691,6 @@ $(function(){
     // 线下支付
     $(".js_offline_btn").on("click",function(){
         $(".js_del_order").hide();
-        $(".js_can_star").addClass("js_star_list");
         $(".p3_btn_div").children(".js_to_pay").hide();
         $m.toPrev($(".page20"),function(){
             $m.active_scroll=3;
@@ -520,80 +702,88 @@ $(function(){
         //     $(".js_rename_txt").text(txt);
         // });
     });
+    // 评星星数量
+    $(".page").on("click",".js_star_list>li",function(){
+        var a=$(this),b=a.children("img"),c=a.parent();
+        var leven=a.attr("data-star")?a.attr("data-star"):"3";
+        c.children("li").each(function(i){
+            if(i<leven){
+                $(this).children("img").attr("src",$m.img_url+"icon17.png");
+            }else{
+                $(this).children("img").attr("src",$m.img_url+"icon16.png");
+            }
+        });
+    });
+    // 提交评价
+    $(".js_sub_evaluate").on("click",function(){
+        msg("评论成功",800);
+        $(this).hide();
+        $(".js_can_star").removeClass("js_star_list");
+        myScroll14.refresh();
+        $(".page").not(".page1,.page14").css({"left":"100%"});
+        $m.toPrev($(".page14"),function(){});
+        // var arr={"user_nicename":txt,"user_id":user_id};
+        // subAjax(arr,"goModifiedSelfInfo",function(){
+        //     $(".js_rename_txt").text(txt);
+        // });
+    });
 	$(window).on("resize",function(){$m.rs()});
 });
 function ms(){
 	// 初始化
 	this.init=function(){
 		$(".js_city_search").val("");
-		$(".search_list").html("").hide();
-		if($(".city_list>li").length>0){
-			$(".city_list").show().siblings(".n_list").hide();
+		$(".js_search_city").html("").hide();
+		if($(".js_city_list>li").length>0){
+			$(".js_city_list").show().siblings(".n_list").hide();
 		}else{
-			$(".city_list").hide().siblings(".n_list").show();
+			$(".js_city_list").hide().siblings(".n_list").show();
 		}
 		myScroll2.refresh();
 	}
 	// 城市生成
-	this.init_cs=function(){
-		var arr=$(".js_city_search").attr("data-id")?$(".js_city_search").attr("data-id"):"";
-		arr=eval(arr);
-		console.log(arr,111)
+	this.init_cs=function(arr,city){
+        var is_city=false;
 		if(arr.length>0){
 			// 循环字母
 			var az=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-			var _html='',_html1='',_html2='';
+			var _html='';
 			for(var n=0,a_len=az.length;n<a_len;n++){
-				var name="",arr_list=[];
+                var _html1='';
 				for(var i=0,len=arr.length;i<len;i++){
-					name=arr[i]["name"]?arr[i]["name"]:"";
-					arr_list=arr[i]["list"]?arr[i]["list"]:[];
+					var name=pcformat(arr[i]["name"])?pcformat(arr[i]["name"]):"";
 					var py_t=Pinyin.GetJP(name)[0].toUpperCase();
-					if(name!=="a-z"){
-						
-						if(py_t==az[n]){
-							// 有货
-							_html1+='<li class="tag jp_">'+name+'</li>';
-							var info="",py1="",id="";
-							for(var j=0,len1=arr_list.length;j<len1;j++){
-								
-								info=arr_list[j].split("@@");
-								py1=info[1]?info[1]:"";
-								id=info[0]?info[0]:"";
-								_html1+='<li class="opt" data-id="'+id+'"><span>'+py1+'</span></li>';
-							}
-
-						}
-						
-					}else{
-						// 有货
-						var info="",py1="",id="";
-						var a=1;
-						var _html3='';
-						for(var j=0,len1=arr_list.length;j<len1;j++){
-							info=arr_list[j].split("@@");
-							py1=info[1]?info[1]:"";
-							py1_f=Pinyin.GetJP(py1)[0].toUpperCase();
-							if(py1_f==az[n]){
-								a=2;
-								id=info[0]?info[0]:"";
-								_html3+='<li class="opt" data-id="'+id+'"><span>'+py1+'</span></li>';
-							}
-						}
-						if(a==2){
-							_html2=_html2+'<li class="tag jp_'+az[n]+'">'+az[n]+'</li>'+_html3;
-						}else{
-							_html2=_html2+'<li class="tag hide jp_'+az[n]+'">'+az[n]+'</li>'+_html3;
-						}
-					}
+					if(py_t==az[n]){
+                        // 有货
+                        var id=arr[i]["id"]?arr[i]["id"]:"";
+                        var level=arr[i]["level"]?arr[i]["level"]:"";
+                        var keyword=arr[i]["keyword"]?arr[i]["keyword"]:"";
+                        var code=arr[i]["code"]?arr[i]["code"]:"";
+                        var servicedesc=arr[i]["servicedesc"]?arr[i]["servicedesc"]:"";
+                        var addtime=arr[i]["addtime"]?arr[i]["addtime"]:"";
+                        var listorder=arr[i]["listorder"]?arr[i]["listorder"]:"";
+                        var upid=arr[i]["upid"]?arr[i]["upid"]:"";
+                        var status=arr[i]["status"]?arr[i]["status"]:"";
+                        if(!is_city && pcformat(city)==name){
+                            // 当前定位的城市
+                            is_city=true;
+                            _html1+='<li class="opt" data-id="'+id+'"><span>'+name+'</span><div class="n_pos_div"><img src="'+$m.img_url+'icon29.png" alt="定位"><span>当前定位</span></div></li>';
+                        }else{
+                            _html1+='<li class="opt" data-id="'+id+'"><span>'+name+'</span></li>';
+                        }
+                    }
 				}
+                if(_html1==''){
+                    _html+='<li class="tag hide jp_'+az[n]+'">'+az[n]+'</li>';
+                }else{
+                    _html+=('<li class="tag jp_'+az[n]+'">'+az[n]+'</li>'+_html1);
+                }
 			}
-			_html=_html1+_html2;
 			if(_html!=''){
-				$(".city_list").html(_html);
+				$(".js_city_list").html(_html);
 			}
 		}else{
-			// 没有国家列表
+			// 没有城市
 			$(".n_list").eq(0).show();
 		}
 		myScroll2.refresh();
@@ -601,56 +791,56 @@ function ms(){
 
 	this.init1=function(arr,txt,oEle){
 		
-		var _html1='<li class="tag jp_A">搜索结果</li>';
-		var _html2='<li class="tag jp_A">搜索结果</li>';
-		var _html3='<li class="tag jp_A">搜索结果</li>';
-		var _html4='<li class="tag jp_A">搜索结果</li>';
-        var a={"jp":"","qp":"","hp":""};
-        var b={"jp":"","qp":"","hp":""};
-        // 获取简拼
-        b.fw=Pinyin.GetQP(txt)[0];
-        b.jp=Pinyin.GetJP(txt);
-        // 全拼
-        b.qp=Pinyin.GetQP(txt);
-        // 混拼
-        b.hp=Pinyin.GetHP(txt);
-        for(var i=0,len=arr.length;i<len;i++){
-        	a.fw=Pinyin.GetQP(arr[i]["name"])[0];
-            a.jp=Pinyin.GetJP(arr[i]["name"]);
-            a.qp=Pinyin.GetQP(arr[i]["name"]);
-            a.hp=Pinyin.GetHP(arr[i]["name"]);
-            if(a.fw==b.fw){
-            	// 首字母匹配
-            	if(a.qp==b.qp){
-                    // 匹配
-                    _html1+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><img src="'+$m.img_url+arr[i]["src"]+'"><span>'+arr[i]["name"]+'</span></li>';
-                    oEle.html("");
-                    oEle.html(_html1);
-                    return false;
-                }else if(a.jp==b.jp){
-                    _html2+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><img src="'+$m.img_url+arr[i]["src"]+'"><span>'+arr[i]["name"]+'</span></li>';
-                    oEle.html(_html2);
-                    return false;
-                }
-                else if(a.hp==b.hp){
-                    _html3+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><img src="'+$m.img_url+arr[i]["src"]+'"><span>'+arr[i]["name"]+'</span></li>';
-                    oEle.html(_html3);
-                    return false;
-                }else{
-                	_html4+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><img src="'+$m.img_url+arr[i]["src"]+'"><span>'+arr[i]["name"]+'</span></li>';
-                    oEle.html(_html4);
-                }
-            }
+		// var _html1='<li class="tag jp_A">搜索结果</li>';
+		// var _html2='<li class="tag jp_A">搜索结果</li>';
+		// var _html3='<li class="tag jp_A">搜索结果</li>';
+		// var _html4='<li class="tag jp_A">搜索结果</li>';
+  //       var a={"jp":"","qp":"","hp":""};
+  //       var b={"jp":"","qp":"","hp":""};
+  //       // 获取简拼
+  //       b.fw=Pinyin.GetQP(txt)[0];
+  //       b.jp=Pinyin.GetJP(txt);
+  //       // 全拼
+  //       b.qp=Pinyin.GetQP(txt);
+  //       // 混拼
+  //       b.hp=Pinyin.GetHP(txt);
+  //       for(var i=0,len=arr.length;i<len;i++){
+  //       	a.fw=Pinyin.GetQP(arr[i]["name"])[0];
+  //           a.jp=Pinyin.GetJP(arr[i]["name"]);
+  //           a.qp=Pinyin.GetQP(arr[i]["name"]);
+  //           a.hp=Pinyin.GetHP(arr[i]["name"]);
+  //           if(a.fw==b.fw){
+  //           	// 首字母匹配
+  //           	if(a.qp==b.qp){
+  //                   // 匹配
+  //                   _html1+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
+  //                   oEle.html("");
+  //                   oEle.html(_html1);
+  //                   return false;
+  //               }else if(a.jp==b.jp){
+  //                   _html2+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
+  //                   oEle.html(_html2);
+  //                   return false;
+  //               }
+  //               else if(a.hp==b.hp){
+  //                   _html3+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
+  //                   oEle.html(_html3);
+  //                   return false;
+  //               }else{
+  //               	_html4+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
+  //                   oEle.html(_html4);
+  //               }
+  //           }
             
-        }
-        if(oEle.children("li").length==0){
-			$(".c_list").siblings(".n_list").children(".at2").show().siblings().hide();
-			$(".c_list").hide().siblings(".n_list").show();
-		}else{
-			oEle.show();
-			$(".c_list").hide();
-		}
-		ttscroll2.refresh();
+  //       }
+  //       if(oEle.children("li").length==0){
+		// 	$(".c_list").siblings(".n_list").children(".at2").show().siblings().hide();
+		// 	$(".c_list").hide().siblings(".n_list").show();
+		// }else{
+		// 	oEle.show();
+		// 	$(".c_list").hide();
+		// }
+		ttscroll15.refresh();
 	}
 
 
@@ -702,48 +892,44 @@ function ms(){
             
         }
         if(oEle.children("li").length<1){
-			$(".city_list").siblings(".n_list").children(".at2").show().siblings().hide();
-			$(".city_list").hide().siblings(".n_list").show();
+			$(".js_city_list").siblings(".n_list").children(".at2").show().siblings().hide();
+			$(".js_city_list").hide().siblings(".n_list").show();
 		}else{
 			oEle.show().siblings().hide();
 		}
 		myScroll2.refresh();
 	}
-
-	//出发地定位
-	this.local=function(){
-		if($m.is_pos){
-			console.log("已经选择城市");
-		}else{
-			var geolocation=new BMap.Geolocation();
-			geolocation.getCurrentPosition(function(r){
-				if(this.getStatus()==BMAP_STATUS_SUCCESS){
-					var mk=new BMap.Marker(r.point);
-					var theurl="http://api.map.baidu.com/geocoder/v2/?ak=5ZmIO6bXbDtdllzdMZwfXmFm&location="+r.point.lat+","+r.point.lng+"&output=json&pois=0";
-					 $.ajax({type:"POST",url:theurl,dataType:'jsonp',
-						success: function(response){ 
-							var res=response.result;
-							var ac=res.addressComponent;
-							if(!$m.is_pos){
-								$(".js_pos_spn").text(pcformat(ac.city));
-								var id="";
-								$(".city_list").children(".opt").each(function(i){
-									if(pcformat(ac.province)==pcformat($(this).children("span").text()) || pcformat(ac.city)==pcformat($(this).children("span").text())){
-										// 有
-										id=$(this).attr("data-id")?$(this).attr("data-id"):"";
-										$(".js_pos_spn").attr("data-id",id);
-										return false;
-									}
-								});
-							}
-							$(".city_list").prepend('<li class="opt" data-id="'+id+'"><span>'+pcformat(ac.city)+'</span><div class="n_pos_div"><img src="'+$m.img_url+'icon29.png" alt="定位"><span>当前定位</span></div></li>');
-
-						}
-					}); 
-				}     
-			},{enableHighAccuracy:true});
-		}
-	}
+}
+// 高德地图检索周边地区
+function getPoiList(map,city,txt){
+    var autoOptions = {
+        city: city //城市，默认全国
+    };
+    autocomplete= new AMap.Autocomplete(autoOptions);
+    autocomplete.search(txt, function(status, result){
+        //TODO:开发者使用result自己进行下拉列表的显示与交互功能
+        console.log(status,result);
+        if(status=="no_data"){
+            // 没有对象
+            $(".js_detail_att").children(".at1").show().siblings().hide();
+            $(".js_detail_att").show().siblings(".target_list").hide();
+            myScroll15.refresh();
+        }else if(status=="complete"){
+            setPos(result);
+        }
+    });
+}
+// 生成搜索列表
+function setPos(data){
+    var arr=data["tips"]?data["tips"]:[];
+    for(var i=0,len=arr.length;i<len;i++){
+        var adcode=arr[i]["adcode"];
+        var district=arr[i]["district"];
+        var id=arr[i]["id"];
+        var name=arr[i]["name"];
+        var lat=arr[i]["location"]["lat"];
+        var lng=arr[i]["location"]["lng"];
+    }
 }
 //格式化省市自治区
 function pcformat(txt){

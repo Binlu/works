@@ -76,10 +76,10 @@ textarea{
 .opt>img{width: 3em;height: 3em;border-radius: 1.5em;margin-right: 0.5em;vertical-align: middle;}
 .opt>span{display: inline-block;margin-left: 0.5em;vertical-align: middle;}
 .search{margin-top:0.5em}
-.search input{width:96%;font-size:0.9em;padding:1.1em 2%;border:none;border-radius:0;background-color:#fff;background-image:url(http://bos.bj.baidubce.com/we-sh2/mtravel/images/newfrontend/loclsearch.png);background-position:left;background-repeat:no-repeat;background-size:auto 100%}
+.search input{width:96%;font-size:0.9em;padding:1.1em 1em;border:none;border-radius:0;background-color:#fff;background-image:url(../images/icon41.png);background-position:1em center;background-repeat:no-repeat;background-size:6em}
 /*.search .c_search{background-image:url(http://bos.bj.baidubce.com/we-sh2/mtravel/images/newfrontend/c_search.jpg);background-position:left;background-repeat:no-repeat;background-size:auto 100%}*/
 .list{position:absolute;top:6.6em;bottom:0em;width: 100%;overflow:hidden}
-.city_list{padding-bottom: 3em;}
+.target_list{padding-bottom: 3em;}
 .azban{position:absolute;top:8em;bottom:0;font-size:0.8em;right:0;width:2em;text-align:center;line-height:1em}
 .azban table{height:100%}
 .azban table td{height:4%}
@@ -431,7 +431,7 @@ div.p6_form_change_div{
 .evaluate_box>ul{
     margin-left: 4em;
 }
-.evaluate_box>ul>li{
+/*.evaluate_box>ul>li{
     display: inline-block;
     padding: 0.2em 0.5em;
     margin: 0.5em 0.1em;
@@ -440,7 +440,7 @@ div.p6_form_change_div{
     border-radius: 0.3em;
     text-align: center;
     background-color: #fff;
-}
+}*/
 .line_info{
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -646,6 +646,45 @@ li.now_choice_li{
     padding-top: 1em;
     padding-bottom: 1em;
 }
+.trip_box{
+    font-size: 0.9em;
+}
+.trip_box>h3{
+    padding: 0.5em 0;
+    text-align: center;
+    font-weight: normal;
+}
+.trip_box>h3>span{
+    display: inline-block;
+    vertical-align: middle;
+}
+.trip_box>h3>label{
+    display: inline-block;
+    width: 30%;
+    margin-top: -0.7em;
+    /*height: 1px;*/
+    border-bottom: 1px solid #aaa;
+    vertical-align: middle;
+}
+.trip_list{
+    padding: 0em 1em;
+}
+.trip_list>li{
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border: 1px solid #aaa;
+    border-radius: 0.4em;
+    background-color: #fff;
+}
+.trip_de_list{
+}
+.trip_de_list>li>img{
+    width: 0.5em;
+    vertical-align: middle;
+}
+.trip_de_list>li{
+    margin: 0.2em 0;
+}
 .header_info{
     padding: 0.5em 0;
 }
@@ -738,4 +777,8 @@ div.p6_form_change_div{
     margin-right: 1em;
     margin-top: 0.4em;
     vertical-align: middle;
+}
+/*page15*/
+.page15 .c_search{
+    background-image: url(../images/icon42.png);
 }
