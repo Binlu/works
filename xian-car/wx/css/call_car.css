@@ -80,11 +80,12 @@ textarea{
 /*.search .c_search{background-image:url(http://bos.bj.baidubce.com/we-sh2/mtravel/images/newfrontend/c_search.jpg);background-position:left;background-repeat:no-repeat;background-size:auto 100%}*/
 .list{position:absolute;top:6.6em;bottom:0em;width: 100%;overflow:hidden}
 .target_list{padding-bottom: 3em;}
-.azban{position:absolute;top:8em;bottom:0;font-size:0.8em;right:0;width:2em;text-align:center;line-height:1em}
+.target_list>li{cursor: pointer;}
+.azban{position:absolute;top:8.5em;bottom:0;font-size:0.8em;right:0;width:2em;text-align:center;line-height:1em}
 .azban table{height:100%}
 .azban table td{height:4%}
 .date{width:90%;margin-left:4.5%;margin-top:1em}
-.n_list{display: none;text-align: center;font-size: 0.9em}
+.n_list{display: none;text-align: center;font-size: 0.9em;padding-top: 2em;}
 .pos_div{position: absolute;top: 0;right: 0em;padding: 0 0.5em}
 .pos_div>img{width: 1em;vertical-align:middle;}
 .pos_div>span{font-size: 0.8em;display: inline-block;min-width: 2em;max-width: 7em;height: 3.3em;line-height: 3.3em;overflow: hidden;vertical-align:middle;}

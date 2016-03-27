@@ -134,18 +134,11 @@ var $m={
         "isChildren":"",             //是否有小孩
         "orderSource":""             //订单来源
     },
-    search_arr:[
-        {
-            citycode:"",
-            city:"",
-            district:"",
-        },
-        {
-            citycode:"",
-            city:"",
-            district:"",
-        }
-    ],
+    search_arr:{
+        "citycode":"",
+        "city":"",
+        "district":"",
+    },
     s_arr2:[                         //城市数据
         {
             "id": "2",
@@ -255,12 +248,26 @@ var $m={
             "upid": "4",
             "status": "1"
         },
+        {
+            "id": "223",
+            "name": "兰州",
+            "level": "3",
+            "keyword": "jt",
+            "code": "01",
+            "servicedesc": "金台区服务站10KM免费接送",
+            "addtime": "1456731385",
+            "listorder": "100",
+            "upid": "4",
+            "status": "1"
+        },
     ],
-
+    now_city:"",           //当前定位城市
 }
 // 获取连接数据
 var link_obj=GetRequest();
 var page=link_obj["page"]?link_obj["page"]:1;
+// 地图
+var map=null,new_city=null;
 $(function(){
     $m.rs();
 	// 绑定滚动
@@ -286,27 +293,33 @@ $(function(){
         $(".js_time").text(h+":"+m);
     })();
     // 高德地图
-    var new_city=new ms();
+    new_city=new ms();
     //初始化地图对象，加载地图
     ////初始化加载地图时，若center及level属性缺省，地图默认显示用户当前城市范围
-    var map = new AMap.Map('mapContainer', {
+    map = new AMap.Map('mapContainer', {
         zoom:14,
+        // center:"南京"
     });
     map.getCity(function(re){
         var city=re.city;
         var province=re.province;
         var district=re.district;
         city=city==""?pcformat(province):pcformat(city);
-        console.log(city);
         $(".js_get_city").text(city);
-        $m.search_arr[0]["city"]=city;
-        $m.search_arr[0]["district"]=district;
-        $m.search_arr[0]["citycode"]=re.citycode;
-        console.log(re);
+        $m.search_arr["city"]=city;
+        $m.search_arr["district"]=district;
+        $m.search_arr["citycode"]=re.citycode;
+        $m.now_city=city;
         new_city.init_cs($m.s_arr2,city);
     });
     // 点击选择出发地
-    $(".js_start_address").on("click",function(){
+    $(".js_get_address").on("click",function(){
+        $(".js_get_address").removeClass("js_now_address");
+        $(this).addClass("js_now_address");
+        var s_city=$(".js_now_city").text()?$(".js_now_city").text():$m.now_city;
+        map.setCity(s_city+"市",function(data){
+            setCityDetail();
+        });
         $m.toNext($(".page15"),function(){
             $m.active_scroll=15;
             $m.refreshPage();
@@ -346,7 +359,7 @@ $(function(){
 		$(".js_city_search").blur();
 		stopBubble(event);
 	});
-	$(".js_azban_city td").unbind().bind("touchstart",function(event){
+	$(".js_azban_city td").on("click",function(event){
 		var x=$(this).html();
 		// try{ttscroll1.scrollToElement(".jp_"+x,10);}catch(e){}
 		$(".js_azban_city td").css({"color":"grey","font-weight":"normal"});
@@ -365,7 +378,7 @@ $(function(){
             new_city.init();
             stopBubble(event);
         }else{
-            getPoiList(map,$m.search_arr[0]["city"],txt);
+            getPoiList(map,$m.search_arr["city"],txt);
             // new_city.init1($m.s_arr2,txt,$(".js_detail_city"));
         }
     }).bind("input propertychange",function(event){
@@ -373,7 +386,7 @@ $(function(){
         if(txt==""){
             new_city.init();
         }else{
-            getPoiList(map,$m.search_arr[0]["city"],txt);
+            getPoiList(map,$m.search_arr["city"],txt);
             // new_city.init1($m.s_arr2,txt,$(".js_detail_city"));
         }
         stopBubble(event);
@@ -382,7 +395,7 @@ $(function(){
         $(".js_detail_search").blur();
         stopBubble(event);
     });
-    $(".js_azban_detail td").unbind().bind("touchstart",function(event){
+    $(".js_azban_detail td").bind("click",function(event){
         var x=$(this).html();
         // try{ttscroll1.scrollToElement(".jp_"+x,10);}catch(e){}
         $(".js_azban_detail td").css({"color":"grey","font-weight":"normal"});
@@ -392,8 +405,11 @@ $(function(){
     });
 	// 选择城市
     $(".js_get_city").on("click",function(){
-    	$(".js_get_city").removeClass("js_now_address");
-    	$(this).addClass("js_now_address");
+        $(".js_city_search").val("");
+        $(".js_detail_search").val("");
+        $(".target_list").show().siblings().hide();
+    	$(".js_get_city").removeClass("js_now_city");
+    	$(this).addClass("js_now_city");
         $m.toNext($(".page2"),function(){
             $m.active_scroll=2;
             $m.refreshPage();
@@ -402,8 +418,16 @@ $(function(){
     // 确认选择
     $(".js_city_box").on("click",".js_city_list .opt",function(){
     	var txt=$(this).children("span").text()?$(this).children("span").text():"";
-    	$(".js_now_address").text(txt);
+    	$(".js_now_city").text(txt);
         $m.toPrev($(".page2"),function(){
+            $m.active_scroll=1;
+        });
+    });
+    // 确认选择地址
+    $(".js_detail_box").on("click",".js_detail_list .opt",function(){
+        var txt=$(this).children("span").text()?$(this).children("span").text():"";
+        $(".js_now_address").text(txt);
+        $m.toPrev($(".page15"),function(){
             $m.active_scroll=1;
         });
     });
@@ -903,12 +927,11 @@ function ms(){
 // 高德地图检索周边地区
 function getPoiList(map,city,txt){
     var autoOptions = {
-        city: city //城市，默认全国
+        city: city,//城市，默认全国
     };
     autocomplete= new AMap.Autocomplete(autoOptions);
     autocomplete.search(txt, function(status, result){
         //TODO:开发者使用result自己进行下拉列表的显示与交互功能
-        console.log(status,result);
         if(status=="no_data"){
             // 没有对象
             $(".js_detail_att").children(".at1").show().siblings().hide();
@@ -921,15 +944,63 @@ function getPoiList(map,city,txt){
 }
 // 生成搜索列表
 function setPos(data){
+    console.log(data);
     var arr=data["tips"]?data["tips"]:[];
-    for(var i=0,len=arr.length;i<len;i++){
-        var adcode=arr[i]["adcode"];
-        var district=arr[i]["district"];
-        var id=arr[i]["id"];
-        var name=arr[i]["name"];
-        var lat=arr[i]["location"]["lat"];
-        var lng=arr[i]["location"]["lng"];
+    if(arr.length>0){
+        // 循环字母
+        var az=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+        var _html='';
+        for(var n=0,a_len=az.length;n<a_len;n++){
+            var _html1='';
+            for(var i=0,len=arr.length;i<len;i++){
+                var name=pcformat(arr[i]["name"])?pcformat(arr[i]["name"]):"";
+                var py_t=Pinyin.GetJP(name)[0].toUpperCase();
+                if(py_t==az[n]){
+                    // 有货
+                    var id=arr[i]["id"]?arr[i]["id"]:"";
+                    var adcode=arr[i]["adcode"]?arr[i]["adcode"]:"";
+                    var district=arr[i]["district"]?arr[i]["district"]:"";
+                    var lat="";
+                    var lng="";
+                    if(arr[i]["location"] && arr[i]["location"]!="undefined"){
+                        lat=arr[i]["location"]["lat"]?arr[i]["location"]["lat"]:"";
+                        lng=arr[i]["location"]["lng"]?arr[i]["location"]["lng"]:"";
+                    }
+                    _html1+='<li class="opt" data-id="'+id+'"><span>'+name+'</span></li>';
+                }
+            }
+            if(_html1==''){
+                _html+='<li class="tag hide jp_'+az[n]+'">'+az[n]+'</li>';
+            }else{
+                _html+=('<li class="tag jp_'+az[n]+'">'+az[n]+'</li>'+_html1);
+            }
+        }
+        if(_html!=''){
+            $(".js_detail_list").html(_html);
+        }
+    }else{
+        // 没有城市
+        $(".n_list").eq(1).show();
     }
+    myScroll15.refresh();
+}
+// 获取城市详情
+function setCityDetail(){
+    map.getCity(function(re){
+        console.log(re);
+        var city=re.city;
+        var province=re.province;
+        var district=re.district;
+        city=city==""?pcformat(province):pcformat(city);
+        console.log(city);
+        // $(".js_get_city").text(city);
+        $m.search_arr["city"]=city;
+        $m.search_arr["district"]=district;
+        $m.search_arr["citycode"]=re.citycode;
+        $m.now_city=city;
+        console.log(re);
+        new_city.init_cs($m.s_arr2,city);
+    });
 }
 //格式化省市自治区
 function pcformat(txt){
