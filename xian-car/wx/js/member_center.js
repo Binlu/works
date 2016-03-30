@@ -214,7 +214,7 @@ $(function(){
         // });
     });
     // 修改年龄
-    $('.js_age').date({theme:"datetime"});
+    $('.js_age').date({theme:"datetime",ylen:70});
     // 确认修改年龄
     $(".js_sex_div>a").on("click",function(){
         $(this).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");

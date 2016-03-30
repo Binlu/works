@@ -163,7 +163,7 @@ a.r_btn{
 /*提示框*/
 #atten_box{
 	-webkit-box-sizing:border-box;-moz-box-sizing:border-box;
-	position: fixed;
+	position: absolute;
 	left: 0;
 	top: 46%;
     max-width: 720px;

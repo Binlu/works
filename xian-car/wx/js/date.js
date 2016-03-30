@@ -74,13 +74,14 @@ that.scrollTo(x,y,time);},disable:function(){this.stop();this._resetPos(0);this.
         var yearScroll=null,monthScroll=null,dayScroll=null;
         var HourScroll=null,MinuteScroll=null,SecondScroll=null;
         $.fn.date.defaultOptions = {
-            curyear:70,                   //当前年份
+            curyear:1,                   //当前年份
             beginyear:1920,                 //日期--年--份开始
             endyear:2050,                   //日期--年--份结束
             beginmonth:1,                   //日期--月--份结束
             endmonth:12,                    //日期--月--份结束
             beginday:1,                     //日期--日--份结束
             endday:31,                      //日期--日--份结束
+            ylen:0,                      //日期--日--份结束
             beginhour:1,
             endhour:12,
             beginminute:00,
@@ -119,7 +120,6 @@ that.scrollTo(x,y,time);},disable:function(){this.stop();this._resetPos(0);this.
             dayScroll.refresh();
 
             resetInitDete();
-            console.log(initY)
             yearScroll.scrollTo(0, initY*40, 100, true);
             monthScroll.scrollTo(0, initM*40-40, 100, true);
             dayScroll.scrollTo(0, initD*40-40, 100, true); 
@@ -143,7 +143,7 @@ that.scrollTo(x,y,time);},disable:function(){this.stop();this._resetPos(0);this.
         }
         function resetInitDete(){
             if(opts.curyear!=""){
-                initY = 70;
+                initY = opts.ylen;
                 return initY;
             }else if(opts.curdate){return false;}
             else if(that.val()===""){return false;}
@@ -169,10 +169,9 @@ that.scrollTo(x,y,time);},disable:function(){this.stop();this._resetPos(0);this.
                 }
 
                 if(Ycallback===undefined){
-                    console.log($("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1));
                     if(docType){that.val(datestr);}else{that.text(datestr);}
                 }else{
-                                    Ycallback(datestr);
+                    Ycallback(that,datestr);
                 }
                 $("#datePage").hide(); 
                 $("#dateshadow").hide();
@@ -180,7 +179,7 @@ that.scrollTo(x,y,time);},disable:function(){this.stop();this._resetPos(0);this.
             $("#datecancle").click(function () {
                 $("#datePage").hide(); 
 		$("#dateshadow").hide();
-                Ncallback(false);
+                // Ncallback(false);
             });
         }		
         function extendOptions(){
