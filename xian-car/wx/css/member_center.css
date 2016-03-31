@@ -146,6 +146,10 @@ textarea{
     font-size: 1.5em;
     margin-bottom: 0.5em;
 }
+.p3_close_div>label{
+    display: inline-block;
+    vertical-align: middle;
+}
 .page3 .trip_de_list{
     padding-left: 1em;
     line-height: 2em;

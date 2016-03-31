@@ -223,29 +223,29 @@
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
                         <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page2"><img src="images/icon10.png" alt="返回"></a>
-                        <span>订单详情</span>
+                        <span class="js_tit_spn">订单详情</span>
                         <a class="btn2 r_btn js_del_order" href="javascript:;" title="取消订单">取消订单</a>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic js_driver_head_pic" src="images/1.jpg" alt="头像"/>
                             <div>
-                                <span>陕A8888</span><span class="color4">王师傅</span><br/>
-                                <ul class="star_list">
-                                    <li><img src="images/icon11.png" alt="星星"></li>
-                                    <li><img src="images/icon11.png" alt="星星"></li>
-                                    <li><img src="images/icon11.png" alt="星星"></li>
-                                    <li><img src="images/icon11.png" alt="星星"></li>
-                                    <li><img src="images/icon11.png" alt="星星"></li>
+                                <span class="car_number">陕A8888</span><span class="color4 js_driver_name">王师傅</span><br/>
+                                <ul class="star_list js_driver_star">
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
+                                    <li><img src="images/icon16.png" alt="星星"></li>
                                 </ul>
                                 <!-- 服务信息 -->
                                 <div class="driver_rank">
-                                    <label>服务次数：</label><span>200</span>
-                                    <label>司机排名：</label><span>10</span>
+                                    <label>服务次数：</label><span class="js_service_num">200</span>
+                                    <label>司机排名：</label><span class="js_driver_ranking">10</span>
                                 </div>
                             </div>
-                            <a class="btn2" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
+                            <a class="btn2 js_driver_mobile" href="tel:" title="电话" value=""><img src="images/icon14.png" alt="电话"></a>
                         </div>  
                         <div class="p3_close_div hide js_cancel_div">
                             <p class="color5">订单已取消！</p>
@@ -258,15 +258,21 @@
                                 <ul class="trip_de_list">
                                     <li>
                                         <img src="images/icon12.png" alt="icon"/>
-                                        <span>20:25</span>
-                                        <div class="f_r">
+                                        <span class="js_order_time">20:25</span>
+                                        <!-- <div class="f_r">
                                             <label>包车天数：</label><span class="color5">1</span><span>天</span>
-                                        </div>
+                                        </div> -->
                                     </li>
                                     <li>
                                         <img src="images/icon12.png" alt="icon"/>
-                                        <span>神木</span>
+                                        <span class="js_start_address">神木</span>
                                     </li>
+                                    <li>
+                                        <img src="images/icon12.png" alt="icon"/>
+                                        <span class="js_end_address">神木</span>
+                                    </li>
+                                </ul>
+                                <ul class="trip_de_list js_additional_list">
                                     <li>
                                         <img src="images/icon13.png" alt="icon"/>
                                         <span>需要捎一件行李</span>
@@ -275,7 +281,7 @@
                             </div>
                             <div class="trip_box txt_c">
                                 <h3><label class="f_l">&nbsp;</label><span class="color6">微信支付</span><label class="f_r">&nbsp;</label></h3>
-                                <span class="color5 font18">25</span><label>元</label>
+                                <span class="color5 font18 js_pay_price">25</span><label>元</label>
                             </div>
                             <!-- 评价 -->
                             <div class="trip_box evaluate_box txt_c">

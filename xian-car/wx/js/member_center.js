@@ -6,6 +6,7 @@ var $m={
     share_href: window.location.href,
     // 图片地址前缀
     img_url:"images/",
+    head_place: "1.jpg",   //头像占位图片
     // 当前页面
     active_scroll:1,
     // 重新布局
@@ -365,14 +366,19 @@ $(function(){
     });
     // 行程详情
     $(".page2").on("click",".js_trip_list>li",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page3"),function(){
             $m.active_scroll=3;
             $m.refreshPage();
         });
+        var orderId=$(this).attr("data-orderid")?$(this).attr("data-orderid"):"";
+        var arr={"orderId":orderId,"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
     });
     // 填写取消订单框
     $(".js_del_order").on("click",function(){
-        $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);;
+        $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);
     });
     
     // 确认取消订单
@@ -381,18 +387,26 @@ $(function(){
         if(txt==""){
             msg("内容不能为空。",800);
         }else{
-            $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
-            $(".js_del_order").hide();
-            $(".p3_btn_div").hide();
-            $(".js_cancel_div").children("span").text(txt);
-            $(".js_del_order_box").fadeOut(200);
-            $(".bg_div").fadeOut(400,function(){
-                myScroll3.refresh();
-            });
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
+            // $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
+            // $(".page3 .js_del_order").hide();
+            // $(".p3_btn_div").hide();
+            // $(".js_cancel_div").children("span").text(txt);
+            // $(".js_del_order_box").fadeOut(200);
+            // $(".bg_div").fadeOut(400,function(){
+            //     myScroll3.refresh();
             // });
+            var orderid=$(".page3 .js_del_order").attr("data-orderid");
+            var arr={"orderId":orderid,"user_id":user_id,"type":1};
+            subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
+                $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
+                $(".page3 .js_del_order").hide();
+                $(".p3_btn_div").hide();
+                $(".js_cancel_div").children("span").text(txt);
+                $(".js_del_order_box").fadeOut(200);
+                $(".bg_div").fadeOut(400,function(){
+                    myScroll3.refresh();
+                });
+            });
         }
     });
     // 评星星数量
@@ -792,7 +806,9 @@ function subAjax(arr,url,func){
         dataType: "json",
         success: function(data){
             if(data["status"]==0){
-                msg(data["status"],800);
+                msg(data["data"],800);
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
             }else if(data["status"]==1){
                 if(typeof func==="function" && func instanceof Function){
                     func(data["data"]);
@@ -801,6 +817,8 @@ function subAjax(arr,url,func){
         },
         error: function(XMLHttpRequest,textStatus,errorThrown){
             msg("请求失败，请稍后重试！","确定");
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
         }
     });
 }
@@ -1225,6 +1243,7 @@ function getMyTrip(){
 }
 // 生成行程dom
 function setMyTrip(arr){
+    $(".js_my_trip").attr("data-add",1);
     if(arr.length<1){
         // 没有数据
         $(".page2").find(".no_list").show().siblings(".trip_box").hide();
@@ -1305,6 +1324,72 @@ function setMyTrip(arr){
         }
         $(".js_trip_list").append(_html);
     }
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
+// 请求订单详情
+function getMyTripDetail(){
+    var arr={"orderId":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
+    subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTrip);
+}
+// 生成订单详情
+function setMyTripDetail(arr){
+    console.log(arr);
+    var orderid=arr["orderid"]?arr["orderid"]:"";
+    var status=arr["status"]?arr["status"]:6;
+    var carno=arr["carno"]?arr["carno"]:"";
+    var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+    var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+    var driverid=driver["driverid"]?driver["driverid"]:0;
+    var tel=driver["tel"]?driver["tel"]:"";
+    var drivername=driver["drivername"]?driver["drivername"]:"";
+    var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+    var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+    $(".page3 .js_driver_head_pic").attr("src",pic_src);
+    $(".page3 .car_number").text(carno);
+    $(".page3 .js_driver_name").text(drivername);
+    $(".page3 .js_service_num").text(servicecounts);
+    $(".page3 .js_driver_ranking").text(driverid);
+    $(".page3 .js_driver_mobile").attr("href","tel:"+tel);
+    var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+    for(var i=0;i<driver_star;i++){
+        $(".page3 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+    }
+    var tit="订单详情";
+    if(status==0){
+        // 未支付
+        var addtime=arr["addtime"]?arr["addtime"]:"";
+        var startname=arr["startname"]?arr["startname"]:"";
+        var endname=arr["endname"]?arr["endname"]:"";
+        var isbag=arr["isbag"]?arr["isbag"]:0;
+        console.log(isbag);
+        var ischildren=arr["ischildren"]?arr["ischildren"]:0;
+        var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+        tit="订单未完成";
+        $(".page3 .js_order_time").text(addtime);
+        $(".page3 .js_start_address").text(startname);
+        $(".page3 .js_end_address").text(endname);
+        // 清空dom先
+        $(".page3 .js_additional_list").html('');
+        if(isbag==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        if(ischildren==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>有小孩</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        $(".page3 .js_pay_price").text(totalprice);
+        // 隐藏/显示其他状态的元素
+        $(".page3 .js_cancel_div").hide();
+        $(".page3 .evaluate_box").hide();
+        $(".page3 .js_del_order").show().attr("data-orderid",orderid);
+        $(".page3 .p3_btn_div").show();
+        $(".page3 .js_order_detail_box").show();
+        $(".page3 .js_to_pay").show().siblings("a").hide();
+    }
+    $(".page3 .js_tit_spn").text(tit);
     $("#atten_box").fadeOut(100);
     $(".bg_div").fadeOut(200);
     $m.refreshPage();
