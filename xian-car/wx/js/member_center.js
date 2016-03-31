@@ -70,8 +70,8 @@ var $m={
             myScroll22.refresh();
         }
     },
-    // ajax 请求地址
-    ajax_link: ["deal_info","is_set_info"],
+    // ajax 请求地址前缀
+    ajax_link:"http://120.25.68.163/citytravel/index.php?g=admin&m=app&a=",
     // 居中显示
     toCenter:function(obj,par){
         var dh=par.height();
@@ -132,11 +132,15 @@ var $m={
         "password":"新密码",
         "autocode":1515
     },
+    user_info:{
+        "phone":      18821725490,                  //手机号码
+        "page":       1                             //我的行程当前页面
+    }
 }
 // 获取连接数据
 var link_obj=GetRequest();
 // 用户id
-var user_id=link_obj["user_id"]?link_obj["user_id"]:1;
+var user_id=link_obj["user_id"]?link_obj["user_id"]:6;
 
 $(function(){
     // 绑定滚动
@@ -177,8 +181,52 @@ $(function(){
             $m.refreshPage();
         });
     });
+    // 点击修改头像
+    $(".js_choice_head_pic").on("click",function(){
+        $(".head_pic_div").show().siblings(".bg_div").fadeIn(400);;
+    });
+    // 相册
+    $(".js_album_btn").on("click",function(){
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original','compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album','camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $(".js_occupying_image").attr("src",localIds);
+                $m.toNext($(".page23"),function(){
+
+                })
+            }
+        });
+    });
+    // 相机
+    $(".js_photograph_btn").on("click",function(){
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original','compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $(".js_occupying_image").attr("src",localIds);
+                $m.toNext($(".page23"),function(){
+
+                })
+            }
+        });
+    });
+    //确认选择图片
+    $(".js_sure_pic_choice").on("click",function(){
+        var src=$(this).siblings(".js_occupying_image").attr("src")?$(this).siblings(".js_occupying_image").attr("src"):"";
+        if(src!=""){
+            $(".js_head_pic").attr("src",src);
+        }
+    });
     // 修改昵称
     $(".js_rename").on("click",function(){
+        var txt=$(this).find(".js_rename_txt").text()?$(this).find(".js_rename_txt").text():"";
+        txt=txt.reSpace();
+        $(".js_rename_box").find(".js_rename_area").val(txt);
         $(".js_rename_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 确认修改昵称
@@ -190,14 +238,20 @@ $(function(){
             $(".js_rename_box").fadeOut(200);
             $(".bg_div").fadeOut(400);
             $(".js_rename_txt").text(txt);
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var arr={"user_nicename":txt,"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+                $(".js_rename_txt").text(txt);
+            });
         }
     });
     // 修改性别
     $(".js_sex").on("click",function(){
+        var sex=$(".js_sex").attr("data-sex")?$(".js_sex").attr("data-sex"):1;
+        if(sex==1){
+            $(".js_sex_div>a").eq(0).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
+        }else{
+            $(".js_sex_div>a").eq(1).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
+        }
         $(".js_sex_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 确认修改性别
@@ -207,41 +261,110 @@ $(function(){
         $(".js_sex_box").fadeOut(200);
         $(".bg_div").fadeOut(400);
         var txt=num==2?"女":"男";
+        $(".js_sex").attr("data-sex",num);
         $(".js_sex_txt").text(txt);
         // var arr={"sex":txt,"user_id":user_id};
-        // subAjax(arr,"goModifiedSelfInfo",function(){
+        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
         //     $(".js_sex_txt").text(txt);
         // });
     });
     // 修改年龄
-    $('.js_age').date({theme:"datetime",ylen:70});
-    // 确认修改年龄
-    $(".js_sex_div>a").on("click",function(){
-        $(this).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
-        var num=$(this).attr("data-sex")?$(this).attr("data-sex"):0;
-        $(".js_sex_box").fadeOut(200);
-        $(".bg_div").fadeOut(400);
-        var txt=num==2?"女":"男";
-        $(".js_sex_txt").text(txt);
-        // var arr={"sex":txt,"user_id":user_id};
-        // subAjax(arr,"goModifiedSelfInfo",function(){
-        //     $(".js_sex_txt").text(txt);
+    $('.js_birthday').date({theme:"date",ylen:70},function(obj,re){
+        $(".js_birth_num").text(re).attr("data-date",re);
+        // var arr={"age":re,"user_id":user_id};
+        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+        //     $(".js_birth_num").text(re).attr("data-date",re);
         // });
+    });
+    // 修改手机号
+    $(".js_mobile_btn").on("click",function(){
+        var num=$(this).attr("data-mobile")?$(this).attr("data-mobile"):"";
+        $(".js_change_mobile").find(".js_input_area").val(num);
+        $(".js_change_mobile").show().siblings(".bg_div").fadeIn(400);;
+    });
+    
+    // 确认修改手机号
+    $(".js_save_mobile_btn").on("click",function(){
+        var a=$(this).parent().siblings(".js_input_area");
+        var txt=a.val()?a.val():"";
+        var regx=/1[1-9]+[0-9]{9}/;
+        if(txt==""){
+            msg("请填写手机号",800);
+        }else if(txt.length<11 || !regx.test(txt)){
+            msg("请填写正确手机号",800);
+        }else{
+            $(".js_change_mobile").fadeOut(200);
+            $(".bg_div").fadeOut(400);
+            var q=txt.substr(0,3);
+            var h=txt.substr(0,4);
+            var str=q+"****"+h;
+            $(".js_mobile_txt1").text(str).attr("data-mobile",txt);
+            // var arr={"phone":txt,"user_id":user_id};
+            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+            //     $(".js_change_mobile").fadeOut(200);
+            //     $(".bg_div").fadeOut(400);
+            //     var q=txt.substr(0,3);
+            //     var h=txt.substr(0,4);
+            //     var str=q+"****"+h;
+            // });
+        }
+    });
+    
+    // 修改签名
+    $(".js_autograph").on("click",function(){
+        var txt=$(this).find(".js_autograph_txt").text()?$(this).find(".js_autograph_txt").text():"";
+        txt=txt.reSpace();
+        if(txt!="" && txt!="请填写"){
+            $(".js_change_autograph").find(".js_text_area").val(txt);
+        }
+        $(".js_change_autograph").show().siblings(".bg_div").fadeIn(400);;
+    });
+    // 确认修改手机号
+    $(".js_autograph_btn").on("click",function(){
+        var a=$(this).parent().siblings(".js_text_area");
+        var txt=a.val()?a.val():"";
+        if(txt==""){
+            msg("请填写签名",800);
+        }else{
+            $(".js_change_autograph").fadeOut(200);
+            $(".bg_div").fadeOut(400);
+            $(".js_autograph").find(".js_autograph_txt").text(txt);
+            // var arr={"signature":txt,"user_id":user_id};
+            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+            //     $(".js_change_mobile").fadeOut(200);
+            //     $(".bg_div").fadeOut(400);
+            //     var q=txt.substr(0,3);
+            //     var h=txt.substr(0,4);
+            //     var str=q+"****"+h;
+            // });
+        }
     });
     // 取消修改
     $(".js_cancel_btn").on("click",function(){
         $(this).parent().parent().fadeOut(200);
         $(".bg_div").fadeOut(400);
     });
+    $(".js_cancel_choice_pic").on("click",function(){
+        $(this).parent().fadeOut(200);
+        $(".bg_div").fadeOut(400);
+    });
+    
     // 我的行程
     $(".js_my_trip").on("click",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page2"),function(){
             $m.active_scroll=2;
             $m.refreshPage();
         });
+        var is_add=$(this).attr("data-add")?$(this).attr("data-add"):2;
+        if(is_add==2){
+            // 没有加载
+            getMyTrip();
+        }
     });
     // 行程详情
-    $(".js_trip_list>li").on("click",function(){
+    $(".page2").on("click",".js_trip_list>li",function(){
         $m.toNext($(".page3"),function(){
             $m.active_scroll=3;
             $m.refreshPage();
@@ -267,7 +390,7 @@ $(function(){
                 myScroll3.refresh();
             });
             // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
+            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
             //     $(".js_rename_txt").text(txt);
             // });
         }
@@ -291,7 +414,7 @@ $(function(){
         $(".js_can_star").removeClass("js_star_list");
         myScroll3.refresh();
         // var arr={"user_nicename":txt,"user_id":user_id};
-        // subAjax(arr,"goModifiedSelfInfo",function(){
+        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
         //     $(".js_rename_txt").text(txt);
         // });
     });
@@ -346,7 +469,7 @@ $(function(){
                 $m.refreshPage();
             });
             // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
+            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
             //     $(".js_rename_txt").text(txt);
             // });
         }
@@ -421,7 +544,7 @@ $(function(){
             });
             // 开始提交
             // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
+            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
             //     $(".js_rename_txt").text(txt);
             // });
         }
@@ -437,7 +560,7 @@ $(function(){
         });
         // 开始提交
         // var arr={"user_nicename":txt,"user_id":user_id};
-        // subAjax(arr,"goModifiedSelfInfo",function(){
+        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
         //     $(".js_rename_txt").text(txt);
         // });
     });
@@ -662,7 +785,6 @@ function GetRequest(){
 };
 // 请求数据
 function subAjax(arr,url,func){
-    var return_arr=null;
     $.ajax({
         type: "POST",
         url: url,
@@ -670,11 +792,10 @@ function subAjax(arr,url,func){
         dataType: "json",
         success: function(data){
             if(data["status"]==0){
-                msg(data["data"],800);
+                msg(data["status"],800);
             }else if(data["status"]==1){
-                msg(data["data"],800);
                 if(typeof func==="function" && func instanceof Function){
-                    func();
+                    func(data["data"]);
                 }
             }
         },
@@ -1087,4 +1208,104 @@ function weSet(arr){
             }
         });
     });
+}
+String.prototype.reSpace=function(){
+    var c=this.replace(/\s/g,"");
+    return c;
+}
+//格式化日期
+function format(txt){
+    var tempdate=new Date(Date.parse(txt.replace(/-/g,"/")));
+    return tempdate;
+}
+// 请求我的行程
+function getMyTrip(){
+    var arr={"phone":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
+    subAjax(arr,$m.ajax_link+"getOrderListByPhone",setMyTrip);
+}
+// 生成行程dom
+function setMyTrip(arr){
+    if(arr.length<1){
+        // 没有数据
+        $(".page2").find(".no_list").show().siblings(".trip_box").hide();
+    }else{
+        var _html='';
+        var status,orderid,ordersn,remainpaysn,ordertype,startname,endname,addtime,voice,desc,personnumber,ishelp,isbag,ischildren,totalprice,freeprice,finalprice,bookprice;
+        for(var i=0,len=arr.length;i<len;i++){
+            status=arr[i]["status"]?arr[i]["status"]:"";                              //订单状态
+            orderid=arr[i]["orderid"]?arr[i]["orderid"]:"";                           //点单id
+            ordersn=arr[i]["ordersn"]?arr[i]["ordersn"]:"";                           //首次支付订单编号
+            remainpaysn=arr[i]["remainpaysn"]?arr[i]["remainpaysn"]:"";               //剩余金额支付订单号
+            ordertype=arr[i]["ordertype"]?arr[i]["ordertype"]:1;                      //订单类型 1立即叫车 2预约线路拼车(客服派单) 3预约线路包（选车、不选车）车 4预约包天（选车、不选车）
+            startname=arr[i]["startname"]?arr[i]["startname"]:"";                     //起点地址
+            endname=arr[i]["endname"]?arr[i]["endname"]:"";                           //终点地址
+            addtime=arr[i]["addtime"]?arr[i]["addtime"]:"";                           //下单时间
+            voice=arr[i]["voice"]?arr[i]["voice"]:"";                                 //语音
+            desc=arr[i]["desc"]?arr[i]["desc"]:"";                                    //留言文字描述
+            personnumber=arr[i]["personnumber"]?arr[i]["personnumber"]:"";            //当前乘客数量
+            ishelp=arr[i]["ishelp"]?arr[i]["ishelp"]:0;                               //是否帮人约车 0 否 1是
+            isbag=arr[i]["isbag"]?arr[i]["isbag"]:0;                                  //是否有包裹 0 否 1是
+            ischildren=arr[i]["ischildren"]?arr[i]["ischildren"]:0;                   //是否有小孩 0 否 1是
+            totalprice=arr[i]["totalprice"]?arr[i]["totalprice"]:0;                   //总价
+            freeprice=arr[i]["freeprice"]?arr[i]["freeprice"]:0;                      //优惠金额
+            finalprice=arr[i]["finalprice"]?arr[i]["finalprice"]:0;                   //终需支付金额
+            bookprice=arr[i]["bookprice"]?arr[i]["bookprice"]:0;                      //定金金额
+            _html+='<li data-status="'+status+'" data-orderid="'+orderid+'" data-ordersn="'+ordersn+'" data-remainpaysn="'+remainpaysn+'" data-ordertype="'+ordertype+'" data-addtime="'+addtime+'" data-voice="'+voice+'" data-desc="'+desc+'" data-personnumber="'+personnumber+'" data-ishelp="'+ishelp+'" data-isbag="'+isbag+'" data-ischildren="'+ischildren+'" data-totalprice="'+totalprice+'" data-freeprice="'+freeprice+'" data-finalprice="'+finalprice+'" data-bookprice="'+bookprice+'">';
+            _html+='<ul class="trip_de_list">';
+            _html+='<li><img src="images/icon12.png" alt="icon"/>';
+            _html+='<span>'+addtime+'</span>';
+            _html+='<div class="f_r"><label>订单号：</label><span>'+ordersn+'</span></div>';
+            _html+='</li>';
+            if(ordertype!=4){
+                // 显示终止地址
+                _html+='<li><img src="images/icon12.png" alt="icon"/>';
+                _html+='<span class="address_spn">'+startname+'</span>';
+                _html+='</li>';
+                _html+='<li><img src="images/icon13.png" alt="icon"/>';
+                _html+='<span class="address_spn">'+endname+'</span>';
+                _html+='<div class="f_r">';
+                if(status==0){
+                    _html+='<span>未支付</span>';
+                }else if(status==1){
+                    _html+='<span>已关闭</span>';
+                }else if(status==2){
+                    _html+='<span>已交定金</span>';
+                }else if(status==3){
+                    _html+='<span>已付全款</span>';
+                }else if(status==4){
+                    _html+='<span>已退款</span>';
+                }else if(status==5){
+                    _html+='<span>已完成</span>';
+                }else{};
+                _html+='</div>';
+
+                _html+='</li>';
+            }else{
+                _html+='<li><img src="images/icon12.png" alt="icon"/>';
+                _html+='<span class="address_spn">'+startname+'</span>';
+                _html+='<div class="f_r">';
+                if(status==0){
+                    _html+='<span>未支付</span>';
+                }else if(status==1){
+                    _html+='<span>已关闭</span>';
+                }else if(status==2){
+                    _html+='<span>已交定金</span>';
+                }else if(status==3){
+                    _html+='<span>已付全款</span>';
+                }else if(status==4){
+                    _html+='<span>已退款</span>';
+                }else if(status==5){
+                    _html+='<span>已完成</span>';
+                }else{};
+                _html+='</div>';
+                _html+='</li>'
+            }
+            _html+='</ul>';
+            _html+='</li>'
+        }
+        $(".js_trip_list").append(_html);
+    }
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
 }

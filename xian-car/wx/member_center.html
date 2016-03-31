@@ -165,10 +165,10 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="trip_box">
-                        <h3><label class="f_l">&nbsp;</label><span class="color3">今天</span><label class="f_r">&nbsp;</label></h3>
+                        <!-- <h3><label class="f_l">&nbsp;</label><span class="color3">今天</span><label class="f_r">&nbsp;</label></h3> -->
                         <!-- 行程列表 -->
                         <ol class="trip_list js_trip_list">
-                            <li>
+                            <!-- <li>
                                 <ul class="trip_de_list">
                                     <li>
                                         <img src="images/icon12.png" alt="icon"/>
@@ -211,61 +211,10 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
-                        </ol>
-                    </div>
-                    <div class="trip_box">
-                        <h3><label class="f_l">&nbsp;</label><span>2016-03-05</span><label class="f_r">&nbsp;</label></h3>
-                        <!-- 行程列表 -->
-                        <ol class="trip_list js_trip_list">
-                            <li>
-                                <ul class="trip_de_list">
-                                    <li>
-                                        <img src="images/icon12.png" alt="icon"/>
-                                        <span>20:25</span>
-                                        <div class="f_r">
-                                            <label>订单号：</label><span>565684848</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <img src="images/icon12.png" alt="icon"/>
-                                        <span>神木</span>
-                                    </li>
-                                    <li>
-                                        <img src="images/icon13.png" alt="icon"/>
-                                        <span>大柳塔</span>
-                                        <div class="f_r">
-                                            <span>已完成</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <ul class="trip_de_list">
-                                    <li>
-                                        <img src="images/icon12.png" alt="icon"/>
-                                        <span>20:25</span>
-                                        <div class="f_r">
-                                            <label>订单号：</label><span>565684848</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <img src="images/icon12.png" alt="icon"/>
-                                        <span>神木</span>
-                                    </li>
-                                    <li>
-                                        <img src="images/icon13.png" alt="icon"/>
-                                        <span>大柳塔</span>
-                                        <div class="f_r">
-                                            <span>已关闭</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            </li> -->
                         </ol>
                     </div>
                 </div>
-                
             </div>
             <!-- 订单详情 -->
             <div class="page page3">
@@ -1092,9 +1041,9 @@
                         <span>个人信息</span>
                     </h3>
                     <!-- 内容 -->
-                    <div class="p18_div clear">
+                    <div class="p18_div clear js_choice_head_pic">
                         <a class="btn2" href="javascript:;" title="头像">头像</a>
-                        <img class="head_pic f_r" src="images/1.jpg" alt="头像"/><br/>
+                        <img class="head_pic f_r js_head_pic" src="images/1.jpg" alt="头像"/><br/>
                     </div>
                     <div class="content_box">
                         <div class="weui_cells weui_cells_access">
@@ -1106,7 +1055,7 @@
                                     死啦死啦
                                 </div>
                             </a>
-                            <a class="weui_cell js_sex" href="#">
+                            <a class="weui_cell js_sex" href="#" data-sex="1">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>性别</p>
                                 </div>
@@ -1114,19 +1063,19 @@
                                     男
                                 </div>
                             </a>
-                            <a class="weui_cell js_age" href="#">
+                            <a class="weui_cell js_birthday" href="#">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>生日</p>
                                 </div>
-                                <div class="weui_cell_ft">
+                                <div class="weui_cell_ft js_birth_num" data-date="1990/10/12">
                                     请填写
                                 </div>
                             </a>
-                            <a class="weui_cell js_mobile_btn" href="#">
+                            <a class="weui_cell js_mobile_btn" href="#" data-mobile="13915520202">
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>手机号</p>
                                 </div>
-                                <div class="weui_cell_ft">
+                                <div class="weui_cell_ft js_mobile_txt1">
                                     136****2568
                                 </div>
                             </a>
@@ -1134,7 +1083,7 @@
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <p>我的签名</p>
                                 </div>
-                                <div class="weui_cell_ft">
+                                <div class="weui_cell_ft js_autograph_txt">
                                     请填写
                                 </div>
                             </a>
@@ -1331,17 +1280,40 @@
                     </div>
                 </div>
             </div>
+            <!-- 图片预览 -->
+            <div class="page page23">
+                <div class="scroll">
+                    <!-- 标题 -->
+                    <h3 class="head_tit">
+                        <!-- 返回前页 -->
+                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page20"><img src="images/icon10.png" alt="返回"></a>
+                        <span>图片预览</span>
+                    </h3>
+                    <!-- 内容 -->
+                    <div class="content_box txt_c">
+                        <img class="js_occupying_image" src="images/1.jpg" alt="图片">
+                        <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_sure_pic_choice" title="确定">确定</a>
+                    </div>
+                </div>
+            </div>
             <!-- <div  class="page page20"></div> -->
             <!-- 页面 -->
         </section>
         <!-- 浮层 -->
         <!-- 修改头像 -->
         <div class="head_pic_div ab_div hide">
+            <a class="btn2 js_album_btn" href="javascript:;" title="相册">相册</a>
+            <a class="btn2 js_photograph_btn" href="javascript:;" title="拍照">拍照</a>
+            <!-- <a class="btn2" href="javascript:;" title="选择照片">选择照片</a> -->
+            <a class="btn2 js_cancel_choice_pic" href="javascript:;" title="取消">取消</a>
+        </div>
+        <!-- 图片选择 -->
+        <!-- <div class=" ab_div hide">
             <a class="btn2" href="javascript:;" title="添加照片">添加照片</a>
             <a class="btn2" href="javascript:;" title="拍照">拍照</a>
             <a class="btn2" href="javascript:;" title="选择照片">选择照片</a>
             <a class="btn2 js_cancel_btn" href="javascript:;" title="取消">取消</a>
-        </div>
+        </div> -->
         <!-- 修改昵称 -->
         <div class="form_change_div ab_div js_rename_box hide">
             <label>请输入昵称：</label><br/>
@@ -1360,19 +1332,25 @@
                 <a class="btn2" href="javascript:;" title="女" data-sex="2" style="margin-left:2em">女</a>
             </div>
         </div>
-        <!-- 日期浮层 -->
-        <div  class="date_box ab_div clear hide">
-            
-        </div>
         <div id="datePlugin"></div>
         <!-- 修改手机号码 -->
-        <div class="form_change_div ab_div hide">
+        <div class="form_change_div ab_div hide js_change_mobile">
             <label>请输入手机号：</label><br/>
-            <input type="text">
+            <input class="js_input_area js_mobile" type="tel" placeholder="" maxlength="11" pattern="[0-9]*">
             <br/>
             <div class="txt_c">
                 <a class="btn5 btn_type4 js_cancel_btn" href="javascript:;" title="取消">取消</a>
-                <a class="btn1 btn_type5" href="javascript:;" title="保存">保存</a>
+                <a class="btn1 btn_type5 js_save_mobile_btn" href="javascript:;" title="保存">保存</a>
+            </div>
+        </div>
+        <!-- 修改签名 -->
+        <div class="form_change_div p3_form_change_div ab_div js_change_autograph">
+            <label>请输入签名：</label><br/>
+            <textarea class="js_text_area" style="width: 86%;display: block;margin: 2em auto 0" rows="6"></textarea>
+            <br/>
+            <div class="txt_c">
+                <a class="btn5 btn_type4 js_cancel_btn" href="javascript:;" title="取消">取消</a>
+                <a class="btn1 btn_type5 js_autograph_btn" href="javascript:;" title="保存">保存</a>
             </div>
         </div>
         <!-- 填写取消订单原因 -->

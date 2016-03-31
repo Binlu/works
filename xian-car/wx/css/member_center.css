@@ -69,7 +69,7 @@ textarea{
     vertical-align: middle;
 }
 .trip_list{
-    padding: 0em 1em;
+    padding: 1em 1em;
 }
 .trip_list>li{
     margin: 0.5em 0;
@@ -82,10 +82,26 @@ textarea{
 }
 .trip_de_list>li>img{
     width: 0.5em;
+    margin-right: 0.3em;
+    margin-top: -0.1em;
     vertical-align: middle;
 }
 .trip_de_list>li{
     margin: 0.2em 0;
+}
+.address_spn{
+    display: inline-block;
+    width: 65%;
+    vertical-align: top;
+}
+.trip_de_list>li>div>label{
+    display: inline-block;
+    vertical-align: middle;
+}
+.no_list{
+    margin-top: 2em;
+    text-align: center;
+    display: none;
 }
 /*page3*/
 .page3 .content_box{
@@ -648,7 +664,7 @@ div.year_section{
 .head_pic_div{
     -webkit-box-sizing:border-box;-moz-box-sizing:border-box;
     padding: 0 0.5em;
-    height: 10em;
+    height: 7.6em;
 }
 .head_pic_div>a{
     display: block;
@@ -698,6 +714,9 @@ div.year_section{
     margin-top: 1em;
     margin-bottom: 1em;
 }
+.form_change_div textarea{
+    font-size: 0.8em;
+}
 .form_change_div a{
     margin-right: 0.5em;
 }
@@ -735,7 +754,7 @@ div.year_section{
     border-radius: 50%;
     vertical-align: middle;
 }
-.page19 .choice_sex_box>a.now_choice_a:before{
+.sex_choice_box .choice_sex_box>a.now_choice_a:before{
     border: 1px solid #ff4e00;
     background-color: #ff4e00;
 }
