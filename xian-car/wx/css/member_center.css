@@ -47,6 +47,9 @@ textarea{
     margin-right: 2em;
     color: #fff;
 }
+.my_integral_spn{
+    display: inline-block;margin-top: 0.4em;
+}
 /*page2*/
 .trip_box{
     font-size: 0.9em;
@@ -280,10 +283,14 @@ li.now_choice_li{
     border-radius: 0.2em;
     text-align: center;
 }
+.p6_attention_p{
+    display: none;
+    text-align: center;
+    margin-top: 2em;
+}
 /*page7*/
 .page7 .weui_cell{
     padding-left: 0.5em;
-    margin-bottom: 0.5em;
     border: 1px solid #aaa;
     border-radius: 0.2em;
 }
@@ -798,7 +805,7 @@ div.year_section{
     vertical-align: middle;
 }
 .page20 .detail_list{
-    margin-left: 6em;
+    /*margin-left: 6em;*/
 }
 .page20 .detail_list>li{
     line-height: 1.8em;
@@ -858,6 +865,12 @@ div.year_section{
     border-radius: 0.2em;
     text-align: center;
 }
+.page20 .star_list{
+    margin-left: 0;
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}
 /*page21*/
 .page21 .content_box>h3{
     margin-top: 2em;
@@ -896,4 +909,30 @@ div.year_section{
 }
 .page22 .checkbut{
     position: static;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and(min-width: 720px){
+    .ab_div{
+        width: 576px;
+        left: 0;
+        right: 0;
+        background-color: #f00;
+    }
+    body{
+        background: #f01;
+    }
 }

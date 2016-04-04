@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/member_center.css">
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     </head>
     <body>
         <!-- 模拟屏幕 -->
@@ -28,18 +29,21 @@
                     <!-- 内容 -->
                     <div class="user_box">
                         <div class="header_div js_personal_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/><br/>
-                            <span>奔跑吧少年</span>
+                            <img class="head_pic js_header_pic" src="images/defult_pic.jpg" alt="头像"/><br/>
+                            <span class="js_nicename">奔跑吧少年</span>
                         </div>
                         <div class="star_div clear">
-                            <ul class="star_list">
-                                <li><img src="images/icon11.png" alt="星星"></li>
-                                <li><img src="images/icon11.png" alt="星星"></li>
-                                <li><img src="images/icon11.png" alt="星星"></li>
-                                <li><img src="images/icon11.png" alt="星星"></li>
-                                <li><img src="images/icon11.png" alt="星星"></li>
+                            <ul class="star_list js_user_star">
+                                <li><img src="images/icon16.png" alt="星星"></li>
+                                <li><img src="images/icon16.png" alt="星星"></li>
+                                <li><img src="images/icon16.png" alt="星星"></li>
+                                <li><img src="images/icon16.png" alt="星星"></li>
+                                <li><img src="images/icon16.png" alt="星星"></li>
                             </ul>
-                            <span class="js_integral">500积分</span>
+                            <span class="my_integral_spn js_integral">
+                                <span class="js_integral_spn v_base">0</span>
+                                积分
+                            </span>
                         </div>
                     </div>
                     <div class="content_box">
@@ -229,7 +233,7 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic js_driver_head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic js_driver_head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
                                 <span class="car_number">陕A8888</span><span class="color4 js_driver_name">王师傅</span><br/>
                                 <ul class="star_list js_driver_star">
@@ -247,11 +251,19 @@
                             </div>
                             <a class="btn2 js_driver_mobile" href="tel:" title="电话" value=""><img src="images/icon14.png" alt="电话"></a>
                         </div>  
+                        <!-- 订单取消 -->
                         <div class="p3_close_div hide js_cancel_div">
                             <p class="color5">订单已取消！</p>
                             <label>取消原因：</label>
-                            <span>应为临时有事所以取消订单</span>
+                            <span class="js_cancel_reason">应为临时有事所以取消订单</span>
                         </div>
+                        <!-- 订单退款 -->
+                        <div class="p3_close_div hide js_refund_div">
+                            <p class="color5">订单已退款！</p>
+                            <label class="v_base">退款金额：</label>
+                            <span class="color5 js_refund_val font12 v_base">20.00</span>元
+                        </div>
+                        <!-- 订单详情 -->
                         <div class="p3_detail_div js_order_detail_box">
                             <div class="trip_box">
                                 <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
@@ -262,6 +274,8 @@
                                         <!-- <div class="f_r">
                                             <label>包车天数：</label><span class="color5">1</span><span>天</span>
                                         </div> -->
+                                        <div class="f_r js_customer_div">乘车人数<span class="color5 v_base">1</span>人</div>
+                                        <div class="f_r js_customer_div">包车天数<span class="color5 v_base">1</span>天</div>
                                     </li>
                                     <li>
                                         <img src="images/icon12.png" alt="icon"/>
@@ -280,7 +294,7 @@
                                 </ul>
                             </div>
                             <div class="trip_box txt_c">
-                                <h3><label class="f_l">&nbsp;</label><span class="color6">微信支付</span><label class="f_r">&nbsp;</label></h3>
+                                <h3><label class="f_l">&nbsp;</label><span class="color6 js_status_txt">还需支付</span><label class="f_r">&nbsp;</label></h3>
                                 <span class="color5 font18 js_pay_price">25</span><label>元</label>
                             </div>
                             <!-- 评价 -->
@@ -288,32 +302,32 @@
                                 <h3><label class="f_l">&nbsp;</label><span class="color6">评价司机</span><label class="f_r">&nbsp;</label></h3>
                                 <label>总评</label>
                                 <ul class="star_list assess_star js_can_star">
-                                    <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
-                                    <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
+                                    <li data-star="1"><img src="images/icon16.png" alt="星星"></li>
+                                    <li data-star="2"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="4"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>车技</label>
                                 <ul class="star_list assess_star js_can_star">
-                                    <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
-                                    <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
+                                    <li data-star="1"><img src="images/icon16.png" alt="星星"></li>
+                                    <li data-star="2"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="4"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>服务</label>
                                 <ul class="star_list assess_star js_can_star">
-                                    <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
-                                    <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
+                                    <li data-star="1"><img src="images/icon16.png" alt="星星"></li>
+                                    <li data-star="2"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="4"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
                                 </ul><br/>
                                 <label>环境</label>
                                 <ul class="star_list assess_star js_can_star">
-                                    <li data-star="1"><img src="images/icon17.png" alt="星星"></li>
-                                    <li data-star="2"><img src="images/icon17.png" alt="星星"></li>
+                                    <li data-star="1"><img src="images/icon16.png" alt="星星"></li>
+                                    <li data-star="2"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="3"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="4"><img src="images/icon16.png" alt="星星"></li>
                                     <li data-star="5"><img src="images/icon16.png" alt="星星"></li>
@@ -353,7 +367,7 @@
                                     <p>钱包余额</p>
                                 </div>
                                 <div class="weui_cell_ft">
-                                    <span>200</span><label>元</label>
+                                    <span class="js_balance_spn">200</span><label>元</label>
                                 </div>
                             </a>
                             <a class="weui_cell js_coupon" href="javascript:;">
@@ -389,7 +403,8 @@
                     <div class="content_box txt_c">
                         <div class="circular_div bg_gradient1">
                             <span>余额</span><br/>
-                            <span class="font15 color1">￥5200</span>
+                            <span class="font15 color1">￥</span>
+                            <span class="font15 color1 js_balance_spn">￥5200</span>
                         </div>
                         <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3" title="充值">充值</a>
                         <a href="javascript:;" class="weui_btn weui_btn_default" title="提现">提现</a>
@@ -411,7 +426,43 @@
                         <div class="txt_r">
                             <a class="btn2 js_rule" href="javascript:;" title="使用规则">使用规则</a>
                         </div>
-                        <ul class="coupon_list">
+                        <ul class="coupon_list js_mycoupon_list">
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
+                            <li>
+                                <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
+                                <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
+                                <div class="txt_r"><span style="margin-right: 2em;">满20元可以使用</span></div>
+                                <div class="font08">有效期至 2016-01-21</div>
+                            </li>
                             <li>
                                 <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
                                 <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
@@ -431,7 +482,8 @@
                                 <div class="font08">有效期至 2016-01-21</div>
                             </li>
                         </ul>
-                        <div class="p6_btn_div hide">
+                        <p class="p6_attention_p">暂时没有优惠券。</p>
+                        <div class="p6_btn_div js_p6_btn_div hide">
                             <a class="btn btn1 b_color3 js_choice_btn" href="javascript:;" title="确定">确定</a>
                         </div>
                     </div>
@@ -457,7 +509,7 @@
                                     <input class="weui_input js_input_area" type="tel" placeholder="请输入编号">
                                 </div>
                             </div>
-                            <div class="weui_cell">
+                            <div class="weui_cell" style="margin-top: 0.8em;">
                                 <div class="weui_cell_hd">
                                     <label class="weui_label">密码：</label>
                                 </div>
@@ -465,9 +517,9 @@
                                     <input class="weui_input js_input_area" type="password" placeholder="请输入密码">
                                 </div>
                             </div>
-                        </div>
+                        </div><br/>
                         <div class="txt_r">
-                            <a href="javascript:;" class="btn2" title="扫一扫添加">扫一扫添加</a>
+                            <a href="javascript:;" class="btn2 js_sweep_btn" title="扫一扫添加">扫一扫添加</a>
                         </div>
                         <br/>
                         <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_add_coupon_btn" title="确定">确定</a>
@@ -782,7 +834,7 @@
                     <div class="content_box txt_c">
                         <div class="circular_div b_color4">
                             <span>积分</span><br/>
-                            <span class="font15">200</span><label>个</label>
+                            <span class="font15 js_integral_spn">200</span><label>个</label>
                         </div>
                         <a href="javascript:;" class="weui_btn weui_btn_my1" title="使用积分">使用积分</a>
                     </div>
@@ -819,14 +871,14 @@
                                 <div class="weui_panel weui_panel_access">
                                     <div class="weui_panel_bd">
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-                                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                                             <div class="weui_media_bd">
                                                 <h4 class="weui_media_title">标题一</h4>
                                                 <p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
                                             </div>
                                         </div>
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-                                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                                             <div class="weui_media_bd">
                                                 <h4 class="weui_media_title"><span>我来也</span><span class="f_r">累计提成</span></h4>
                                                 <p class="weui_media_desc"><label>订单数量：</label><span>25次</span><span class="f_r color6">25元</span></p>
@@ -840,14 +892,14 @@
                                 <div class="weui_panel weui_panel_access">
                                     <div class="weui_panel_bd">
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-                                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                                             <div class="weui_media_bd">
                                                 <h4 class="weui_media_title">标题一</h4>
                                                 <p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
                                             </div>
                                         </div>
                                         <div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-                                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                                             <div class="weui_media_bd">
                                                 <h4 class="weui_media_title"><span>我来也</span><span class="f_r">累计提成</span></h4>
                                                 <p class="weui_media_desc"><label>订单数量：</label><span>25次</span><span class="f_r color6">25元</span></p>
@@ -918,7 +970,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box txt_c">
-                        <div id="head_div"><img src="images/1.jpg" alt="头像"></div>
+                        <div id="head_div"><img src="images/defult_pic.jpg" alt="头像"></div>
                         <input class="inp1 user_info input_area js_input_area" type="text" name="number" placeholder="手机号" maxlength="11" pattern="[0-9]*"/>
                         <input class="inp2 user_info input_area js_input_area" type="password" name="password" placeholder="输入密码"/>
                         <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_sign_btn" title="登录">登录</a>
@@ -940,7 +992,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box txt_c">
-                        <div id="head_div"><img src="images/1.jpg" alt="头像"></div>
+                        <div id="head_div"><img src="images/defult_pic.jpg" alt="头像"></div>
                         <div class="p2_inp">
                             <input class="inp1 user_info input_area js_mobile" type="text" name="number" placeholder="手机号" maxlength="11" pattern="[0-9]*"/>
                             <a class="checkbut btn1 js_get_code" title="获取验证码">获取验证码</a>
@@ -1049,7 +1101,7 @@
                     <!-- 内容 -->
                     <div class="p18_div clear js_choice_head_pic">
                         <a class="btn2" href="javascript:;" title="头像">头像</a>
-                        <img class="head_pic f_r js_head_pic" src="images/1.jpg" alt="头像"/><br/>
+                        <img class="head_pic f_r js_head_pic js_header_pic" src="images/defult_pic.jpg" alt="头像"/><br/>
                     </div>
                     <div class="content_box">
                         <div class="weui_cells weui_cells_access">
@@ -1129,9 +1181,9 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic js_driver_head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
-                                <span style="margin-right: 0.5em">陕A8888</span><span class="color4">王师傅</span><br/>
+                                <span class="car_number" style="margin-right: 0.5em">陕A8888</span><span class="color4 js_driver_name">王师傅</span><br/>
                                 <div class="clear">
                                     <ul class="star_list">
                                         <li><img src="images/icon11.png" alt="星星"></li>
@@ -1144,34 +1196,43 @@
                                 </div>
                                 <!-- 服务信息 -->
                                 <div class="driver_rank">
-                                    <label>服务次数：</label><span>200</span>
-                                    <div class="f_r"><label>司机排名：</label><span>10</span></div>
+                                    <label>服务次数：</label><span class="js_service_num">200</span>
+                                    <div class="f_r"><label>司机排名：</label><span class="js_driver_ranking">10</span></div>
                                 </div>
                             </div>
                         </div>
                         <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
                         <ul class="detail_list">
-                            <li class="clear"><img src="images/icon12.png" alt="icon"><span>今天</span><span>22:00</span><div class="f_r">乘车人数<span class="color5">1</span>人</div></li>
-                            <li><img src="images/icon12.png" alt="icon"><span>神木</span></li>
-                            <li><img src="images/icon13.png" alt="icon"><span>大柳塔</span></li>
-                            <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li>
+                            <li class="clear"><img src="images/icon12.png" alt="icon"><span class="js_order_time">22:00</span>
+                                <div class="f_r js_customer_div">乘车人数：<span class="color5 v_base">1</span>人</div>
+                                <div class="f_r js_customer_div">包车天数：<span class="color5 v_base">1</span>天</div>
+                            </li>
+                            <li><img src="images/icon12.png" alt="icon"><span class="js_start_address">神木</span></li>
+                            <li><img src="images/icon13.png" alt="icon"><span class="js_end_address">大柳塔</span></li>
+                            <!-- <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li> -->
                         </ul>
-                        <div class="txt_c"><span>预计司机</span><span>15min</span><span>后到达</span></div>
+                        <ul class="trip_de_list js_additional_list">
+                            <li>
+                                <img src="images/icon13.png" alt="icon"/>
+                                <span>需要捎一件行李</span>
+                            </li>
+                        </ul>
+                        <!-- <div class="txt_c"><span>预计司机</span><span>15min</span><span>后到达</span></div> -->
                         <h3><label class="f_l">&nbsp;</label><span class="color6">车费支付</span><label class="f_r">&nbsp;</label></h3>
                         <div class="pay_box">
                             <a class="btn2 js_to_get_coupon" href="javascript:;" title="优惠券">
                                 <label>优惠券</label>
-                                已使用<span class="color6 font12 v_base">5</span>元
+                                已使用<span class="color6 font12 v_base">0</span>元
                             </a>
                             <div class="txt_c">
-                                还需支付 <span class="font18 color6 v_base">25</span> 元
+                                还需支付 <span class="font18 color6 v_base js_pay_price">25</span> 元
                             </div>
                             <ul class="pay_type_list js_pay_list">
-                                <li data-type="1">
+                                <li class="js_now" data-type="1">
                                     <a class="btn2" href="javascript:;" title="微信支付">
                                         <img src="images/icon33.png" alt="微信"><br/>
                                         微信<br/>
-                                        <span class="">&nbsp;</span>
+                                        <span class="now_choice_spn">&nbsp;</span>
                                     </a>
                                 </li>
                                 <!-- <li>
@@ -1188,11 +1249,11 @@
                                         <span>&nbsp;</span>
                                     </a>
                                 </li> -->
-                                <li data-type="2">
+                                <li class="" data-type="2">
                                     <a class="btn2" href="javascript:;" title="余额支付">
                                         <img src="images/icon36.png" alt="余额"><br/>
                                         余额<br/>
-                                        <span class="now_choice_spn">&nbsp;</span>
+                                        <span class="">&nbsp;</span>
                                     </a>
                                 </li>
                             </ul>
@@ -1297,7 +1358,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box txt_c">
-                        <img class="js_occupying_image" src="images/1.jpg" alt="图片">
+                        <img class="js_occupying_image" src="images/defult_pic.jpg" alt="图片">
                         <a href="javascript:;" class="weui_btn weui_btn_my1 b_color3 js_sure_pic_choice" title="确定">确定</a>
                     </div>
                 </div>
@@ -1384,6 +1445,7 @@
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript" src="js/frame.js"></script>
         <script type="text/javascript" src="js/date.js"></script>
+        <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>  
         <script type="text/javascript" src="js/member_center.js"></script>
     </body>
    

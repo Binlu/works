@@ -4,9 +4,16 @@ var myScroll1,myScroll2,myScroll3,myScroll4,myScroll5,myScroll6,myScroll7,myScro
 var $m={
     // 分享链接
     share_href: window.location.href,
+    // 分享配置
+    share_arr:{
+        appId: "", 
+        timestamp: "", 
+        nonceStr: "", 
+        signature: "", 
+    },
     // 图片地址前缀
     img_url:"images/",
-    head_place: "1.jpg",   //头像占位图片
+    head_place: "defult_pic.jpg",   //头像占位图片
     // 当前页面
     active_scroll:1,
     // 重新布局
@@ -136,7 +143,13 @@ var $m={
     user_info:{
         "phone":      18821725490,                  //手机号码
         "page":       1                             //我的行程当前页面
-    }
+    },
+    order_arr:null,
+    my_coupon:{                                     //我的优惠券去当前信息
+        is_add:false,
+        npage:1,
+        is_get: false,
+    },
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -145,49 +158,76 @@ var user_id=link_obj["user_id"]?link_obj["user_id"]:6;
 
 $(function(){
     // 绑定滚动
-    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll11=new IScroll('.page11',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll15=new IScroll('.page15',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll16=new IScroll('.page16',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll17=new IScroll('.page17',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll18=new IScroll('.page18',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll19=new IScroll('.page19',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll20=new IScroll('.page20',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll21=new IScroll('.page21',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
-    myScroll22=new IScroll('.page22',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false});
+    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll2=new IScroll('.page2',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true,probeType:3});
+    myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll11=new IScroll('.page11',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll15=new IScroll('.page15',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll16=new IScroll('.page16',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll17=new IScroll('.page17',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll18=new IScroll('.page18',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll19=new IScroll('.page19',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll20=new IScroll('.page20',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll21=new IScroll('.page21',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
+    myScroll22=new IScroll('.page22',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
     $m.rs();
     // 显示
-    $m.showPage(function(){});
-    
+    (function(){
+        // 获取个人信息
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getSelfInfos",function(re){
+            var re_arr=re["data"]?re["data"]:{};
+            console.log(re_arr);
+            var avatar=re_arr["avatar"]?re_arr["avatar"]:$m.img_url+$m.head_place;
+            var age=re_arr["age"]?re_arr["age"]:0;
+            var balance=re_arr["balance"]?re_arr["balance"]:0.00;
+            var score=re_arr["score"]?re_arr["score"]:0;
+            var sex=re_arr["sex"]?re_arr["sex"]:1;
+            var signature=re_arr["signature"]?re_arr["signature"]:"未填写";
+            var star=re_arr["star"]?re_arr["star"]:0;
+            var user_login=re_arr["user_login"]?re_arr["user_login"]:"";
+            var user_nicename=re_arr["user_nicename"]?re_arr["user_nicename"]:"";
+            var user_star=parseInt(star)?parseInt(star):0;
+            console.log(user_star);
+            for(var i=0;i<user_star;i++){
+                console.log(i)
+                $(".page1 .js_user_star>li").eq(i).children("img").attr("src",$m.img_url+"icon17.png");
+            }
+            $(".js_header_pic").attr("src",avatar);
+            $(".js_nicename").text(user_nicename);
+            $(".js_integral_spn").text(score);
+            $(".js_balance_spn").text(balance);
+        });
+    })()
+    $m.showPage(function(){
+    });
     // 绑定返回事件
-    $(".js_back").on("click",function(){
+    $(".js_back").on("tap",function(){
         $m.toPrev($(this).parents(".page"));
     });
     // 个人信息
-    $(".js_personal_info").on("click",function(){
+    $(".js_personal_info").on("tap",function(){
         $m.toNext($(".page19"),function(){
             $m.active_scroll=19;
             $m.refreshPage();
         });
     });
     // 点击修改头像
-    $(".js_choice_head_pic").on("click",function(){
+    $(".js_choice_head_pic").on("tap",function(){
         $(".head_pic_div").show().siblings(".bg_div").fadeIn(400);;
     });
     // 相册
-    $(".js_album_btn").on("click",function(){
+    $(".js_album_btn").on("tap",function(){
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original','compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -202,7 +242,7 @@ $(function(){
         });
     });
     // 相机
-    $(".js_photograph_btn").on("click",function(){
+    $(".js_photograph_btn").on("tap",function(){
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original','compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -217,14 +257,14 @@ $(function(){
         });
     });
     //确认选择图片
-    $(".js_sure_pic_choice").on("click",function(){
+    $(".js_sure_pic_choice").on("tap",function(){
         var src=$(this).siblings(".js_occupying_image").attr("src")?$(this).siblings(".js_occupying_image").attr("src"):"";
         if(src!=""){
             $(".js_head_pic").attr("src",src);
         }
     });
     // 修改昵称
-    $(".js_rename").on("click",function(){
+    $(".js_rename").on("tap",function(){
         var txt=$(this).find(".js_rename_txt").text()?$(this).find(".js_rename_txt").text():"";
         txt=txt.reSpace();
         $(".js_rename_box").find(".js_rename_area").val(txt);
@@ -246,7 +286,7 @@ $(function(){
         }
     });
     // 修改性别
-    $(".js_sex").on("click",function(){
+    $(".js_sex").on("tap",function(){
         var sex=$(".js_sex").attr("data-sex")?$(".js_sex").attr("data-sex"):1;
         if(sex==1){
             $(".js_sex_div>a").eq(0).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
@@ -278,7 +318,7 @@ $(function(){
         // });
     });
     // 修改手机号
-    $(".js_mobile_btn").on("click",function(){
+    $(".js_mobile_btn").on("tap",function(){
         var num=$(this).attr("data-mobile")?$(this).attr("data-mobile"):"";
         $(".js_change_mobile").find(".js_input_area").val(num);
         $(".js_change_mobile").show().siblings(".bg_div").fadeIn(400);;
@@ -312,7 +352,7 @@ $(function(){
     });
     
     // 修改签名
-    $(".js_autograph").on("click",function(){
+    $(".js_autograph").on("tap",function(){
         var txt=$(this).find(".js_autograph_txt").text()?$(this).find(".js_autograph_txt").text():"";
         txt=txt.reSpace();
         if(txt!="" && txt!="请填写"){
@@ -351,21 +391,28 @@ $(function(){
     });
     
     // 我的行程
-    $(".js_my_trip").on("click",function(){
+    $(".js_my_trip").on("tap",function(){
         $("#atten_box").fadeIn(100);
         $(".bg_div").fadeIn(200);
-        $m.toNext($(".page2"),function(){
-            $m.active_scroll=2;
-            $m.refreshPage();
-        });
         var is_add=$(this).attr("data-add")?$(this).attr("data-add"):2;
         if(is_add==2){
             // 没有加载
+            $m.toNext($(".page2"),function(){
+                $m.active_scroll=2;
+                $m.refreshPage();
+            });
             getMyTrip();
+        }else{
+            $m.toNext($(".page2"),function(){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                $m.active_scroll=2;
+                $m.refreshPage();
+            });
         }
     });
     // 行程详情
-    $(".page2").on("click",".js_trip_list>li",function(){
+    $(".page2").on("tap",".js_trip_list>li",function(){
         $("#atten_box").fadeIn(100);
         $(".bg_div").fadeIn(200);
         $m.toNext($(".page3"),function(){
@@ -377,30 +424,22 @@ $(function(){
         subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
     });
     // 填写取消订单框
-    $(".js_del_order").on("click",function(){
+    $(".js_del_order").on("tap",function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);
     });
-    
     // 确认取消订单
     $(".js_order_btn").on("click",function(){
         var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
         if(txt==""){
             msg("内容不能为空。",800);
         }else{
-            // $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
-            // $(".page3 .js_del_order").hide();
-            // $(".p3_btn_div").hide();
-            // $(".js_cancel_div").children("span").text(txt);
-            // $(".js_del_order_box").fadeOut(200);
-            // $(".bg_div").fadeOut(400,function(){
-            //     myScroll3.refresh();
-            // });
             var orderid=$(".page3 .js_del_order").attr("data-orderid");
             var arr={"orderId":orderid,"user_id":user_id,"type":1};
             subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
                 $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
                 $(".page3 .js_del_order").hide();
                 $(".p3_btn_div").hide();
+                $(".js_refund_div").hide();
                 $(".js_cancel_div").children("span").text(txt);
                 $(".js_del_order_box").fadeOut(200);
                 $(".bg_div").fadeOut(400,function(){
@@ -410,37 +449,55 @@ $(function(){
         }
     });
     // 评星星数量
-    $(".page").on("click",".js_star_list>li",function(){
+    $(".page").on("tap",".js_star_list>li",function(){
         var a=$(this),b=a.children("img"),c=a.parent();
         var leven=a.attr("data-star")?a.attr("data-star"):"3";
         c.children("li").each(function(i){
             if(i<leven){
-                $(this).children("img").attr("src",$m.img_url+"icon17.png");
+                $(this).addClass("js_now").children("img").attr("src",$m.img_url+"icon17.png");
             }else{
-                $(this).children("img").attr("src",$m.img_url+"icon16.png");
+                $(this).removeClass("js_now").children("img").attr("src",$m.img_url+"icon16.png");
             }
         });
     });
     // 提交评价
-    $(".js_sub_evaluate").on("click",function(){
-        msg("评论成功",800);
-        $(this).hide();
-        $(".js_can_star").removeClass("js_star_list");
-        myScroll3.refresh();
-        // var arr={"user_nicename":txt,"user_id":user_id};
-        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-        //     $(".js_rename_txt").text(txt);
-        // });
+    $(".js_sub_evaluate").on("tap",function(){
+        var a=$(this);
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
+        var orderId=$(".js_del_order").attr("data-orderid")?$(".js_del_order").attr("data-orderid"):"";
+        var toUid=$(".js_del_order").attr("data-driverid")?$(".js_del_order").attr("data-driverid"):"";
+        var preview=[];
+        $(".js_can_star").each(function(){
+            var n_len=$(this).children("li.js_now").length;
+            preview.push(n_len);
+        });
+        var arr={"orderId":orderId,"skills":preview[1],"service":preview[2],"environment":preview[3],"toUid":toUid,"starLevel":preview[0],"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goDriverComments",function(re){
+            var txt=re["data"]?re["data"]:"评论成功！";
+            msg(re["data"],800);
+            a.parent().hide();
+            $(".js_can_star").removeClass("js_star_list");
+            myScroll3.refresh();
+        });
     });
     // 去支付剩余
-    $(".js_to_pay").on("click",function(){
+    $(".js_to_pay").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page20"),function(){
             $m.active_scroll=20;
             $m.refreshPage();
         });
+        var arr=$m.order_arr?$m.order_arr:"";
+        if(arr!=""){
+            setPayDom(arr);
+        }
     });
     // 去选择优惠券
-    $(".js_to_get_coupon").on("click",function(){
+    $(".js_to_get_coupon").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $(".page6").css({"z-index":50});
         $(".p6_btn_div").show();
         $(".coupon_list").addClass("js_coupon_list");
@@ -449,9 +506,18 @@ $(function(){
             $m.active_scroll=6;
             $m.refreshPage();
         });
+        if(!$m.my_coupon["is_add"]){
+            var arr={"user_id":user_id,"page":$m.my_coupon["npage"]};
+            subAjax(arr,$m.ajax_link+"getMyBonus",setMyCoupon,function(){
+                $m.my_coupon["is_get"]=false;
+            });
+        }else{
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+        }
     });
     // 选择优惠券
-    $(".page6").on("click",".js_coupon_list>li",function(){
+    $(".page6").on("tap",".js_coupon_list>li",function(){
         if(!$(this).hasClass("now_choice_li")){
             $(this).addClass("now_choice_li");
         }else{
@@ -459,45 +525,54 @@ $(function(){
         }
     });
     // 确认选择优惠券
-    $(".js_choice_btn").on("click",function(){
+    $(".js_choice_btn").on("tap",function(){
+        var a=$(".js_mycoupon_list").children("li.now_choice_li");
+        var id=a.attr("data-bonusid")?a.attr("data-bonusid"):"";
+        var price=a.attr("data-price")?a.attr("data-price"):0;
+        $(".js_to_get_coupon").attr("data-bonusid",id);
+        $(".js_to_get_coupon").children("span").text(price);
+        var totalprice=$m.order_arr["totalprice"]?$m.order_arr["totalprice"]:0;
+        $(".page20 .js_pay_price").text(totalprice-price);
         $m.toPrev($(".page6"),function(){
             $m.active_scroll=20;
             $m.refreshPage();
             $(".page6").css({"z-index":10});
         });
     });
-    // 添加优惠券
-    $(".js_add_coupon_btn").on("click",function(){
-        var arr=[];
-        $(".page7 .js_input_area").each(function(){
-            var txt=$(this).val()?$(this).val():"";
-            arr.push(txt);
-        });
-        if(arr[0]==""){
-            msg("请输入编号",800);
-        }else if(arr[1]==""){
-            msg("请输入密码",800);
-        }else{
-            $m.toPrev($(".page7"),function(){
-                $m.active_scroll=6;
-                $m.refreshPage();
-            });
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
-        }
-    });
     
     // 选择支付方式
-    $(".js_pay_list>li").on("click",function(){
+    $(".js_pay_list>li").on("tap",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
         var a=$(this).children("a").children("span");
         a.addClass("now_choice_spn");
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
+    // 线下支付
+    $(".js_offline_btn").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
+        // 开始提交
+        var payType=1;
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=$(".page20 .js_to_get_coupon").attr("data-bonusid")?$(".page20 .js_to_get_coupon").attr("data-bonusid"):"";
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax2(arr,$m.ajax_link+"goPayOrder",function(re){
+            $("#atten_box").fadeOut(50);
+            $(".bg_div").fadeOut(100);
+            msg("提交成功！",800);
+            $(".page3 .js_del_order").hide();
+            $(".page3 .js_can_star").addClass("js_star_list");
+            $(".page3 .p3_btn_div").children(".js_to_pay").hide();
+            $m.toPrev($(".page20"),function(){
+                $m.active_scroll=3;
+                $m.refreshPage();
+            });
+        });
+    });
     // 确认支付按钮
-    $(".js_pay_sure_btn").on("click",function(){
-        var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
+    $(".js_pay_sure_btn").on("tap",function(){
+        var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
+        console.log(type)
         if(type==2){
             // 余额支付
             $m.toNext($(".page21"),function(){
@@ -506,7 +581,23 @@ $(function(){
             });
         }else{
             // 微信支付
-
+            var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+            // 商户id
+            var partnerId=$m.order_arr["partnerId"]?$m.order_arr["partnerId"]:"";
+            var ip=returnCitySN["cip"]?returnCitySN["cip"]:"";
+            var nprice=222;
+            var str='bank_type=WX&body=微信支付&fee_type=1&input_charset=UTF-8&notify_url=http://weixin.qq.com&out_trade_no='+orderId+'&partner='+partnerId+'&spbill_create_ip='+ip+'&total_fee='+nprice;
+            wx.chooseWXPay({
+                timestamp: $m.share_arr["timestamp"], // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                nonceStr: $m.share_arr["nonceStr"], // 支付签名随机串，不长于 32 位
+                package: str, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                paySign: '', // 支付签名
+                success: function (res) {
+                    // 支付成功后的回调函数
+                    console.log(res);
+                }
+            });
         }
     });
     // 密码输入控制
@@ -517,18 +608,18 @@ $(function(){
         }
     });
     // 找回密码
-    $(".js_get_pass").on("click",function(){
+    $(".js_get_pass").on("tap",function(){
         $m.toNext($(".page22"),function(){
             $m.active_scroll=22;
             $m.refreshPage();
         });
     });
     // 获取验证码
-    $(".page22 .js_get_code").on("click",function(){
+    $(".page22 .js_get_code").on("tap",function(){
         checkpost($(this),"page22 .js_mobile");
     });
     // 确认修改密码
-    $(".js_sure_resetpass").on("click",function(){
+    $(".js_sure_resetpass").on("tap",function(){
         toSubPass($(this),function(){
             $m.toPrev($(".page22"),function(){
                 $m.active_scroll=21;
@@ -542,8 +633,8 @@ $(function(){
         var regx=/\D/g;
         $(this).val(txt.replace(regx,''));
     });
-    // 余额支付
-    $(".js_pay_balance_now").on("click",function(){
+    // 确认余额支付
+    $(".js_pay_balance_now").on("tap",function(){
         var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
@@ -557,51 +648,73 @@ $(function(){
                 $m.refreshPage();
             });
             // 开始提交
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var arr={"user_nicename":txt,"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+                $(".js_rename_txt").text(txt);
+            });
         }
     });
-    // 线下支付
-    $(".js_offline_btn").on("click",function(){
-        $(".js_del_order").hide();
-        $(".js_can_star").addClass("js_star_list");
-        $(".p3_btn_div").children(".js_to_pay").hide();
-        $m.toPrev($(".page20"),function(){
-            $m.active_scroll=3;
-            $m.refreshPage();
-        });
-        // 开始提交
-        // var arr={"user_nicename":txt,"user_id":user_id};
-        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-        //     $(".js_rename_txt").text(txt);
-        // });
-    });
     // 我的钱包
-    $(".js_my_wallet").on("click",function(){
+    $(".js_my_wallet").on("tap",function(){
         $m.toNext($(".page4"),function(){
             $m.active_scroll=4;
             $m.refreshPage();
         });
     });
     // 钱包余额
-    $(".js_balance").on("click",function(){
-        $m.setHeight($(".circular_div").eq(0),1);
+    $(".page4 .js_balance").on("tap",function(){
+        // $("#atten_box").fadeIn(100);
+        // $(".bg_div").fadeIn(200);
         $m.toNext($(".page5"),function(){
             $m.active_scroll=5;
             $m.refreshPage();
         });
+        // 开始提交
+        // var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        // subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+        //     $m.setHeight($(".circular_div").eq(0),1);
+        // });
+        $m.setHeight($(".circular_div").eq(0),1);
     });
     // 优惠券
-    $(".js_coupon").on("click",function(){
+    $(".js_coupon").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page6"),function(){
             $m.active_scroll=6;
             $m.refreshPage();
         });
+        if(!$m.my_coupon["is_add"]){
+            var arr={"user_id":user_id,"page":$m.my_coupon["npage"]};
+            subAjax(arr,$m.ajax_link+"getMyBonus",setMyCoupon,function(){
+                $m.my_coupon["is_get"]=false;
+            });
+        }else{
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+        }
+    });
+    // 优惠券滚动监听
+    myScroll6.on("scrollEnd",function(){
+        var ph=this.wrapperHeight;
+        var oh=this.scrollerHeight;
+        var y=this.y;
+        if(y<ph-oh+10){
+            // 开始请求
+            if(!$m.my_coupon["is_get"]){
+                $("#atten_box").fadeIn(100);
+                $(".bg_div").fadeIn(200);
+                $m.my_coupon["is_get"]=true;
+                var arr={"user_id":user_id,"page":$m.my_coupon["npage"]};
+                subAjax(arr,$m.ajax_link+"getMyBonus",setMyCoupon,function(){
+                    $m.my_coupon["is_get"]=false;
+                });
+            }
+        }
+        
     });
     // 使用详情
-    $(".js_rule").on("click",function(){
+    $(".js_rule").on("tap",function(){
         $(".page8").css({"z-index":50});
         $m.toNext($(".page8"),function(){
             m.active_scroll=8;
@@ -609,22 +722,59 @@ $(function(){
         });
     });
     // 添加优惠券
-    $(".js_add_coupon").on("click",function(){
+    $(".js_add_coupon").on("tap",function(){
         $(".page7").css({"z-index":50});
         $m.toNext($(".page7"),function(){
             m.active_scroll=7;
             $m.refreshPage();
         });
     });
+    // 扫一扫添加优惠券
+    $(".js_sweep_btn").on("tap",function(){
+        wx.scanQRCode({
+            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) {
+                var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            }
+        });
+    });
+    // 确定添加优惠券
+    $(".js_add_coupon_btn").on("tap",function(){
+        var str_arr=[];
+        $(".page7 .js_input_area").each(function(){
+            var txt=$(this).val()?$(this).val():"";
+            str_arr.push(txt);
+        });
+        if(str_arr[0]==""){
+            msg("请输入编号",800);
+        }else if(str_arr[1]==""){
+            msg("请输入密码",800);
+        }else{
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
+            // $m.toPrev($(".page7"),function(){
+            //     $m.active_scroll=6;
+            //     $m.refreshPage();
+            // });
+            var arr={"bonusSN":str_arr[0],"passcode":str_arr[1],"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"addBonus",function(re){
+                console.log(re);
+                $("#atten_box").fadeIn(50);
+                $(".bg_div").fadeIn(100);
+                mgs("添加成功！",800);
+            });
+        }
+    });
     // 开发票
-    $(".js_invoice").on("click",function(){
+    $(".js_invoice").on("tap",function(){
         $m.toNext($(".page9"),function(){
             $m.active_scroll=9;
             $m.refreshPage();
         });
     });
     // 选择发票订单
-    $(".page9").on("click",".js_invoice_list>li",function(){
+    $(".page9").on("tap",".js_invoice_list>li",function(){
         // if(!$(this).hasClass("now_choice_li")){
         //     $(this).addClass("now_choice_li");
         // }else{
@@ -633,7 +783,7 @@ $(function(){
         $(this).addClass("now_choice_li").siblings("li").removeClass("now_choice_li");
     });
     // 全选
-    $(".js_choice_all_invoice").on("click",function(){
+    $(".js_choice_all_invoice").on("tap",function(){
         // if(!$(this).hasClass("all_chocie_btn")){
         //     $(this).addClass("all_chocie_btn").removeClass("all_nchocie_btn");
         //     $(".page9 .js_invoice_list>li").addClass("now_choice_li");
@@ -644,7 +794,7 @@ $(function(){
 
     });
     // 填写信息
-    $(".js_fill_info").on("click",function(){
+    $(".js_fill_info").on("tap",function(){
         if($(".js_invoice_list").children("li.now_choice_li").length<1){
             msg("请先选择订单。",800);
         }else{
@@ -657,26 +807,26 @@ $(function(){
         }
     });
     // 送达服务站
-    $(".js_to_service_station").on("click",function(){
+    $(".js_to_service_station").on("tap",function(){
         $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
         $(".js_service_station").show();
         $(".js_address_ele").hide();
         myScroll10.refresh();
     });
     // 选择服务站
-    $(".page10").on("click",".js_choice_service_station",function(){
+    $(".page10").on("tap",".js_choice_service_station",function(){
         $(this).find(".js_choice_pic").attr("src",$m.img_url+"icon22.png");
         $(this).siblings(".js_choice_service_station").find(".js_choice_pic").attr("src",$m.img_url+"icon21.png");
     });
     // 快递
-    $(".js_to_express").on("click",function(){
+    $(".js_to_express").on("tap",function(){
         $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
         $(".js_service_station").hide();
         $(".js_address_ele").show();
         myScroll10.refresh();
     });
     // 提交发票信息
-    $(".js_save_info").on("click",function(){
+    $(".js_save_info").on("tap",function(){
         msg("恭喜，提交成功！","确定",function(){
             $m.toPrev($(".page10"),function(){
                 $m.active_scroll=9;
@@ -684,7 +834,7 @@ $(function(){
         },true);
     });
     // 我的积分
-    $(".js_integral").on("click",function(){
+    $(".js_integral").on("tap",function(){
         $m.setHeight($(".circular_div").eq(1),1);
         $m.toNext($(".page11"),function(){
             $m.active_scroll=11;
@@ -692,35 +842,35 @@ $(function(){
         });
     });
     // 我的分享
-    $(".js_share").on("click",function(){
+    $(".js_share").on("tap",function(){
         $m.toNext($(".page12"),function(){
             $m.active_scroll=12;
             $m.refreshPage();
         });
     });
     // 切换分享
-    $(".js_btn_div").on("click",function(){
+    $(".js_btn_div").on("tap",function(){
         var _index=$(".js_btn_div").index($(this));
         $(this).addClass("weui_bar_item_on").siblings(".js_btn_div").removeClass("weui_bar_item_on");
         $(".js_detail_div").eq(_index).show().siblings(".js_detail_div").hide();
         myScroll12.refresh();
     });
     // 关于我们
-    $(".js_about").on("click",function(){
+    $(".js_about").on("tap",function(){
         $m.toNext($(".page13"),function(){
             $m.active_scroll=13;
             $m.refreshPage();
         });
     });
     // 意见反馈
-    $(".js_feedback").on("click",function(){
+    $(".js_feedback").on("tap",function(){
         $m.toNext($(".page14"),function(){
             $m.active_scroll=14;
             $m.refreshPage();
         });
     });
     // 提交反馈
-    $(".js_sub_feedback").on("click",function(){
+    $(".js_sub_feedback").on("tap",function(){
         msg("您的反馈已经提交成功！","确定",function(){
             $m.toPrev($(".page14"),function(){
                 $m.active_scroll=1;
@@ -728,14 +878,14 @@ $(function(){
         },true);
     });
     // 退出登录
-    $(".js_sign_out").on("click",function(){
+    $(".js_sign_out").on("tap",function(){
         $m.toNext($(".page15"),function(){
             $m.active_scroll=15;
             $m.refreshPage();
         });
     });
     // 登录
-    $(".js_sign_btn").on("click",function(){
+    $(".js_sign_btn").on("tap",function(){
         signInFuc($(this),function(){
             msg("登录成功！","确定",function(){
                 $m.toPrev($(".page15"),function(){
@@ -745,14 +895,14 @@ $(function(){
         });
     });
     // 注册
-    $(".js_to_register").on("click",function(){
+    $(".js_to_register").on("tap",function(){
         $m.toNext($(".page16"),function(){
             $m.active_scroll=16;
             $m.refreshPage();
         });
     });
     // 提交注册
-    $(".js_register_btn").on("click",function(){
+    $(".js_register_btn").on("tap",function(){
         registerFunc($(this),function(){
             msg("注册成功，立即登录。","确定",function(){
                 $m.toPrev($(".page16"),function(){
@@ -762,11 +912,11 @@ $(function(){
         });
     });
     // 获取验证码
-    $(".page16 .js_get_code").on("click",function(){
+    $(".page16 .js_get_code").on("tap",function(){
         checkpost($(this),"page16 .js_mobile");
     });
     // 找回密码
-    $(".js_get_ps").on("click",function(){
+    $(".js_get_ps").on("tap",function(){
         getSignPass($(this),function(){
             $m.toNext($(".page17"),function(){
                 $m.active_scroll=17;
@@ -775,7 +925,7 @@ $(function(){
         });
     });
     // 提交找密码
-    $(".js_get_ps_btn").on("click",function(){
+    $(".js_get_ps_btn").on("tap",function(){
         msg("密码已经发送到您的手机，请注意查收。","确定",function(){
             $m.toPrev($(".page17"),function(){
                 $m.active_scroll=15;
@@ -798,21 +948,49 @@ function GetRequest(){
     return theRequest; 
 };
 // 请求数据
-function subAjax(arr,url,func){
+function subAjax(arr,url,successFunc,errorFunc){
     $.ajax({
         type: "POST",
         url: url,
         data:arr,
         dataType: "json",
         success: function(data){
-            if(data["status"]==0){
+            if(data["status"]==1){
+                if(typeof successFunc==="function" && successFunc instanceof Function){
+                    successFunc(data);
+                }
+            }else{
+                if(typeof errorFunc==="function" && errorFunc instanceof Function){
+                    errorFunc();
+                }
                 msg(data["data"],800);
                 $("#atten_box").fadeOut(100);
                 $(".bg_div").fadeOut(200);
-            }else if(data["status"]==1){
+            }
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            msg("请求失败，请稍后重试！","确定");
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+        }
+    });
+}
+// 请求数据
+function subAjax2(arr,url,func){
+    $.ajax({
+        type: "POST",
+        url: url,
+        data:arr,
+        dataType: "json",
+        success: function(data){
+            if(data["status"]==-2){
                 if(typeof func==="function" && func instanceof Function){
-                    func(data["data"]);
+                    func(data);
                 }
+            }else{
+                msg(data["data"],800);
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
             }
         },
         error: function(XMLHttpRequest,textStatus,errorThrown){
@@ -1243,6 +1421,7 @@ function getMyTrip(){
 }
 // 生成行程dom
 function setMyTrip(arr){
+    var arr=arr["data"];
     $(".js_my_trip").attr("data-add",1);
     if(arr.length<1){
         // 没有数据
@@ -1335,9 +1514,14 @@ function getMyTripDetail(){
 }
 // 生成订单详情
 function setMyTripDetail(arr){
+    var arr=arr["data"];
+    if(arr!=null && arr!="undefined"){
+        $m.order_arr=arr;
+    }
     console.log(arr);
     var orderid=arr["orderid"]?arr["orderid"]:"";
     var status=arr["status"]?arr["status"]:6;
+    // var status=5;
     var carno=arr["carno"]?arr["carno"]:"";
     var driver=arr["driverinfo"]?arr["driverinfo"]:{};
     var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
@@ -1357,19 +1541,37 @@ function setMyTripDetail(arr){
         $(".page3 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
     }
     var tit="订单详情";
+    var status_txt="支付金额";
+    // 订单详情
+    var ordertype=arr["ordertype"]?arr["ordertype"]:0;
+    var personnumber=arr["personnumber"]?arr["personnumber"]:0;
+    var addtime=arr["addtime"]?arr["addtime"]:"";
+    var startname=arr["startname"]?arr["startname"]:"";
+    var endname=arr["endname"]?arr["endname"]:"";
+    var isbag=arr["isbag"]?arr["isbag"]:0;
+    var ischildren=arr["ischildren"]?arr["ischildren"]:0;
+    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    var remainpaytype=arr["remainpaytype"]?arr["remainpaytype"]:0;
+    // 评价
+    var iscomment=arr["iscomment"]?arr["iscomment"]:0;
     if(status==0){
         // 未支付
-        var addtime=arr["addtime"]?arr["addtime"]:"";
-        var startname=arr["startname"]?arr["startname"]:"";
-        var endname=arr["endname"]?arr["endname"]:"";
-        var isbag=arr["isbag"]?arr["isbag"]:0;
-        console.log(isbag);
-        var ischildren=arr["ischildren"]?arr["ischildren"]:0;
-        var totalprice=arr["totalprice"]?arr["totalprice"]:0;
         tit="订单未完成";
+        status_txt="需要支付";
         $(".page3 .js_order_time").text(addtime);
+        if(ordertype==4){
+            // 包天
+            var days=arr["days"]?arr["days"]:0;
+            $(".page3 .js_end_address").parent().hide();
+            $(".page3 .js_customer_div").eq(1).children("span").text(days);
+            $(".page3 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+        }else{
+            $(".page3 .js_end_address").text(endname).parent().show();
+            $(".page3 .js_customer_div").eq(0).children("span").text(personnumber);
+            $(".page3 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();   
+        }
         $(".page3 .js_start_address").text(startname);
-        $(".page3 .js_end_address").text(endname);
+        // $(".page3 .js_end_address").text(endname);
         // 清空dom先
         $(".page3 .js_additional_list").html('');
         if(isbag==1){
@@ -1383,13 +1585,270 @@ function setMyTripDetail(arr){
         $(".page3 .js_pay_price").text(totalprice);
         // 隐藏/显示其他状态的元素
         $(".page3 .js_cancel_div").hide();
+        $(".page3 .js_refund_div").hide();
         $(".page3 .evaluate_box").hide();
-        $(".page3 .js_del_order").show().attr("data-orderid",orderid);
-        $(".page3 .p3_btn_div").show();
+        $(".page3 .js_del_order").show().attr({"data-orderid":orderid,"data-driverid":driverid});
+        if(ordertype==1 && remainpaytype==1){
+            $(".page3 .p3_btn_div").hide();
+        }else{
+            $(".page3 .p3_btn_div").show();
+            $(".page3 .js_to_pay").show().siblings("a").hide();
+        }
         $(".page3 .js_order_detail_box").show();
-        $(".page3 .js_to_pay").show().siblings("a").hide();
+    }else if(status==1){
+        // 订单已经取消
+        tit="订单已取消";
+        var cancelreason=arr["cancelreason"]?arr["cancelreason"]:0;
+        var txt="";
+        if(cancelreason==1){
+            txt="态度差";
+        }else if(cancelreason==2){
+            txt="服务不好";
+        }else if(cancelreason==3){
+            txt="等待时间太长";
+        }else if(cancelreason==4){
+            txt="我有事";
+        }else if(cancelreason==5){
+            txt="车内环境差";
+        }else if(cancelreason==6){
+            txt="不需要用车了";
+        }
+        $(".page3 .js_cancel_div").show();
+        $(".page3 .js_refund_val").text(txt);
+        $(".page3 .evaluate_box").hide();
+        $(".page3 .js_del_order").hide().attr({"data-orderid":orderid,"data-driverid":driverid});
+        $(".page3 .p3_btn_div").hide();
+        $(".page3 .js_order_detail_box").hide();
+    }else if(status==2){
+        // 订单已交定金
+        status_txt="还需支付";
+        $(".page3 .js_order_time").text(addtime);
+        if(ordertype==4){
+            // 包天
+            var days=arr["days"]?arr["days"]:0;
+            $(".page3 .js_end_address").parent().hide();
+            $(".page3 .js_customer_div").eq(1).children("span").text(days);
+            $(".page3 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+        }else{
+            $(".page3 .js_end_address").text(endname).parent().show();
+            $(".page3 .js_customer_div").eq(0).children("span").text(personnumber);
+            $(".page3 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();   
+        }
+        $(".page3 .js_start_address").text(startname);
+        // $(".page3 .js_end_address").text(endname);
+        // 清空dom先
+        $(".page3 .js_additional_list").html('');
+        if(isbag==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        if(ischildren==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>有小孩</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        $(".page3 .js_pay_price").text(totalprice);
+        // 隐藏/显示其他状态的元素
+        $(".page3 .js_cancel_div").hide();
+        $(".page3 .js_refund_div").hide();
+        $(".page3 .evaluate_box").hide();
+        $(".page3 .js_del_order").show().attr({"data-orderid":orderid,"data-driverid":driverid});
+
+        if(remainpaytype==1){
+            $(".page3 .p3_btn_div").hide();
+        }else{
+            $(".page3 .p3_btn_div").show();
+            $(".page3 .js_to_pay").show().siblings("a").hide();
+        }
+        $(".page3 .js_order_detail_box").show();
+    }else if(status==3){
+        // 订单已付全款
+        tit="订单未完成";
+        var days=arr["days"]?arr["days"]:0;
+        $(".page3 .js_order_time").text(addtime);
+        if(ordertype==4){
+            // 包天
+            $(".page3 .js_end_address").parent().hide();
+            $(".page3 .js_customer_div").eq(1).children("span").text(days);
+        $(".page3 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+        }else{
+            $(".page3 .js_end_address").text(endname).parent().show();
+            $(".page3 .js_customer_div").eq(0).children("span").text(personnumber);
+            $(".page3 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();   
+        }
+        $(".page3 .js_start_address").text(startname);
+        // $(".page3 .js_end_address").text(endname);
+        // 清空dom先
+        $(".page3 .js_additional_list").html('');
+        if(isbag==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        if(ischildren==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>有小孩</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        $(".page3 .js_pay_price").text(totalprice);
+        // 隐藏/显示其他状态的元素
+        $(".page3 .js_cancel_div").hide();
+        $(".page3 .js_refund_div").hide();
+        $(".page3 .evaluate_box").show();
+        $(".page3 .js_del_order").show().attr({"data-orderid":orderid,"data-driverid":driverid});
+        $(".page3 .p3_btn_div").hide();
+        $(".page3 .js_order_detail_box").show();
+    }else if(status==4){
+        // 订单已退款
+        tit="订单已退款";
+        var cancelreason=arr["cancelreason"]?arr["cancelreason"]:0;
+        $(".page3 .js_refund_div").show();
+        $(".page3 .js_cancel_div").hide();
+        $(".page3 .evaluate_box").hide();
+        $(".page3 .js_del_order").hide().attr({"data-orderid":orderid,"data-driverid":driverid});
+        $(".page3 .p3_btn_div").hide();
+        $(".page3 .js_order_detail_box").hide();
+    }else if(status==5){
+        // 订单已完成
+        var cancelreason=arr["cancelreason"]?arr["cancelreason"]:0;
+        tit="订单已完成";
+        var days=arr["days"]?arr["days"]:0;
+        $(".page3 .js_order_time").text(addtime);
+        if(ordertype==4){
+            // 包天
+            $(".page3 .js_end_address").parent().hide();
+            $(".page3 .js_customer_div").eq(1).children("span").text(days);
+            $(".page3 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+        }else{
+            $(".page3 .js_end_address").text(endname).parent().show();
+            $(".page3 .js_customer_div").eq(0).children("span").text(personnumber);
+            $(".page3 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();   
+        }
+        $(".page3 .js_start_address").text(startname);
+        // $(".page3 .js_end_address").text(endname);
+        // 清空dom先
+        $(".page3 .js_additional_list").html('');
+        if(isbag==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        if(ischildren==1){
+            var _html='<li><img src="images/icon13.png" alt="icon"/><span>有小孩</span></li>';
+            $(".page3 .js_additional_list").append(_html);
+        }
+        $(".page3 .js_pay_price").text(totalprice);
+        // 隐藏/显示其他状态的元素
+        $(".page3 .js_cancel_div").hide();
+        $(".page3 .js_refund_div").hide();
+        $(".page3 .evaluate_box").show();
+        $(".page3 .js_del_order").hide().attr({"data-orderid":orderid,"data-driverid":driverid});
+        if(iscomment==0){
+            // 没有评价
+            $(".js_can_star").addClass("js_star_list");
+            $(".page3 .p3_btn_div").show();
+            $(".page3 .js_sub_evaluate").show().siblings("a").hide();
+        }
+        $(".page3 .js_order_detail_box").show();
+    }else{
+        msg("订单异常，请联系客服。","确定");
     }
-    $(".page3 .js_tit_spn").text(tit);
+    $(".page3 .js_status_txt").text(status_txt);
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
+// 生成车辆支付详情
+function setPayDom(arr){
+    var ordertype=arr["ordertype"]?arr["ordertype"]:0;
+    var orderid=arr["orderid"]?arr["orderid"]:"";
+    var status=arr["status"]?arr["status"]:6;
+    // var status=5;
+    var carno=arr["carno"]?arr["carno"]:"";
+    var days=arr["days"]?arr["days"]:0;
+    var personnumber=arr["personnumber"]?arr["personnumber"]:0;
+    var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+    var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+    var driverid=driver["driverid"]?driver["driverid"]:0;
+    var tel=driver["tel"]?driver["tel"]:"";
+    var drivername=driver["drivername"]?driver["drivername"]:"";
+    var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+    var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+    $(".page20 .js_driver_head_pic").attr("src",pic_src);
+    $(".page20 .car_number").text(carno);
+    $(".page20 .js_driver_name").text(drivername);
+    $(".page20 .js_service_num").text(servicecounts);
+    $(".page20 .js_driver_ranking").text(driverid);
+    $(".page20 .js_driver_mobile").attr("href","tel:"+tel);
+    var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+    for(var i=0;i<driver_star;i++){
+        $(".page20 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+    }
+    // 订单详情
+    var addtime=arr["addtime"]?arr["addtime"]:"";
+    var startname=arr["startname"]?arr["startname"]:"";
+    var endname=arr["endname"]?arr["endname"]:"";
+    var isbag=arr["isbag"]?arr["isbag"]:0;
+    var ischildren=arr["ischildren"]?arr["ischildren"]:0;
+    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    $(".page20 .js_order_time").text(addtime);
+    $(".page20 .js_start_address").text(startname);
+    if(ordertype==4){
+        // 包天
+        $(".page20 .js_end_address").parent().hide();
+        $(".page20 .js_customer_div").eq(1).children("span").text(days);
+        $(".page20 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+    }else{
+        $(".page20 .js_end_address").text(endname).parent().show();   
+        console.log(personnumber)
+        $(".page20 .js_customer_div").eq(0).children("span").text(personnumber);
+        $(".page20 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();
+    }
+    // 清空dom先
+    $(".page20 .js_additional_list").html('');
+    if(isbag==1){
+        var _html='<li><img src="images/icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+        $(".page20 .js_additional_list").append(_html);
+    }
+    if(ischildren==1){
+        var _html='<li><img src="images/icon13.png" alt="icon"/><span>有小孩</span></li>';
+        $(".page20 .js_additional_list").append(_html);
+    }
+    $(".page20 .js_pay_price").text(totalprice);
+
+
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
+// 生成优惠券
+function setMyCoupon(arr){
+    var arr=arr["data"];
+    var len=arr.length;
+    if(len<0){
+        var bonusid,bonussn,bonusamount,condition,endtime;
+        var _html='';
+        for(i=0;i<len;i++){
+            bonusid=arr[i]["bonusid"]?arr[i]["bonusid"]:"";
+            bonussn=arr[i]["bonussn"]?arr[i]["bonussn"]:"";
+            bonusamount=arr[i]["bonusamount"]?arr[i]["bonusamount"]:"";
+            condition=arr[i]["condition"]?arr[i]["condition"]:"";
+            endtime=arr[i]["endtime"]?arr[i]["endtime"]:"";
+            _html+='<li data-bonusid="'+bonusid+'" data-price="'+bonusamount+'">';
+            _html+='<div class="txt_r"><label class="font08">编号：</label>';
+            _html+='<span class="font08">'+bonussn+'</span></div>';
+            _html+='<div><label class="v_base">优惠券</label>';
+            _html+='<span class="font18 color6 v_base">'+bonusamount+'</span><span class="v_base">元</span></div>';
+            _html+='<div class="txt_r"><span style="margin-right: 2em;">满'+condition+'元可以使用</span></div>';
+            _html+='<div class="font08">有效期至 '+endtime+'</div>';
+            _html+='</li>';
+        }
+        $(".js_mycoupon_list").append(_html);
+        $(".page6 js_co.upon_list").show().siblings(".p6_attention_p").hide().siblings(".js_p6_btn_div").show();
+        if(!$m.my_coupon["is_add"]){
+            $m.my_coupon["is_add"]=true;
+        }
+        $m.my_coupon["npage"]++;
+    }else{
+        $(".page6 .p6_attention_p").show().siblings(".js_coupon_list").show().siblings(".js_p6_btn_div").hide();
+    }
+    $m.my_coupon["is_get"]=false;
     $("#atten_box").fadeOut(100);
     $(".bg_div").fadeOut(200);
     $m.refreshPage();
