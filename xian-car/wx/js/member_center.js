@@ -154,8 +154,7 @@ var $m={
 // 获取连接数据
 var link_obj=GetRequest();
 // 用户id
-var user_id=link_obj["user_id"]?link_obj["user_id"]:6;
-
+var user_id=link_obj["user_id"]?link_obj["user_id"]:"";
 $(function(){
     // 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
@@ -183,34 +182,23 @@ $(function(){
     $m.rs();
     // 显示
     (function(){
-        // 获取个人信息
-        var arr={"user_id":user_id};
-        subAjax(arr,$m.ajax_link+"getSelfInfos",function(re){
-            var re_arr=re["data"]?re["data"]:{};
-            console.log(re_arr);
-            var avatar=re_arr["avatar"]?re_arr["avatar"]:$m.img_url+$m.head_place;
-            var age=re_arr["age"]?re_arr["age"]:0;
-            var balance=re_arr["balance"]?re_arr["balance"]:0.00;
-            var score=re_arr["score"]?re_arr["score"]:0;
-            var sex=re_arr["sex"]?re_arr["sex"]:1;
-            var signature=re_arr["signature"]?re_arr["signature"]:"未填写";
-            var star=re_arr["star"]?re_arr["star"]:0;
-            var user_login=re_arr["user_login"]?re_arr["user_login"]:"";
-            var user_nicename=re_arr["user_nicename"]?re_arr["user_nicename"]:"";
-            var user_star=parseInt(star)?parseInt(star):0;
-            console.log(user_star);
-            for(var i=0;i<user_star;i++){
-                console.log(i)
-                $(".page1 .js_user_star>li").eq(i).children("img").attr("src",$m.img_url+"icon17.png");
-            }
-            $(".js_header_pic").attr("src",avatar);
-            $(".js_nicename").text(user_nicename);
-            $(".js_integral_spn").text(score);
-            $(".js_balance_spn").text(balance);
-        });
-    })()
-    $m.showPage(function(){
-    });
+        // 判断是否登录
+        var is_sign=getLocalStorage("is_sign")?getLocalStorage("is_sign"):"";
+        var id=getLocalStorage("id")?getLocalStorage("id"):"";
+        if(is_sign==""){
+            // 没登录
+            $m.toNext($(".page15"),function(){
+                $m.showPage();
+                $m.active_scroll=15;
+                $m.refreshPage();
+            });
+        }else{
+            // 获取个人信息
+            var user_id=getLocalStorage("id");
+            var arr={"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"getSelfInfos",setUserInfo);
+        }
+    })();
     // 绑定返回事件
     $(".js_back").on("tap",function(){
         $m.toPrev($(this).parents(".page"));
@@ -871,14 +859,27 @@ $(function(){
     });
     // 提交反馈
     $(".js_sub_feedback").on("tap",function(){
-        msg("您的反馈已经提交成功！","确定",function(){
-            $m.toPrev($(".page14"),function(){
-                $m.active_scroll=1;
+        var msg_content=$(".page14 .js_txt_area").val()?$(".page14 .js_txt_area").val():"";
+        if(msg_content==""){
+            msg("请填写您的意见。",800);
+        }else{
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
+            var arr={"user_id":user_id,"msg_content":msg_content};
+            subAjax(arr,$m.ajax_link+"goFeedBack",function(){
+                $("#atten_box").fadeOut(50);
+                $(".bg_div").fadeOut(100);
+                msg("您的反馈内容已经提交成功！","确定",function(){
+                    $m.toPrev($(".page14"),function(){
+                        $m.active_scroll=1;
+                    });
+                },true);
             });
-        },true);
+        }
     });
     // 退出登录
     $(".js_sign_out").on("tap",function(){
+        delLocalStorage(["is_sign"]);
         $m.toNext($(".page15"),function(){
             $m.active_scroll=15;
             $m.refreshPage();
@@ -886,12 +887,17 @@ $(function(){
     });
     // 登录
     $(".js_sign_btn").on("tap",function(){
-        signInFuc($(this),function(){
-            msg("登录成功！","确定",function(){
-                $m.toPrev($(".page15"),function(){
-                    $m.active_scroll=1;
-                });
-            },true);
+        signInFuc($(this),function(re){
+            msg("登录成功！",800);
+            $m.toPrev($(".page15"),function(){
+                $m.active_scroll=1;
+            });
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
+            // 获取个人信息
+            user_id=re["data"]["id"]?re["data"]["id"]:"";
+            setLocalStorage({"id":user_id,"is_sign":true});
+            setUserInfo(re);
         });
     });
     // 注册
@@ -913,24 +919,27 @@ $(function(){
     });
     // 获取验证码
     $(".page16 .js_get_code").on("tap",function(){
-        checkpost($(this),"page16 .js_mobile");
+        checkpost($(this),"page16 .js_mobile",1);
     });
     // 找回密码
     $(".js_get_ps").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
+        $m.toNext($(".page17"),function(){
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+            $m.active_scroll=17;
+        });
+        
+    });
+    // 提交找密码
+    $(".js_get_ps_btn").on("tap",function(){
         getSignPass($(this),function(){
             $m.toNext($(".page17"),function(){
                 $m.active_scroll=17;
                 $m.refreshPage();
             });
         });
-    });
-    // 提交找密码
-    $(".js_get_ps_btn").on("tap",function(){
-        msg("密码已经发送到您的手机，请注意查收。","确定",function(){
-            $m.toPrev($(".page17"),function(){
-                $m.active_scroll=15;
-            });
-        },true);
     });
     $(window).on("resize",function(){$m.rs()});
 });
@@ -1000,6 +1009,33 @@ function subAjax2(arr,url,func){
         }
     });
 }
+// 生成dom
+function setUserInfo(re){
+    var re_arr=re["data"]?re["data"]:{};
+    console.log(re_arr);
+    var avatar=re_arr["avatar"]?re_arr["avatar"]:$m.img_url+$m.head_place;
+    var age=re_arr["age"]?re_arr["age"]:0;
+    var balance=re_arr["balance"]?re_arr["balance"]:0.00;
+    var score=re_arr["score"]?re_arr["score"]:0;
+    var sex=re_arr["sex"]?re_arr["sex"]:1;
+    var signature=re_arr["signature"]?re_arr["signature"]:"未填写";
+    var star=re_arr["star"]?re_arr["star"]:0;
+    var user_login=re_arr["user_login"]?re_arr["user_login"]:"";
+    var user_nicename=re_arr["user_nicename"]?re_arr["user_nicename"]:"";
+    var user_star=parseInt(star)?parseInt(star):0;
+    console.log(user_star);
+    for(var i=0;i<user_star;i++){
+        console.log(i)
+        $(".page1 .js_user_star>li").eq(i).children("img").attr("src",$m.img_url+"icon17.png");
+    }
+    $(".js_header_pic").attr("src",avatar);
+    $(".js_nicename").text(user_nicename);
+    $(".js_integral_spn").text(score);
+    $(".js_balance_spn").text(balance);
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.showPage();
+}
 // 登录
 function signInFuc(obj,func){
     var _this=obj;
@@ -1019,21 +1055,21 @@ function signInFuc(obj,func){
         _this.off("click");
         _this.text("登录中...");
         // 赋值
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        return false;
+        // if(typeof func==="function" && func instanceof Function){
+        //     func();
+        // }
+        // return false;
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goLogin",
+            url: $m.ajax_link+"goLogin",
             dataType: "json",
-            data: {"user_id":user_id,"phone":input_txt[0],"user_pass":input_txt[1]},
+            data: {"phone":input_txt[0],"user_pass":input_txt[1]},
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
-                        func();
+                        func(data);
                     }
                     _this.text("登录");
                     _this.on("click",function(){
@@ -1082,18 +1118,19 @@ function registerFunc(obj,func){
         _this.off("click");
         _this.text("提交中...");
         // 赋值
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        return false;
+        // if(typeof func==="function" && func instanceof Function){
+        //     func();
+        // }
+        // return false;
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goRegister",
+            url: $m.ajax_link+"goRegister",
             dataType: "json",
-            data: {"user_id":user_id,"phone":input_txt[0],"code":input_txt[1],"user_pass":input_txt[2]},
+            data: {"phone":input_txt[0],"code":input_txt[1],"user_pass":input_txt[2]},
             success: function(data){
                 if(data["status"]==1){
+                    user_id=data["data"];
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
                         func();
@@ -1134,14 +1171,14 @@ function getSignPass(obj,func){
     }else{
         _this.off("click");
         _this.text("提交中...");
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        return false;
+        // if(typeof func==="function" && func instanceof Function){
+        //     func();
+        // }
+        // return false;
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goLogin",
+            url: $m.ajax_link+"goFindPwd",
             dataType: "json",
             data: {"user_id":user_id,"phone":input_txt},
             success: function(data){
@@ -1252,7 +1289,7 @@ function toSubPass(obj,func){
     }
 }
 // 验证码
-function checkpost(obj,input_class){
+function checkpost(obj,input_class,type){
     var input_txt="";
     var regPartton=/1[1-9]+[0-9]{9}/;
     input_txt=$("."+input_class).val();
@@ -1262,30 +1299,30 @@ function checkpost(obj,input_class){
         msg("请填写正确手机号",800);
     }else{
         obj.off("click");
-        var timer=null;
-        var seconds=59;
-        // 发送验证码后台切入口
-        obj.css({"color":"#acacac"});
-        obj.text("已发送(60)");
-        timer=setInterval(function(){
-            obj.text("已发送("+seconds+")");
-            seconds--;
-            if(seconds<0){
-                clearInterval(timer);
-                obj.text("重新发送");
-                obj.css({"color":"#fff"});
-                obj.on("click",function(){
-                    checkpost(obj,input_class);
-                });
-            }
-        },1000);
-        return false;
+        // var timer=null;
+        // var seconds=59;
+        // // 发送验证码后台切入口
+        // obj.css({"color":"#acacac"});
+        // obj.text("已发送(60)");
+        // timer=setInterval(function(){
+        //     obj.text("已发送("+seconds+")");
+        //     seconds--;
+        //     if(seconds<0){
+        //         clearInterval(timer);
+        //         obj.text("重新发送");
+        //         obj.css({"color":"#fff"});
+        //         obj.on("click",function(){
+        //             checkpost(obj,input_class);
+        //         });
+        //     }
+        // },1000);
+        // return false;
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "getVerifyCode",
+            url: $m.ajax_link+"getVerifyCode",
             dataType: "json",
-            data: {"openid":openid,"phone":input_txt,"type":2},
+            data: {"phone":input_txt,"type":type},
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
@@ -1302,7 +1339,7 @@ function checkpost(obj,input_class){
                             obj.text("重新发送");
                             obj.css({"color":"#fff"});
                             obj.on("click",function(){
-                                checkpost(obj,input_class);
+                                checkpost(obj,input_class,type);
                             });
                         }
                     },1000);
@@ -1313,7 +1350,7 @@ function checkpost(obj,input_class){
                     obj.text("获取验证码");
                     obj.css({"color":"#fff"});
                     obj.on("click",function(){
-                        checkpost(obj,input_class);
+                        checkpost(obj,input_class,type);
                     });
                 }
             },
@@ -1324,7 +1361,7 @@ function checkpost(obj,input_class){
                 obj.text("获取验证码");
                 obj.css({"color":"#fff"});
                 obj.on("click",function(){
-                    checkpost(obj,input_class);
+                    checkpost(obj,input_class,type);
                 });
             }
         });
@@ -1852,4 +1889,38 @@ function setMyCoupon(arr){
     $("#atten_box").fadeOut(100);
     $(".bg_div").fadeOut(200);
     $m.refreshPage();
+}
+
+
+// 设置本地存储
+function setLocalStorage(options){
+    if(window.localStorage){
+        for(var key in options){
+            localStorage.setItem(key,options[key]);
+        }
+    }else{
+
+    }
+}
+// 获取本地存储
+function getLocalStorage(key){
+    var val="";
+    if(window.localStorage){
+        val=localStorage.getItem(key)?localStorage.getItem(key):"";
+    }else{
+
+    }
+    return val;
+}
+// 删除本地存储
+function delLocalStorage(arr){
+    if(window.localStorage){
+        for(var i=0,len=arr.length;i<len;i++){
+            if(localStorage.getItem(arr[i])){
+                localStorage.removeItem(arr[i]);
+            }
+        }
+    }else{
+
+    }
 }

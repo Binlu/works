@@ -488,6 +488,7 @@ a.share_btn>img{
     background-size: 1em;
 }
 .inp2{
+    padding-left: 2em;
     background-image: url(../images/icon26.png);
     background-repeat: no-repeat;
     background-position: 2% center;
