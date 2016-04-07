@@ -187,7 +187,7 @@ $(function(){
         var id=getLocalStorage("id")?getLocalStorage("id"):"";
         if(is_sign==""){
             // 没登录
-            $m.toNext($(".page15"),function(){
+            $m.toDirect($(".page15"),function(){
                 $m.showPage();
                 $m.active_scroll=15;
                 $m.refreshPage();

@@ -45,8 +45,8 @@
                                     <img src="images/icon12.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <span class="js_get_city">出发城市</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_get_address">出发地址</span>
+                                    <span class="js_get_city" data-type="1">出发城市</span><span class="division_spn">&nbsp;</span>
+                                    <span class="js_get_address" data-type="1">出发地址</span>
                                 </div>
                             </a>
                             <a class="weui_cell" href="#" data-type="end">
@@ -54,8 +54,8 @@
                                     <img src="images/icon13.png" alt="icon">
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <span class="js_get_city">到达城市</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_get_address">目的地址</span>
+                                    <span class="js_get_city" data-type="2">到达城市</span><span class="division_spn">&nbsp;</span>
+                                    <span class="js_get_address" data-type="2">目的地址</span>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
@@ -153,7 +153,8 @@
                         </div>
                         <textarea class="text_area js_txt_area" placeholder="请在此手动输入" rows="7"></textarea>
                         <ul class="pic_list clear">
-                            <li><a class="btn2" href="javascript:;" title="添加照片"><img src="images/icon31.png" alt="添加照片"><span>添加照片</span></a></li>
+                            <li class="hide"><img src="images/icon31.png"><a class="btn1 del_btn" href="javascript:;"></a></li>
+                            <li><a class="btn2 js_album_btn" href="javascript:;" title="添加照片"><img src="images/icon31.png" alt="添加照片"><span>添加照片</span></a></li>
                         </ul>
                         <div class="check_box_div js_check_condition">
                             <a class="btn2 now_choice_a" href="javascript:;" title="是否有行李">是否有行李</a><br/>
@@ -282,7 +283,7 @@
                         <p class="txt_c js_set_order_p">正在为您派单中,请耐心等待。</p>
                         <h3 class="txt_c js_order_ele hide">为您服务的司机师傅</h3>
                         <div class="order_box js_drver js_order_ele hide">
-                            <h3 class="n_b txt_c"><img class="head_pic" src="images/1.jpg" alt="头像"/></h3>
+                            <h3 class="n_b txt_c"><img class="head_pic" src="images/defult_pic.jpg" alt="头像"/></h3>
                             <div class="header_info">
                                 <span>陕A8888</span><span class="color4">王师傅</span><br/>
                                 <div class="clear">
@@ -320,7 +321,7 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
                                 <span>陕A8888</span><span class="color4">王师傅</span><br/>
                                 <div class="clear">
@@ -371,7 +372,7 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
                                 <span style="margin-right: 0.5em">陕A8888</span><span class="color4">王师傅</span><br/>
                                 <div class="clear">
@@ -643,7 +644,7 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/1.jpg" alt="头像"/>
+                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
                                 <span>陕A8888</span><span class="color4">王师傅</span><br/>
                                 <ul class="star_list">
@@ -748,7 +749,7 @@
                 <!-- 标题 -->
                 <h3 class="head_tit">
                     <!-- 返回前页 -->
-                    <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                    <a class="btn1 return_btn js_back js_page_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                     <span>地址选择</span>
                 </h3>
                 <div class="search"><input id="tipinput" class="mysel c_search js_detail_search"/></div>
