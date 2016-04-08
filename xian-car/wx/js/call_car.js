@@ -57,8 +57,6 @@ var $m={
             myScroll14.refresh();
         }
     },
-    // ajax 请求地址
-    ajax_link: ["deal_info","is_set_info"],
     // 居中显示
     toCenter:function(obj,par){
         var dh=par.height();
@@ -146,7 +144,7 @@ var $m={
 }
 // 获取连接数据
 var link_obj=GetRequest();
-var user_id=link_obj["user_id"]?link_obj["user_id"]:"";
+var user_id=link_obj["user_id"]?link_obj["user_id"]:"25";
 // 地图
 var map=null,new_city=null;
 $(function(){
@@ -191,6 +189,8 @@ $(function(){
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
         $m.now_city=city;
+        $m.return_arr["city"]=city;
+        $m.return_arr["district"]=district;
         // 开始提交
         var arr={"user_id":user_id};
         subAjax(arr,$m.ajax_link+"getCityList",function(data){
@@ -433,17 +433,31 @@ $(function(){
     });
     // 立即叫车
     $(".js_call_btn").on("tap",function(){
-        // 开始请求
-        // setOrderDom();
-        $m.toNext($(".page6"),function(){
-            $m.active_scroll=6;
-            setTimeout(function(){
-                $(".js_set_order_p").hide();
-                $(".js_order_ele").show();
+        console.log($m.return_arr);
+        var return_arr=$m.return_arr;
+        if(return_arr["city"]==""){
+            msg("请选择出发城市",800);
+        }else if(return_arr["startName"]==""){
+            msg("请选择出发地点",800);
+        }else if(return_arr["endName"]==""){
+            msg("请选择目的地点",800);
+        }else if(return_arr["personNumber"]==0){
+            msg("请选择乘车人数",800);
+        }else{
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
+            $m.toNext($(".page6"),function(){
+                $m.active_scroll=6;
                 $m.refreshPage();
-            },1000)
-            
-        });
+            });
+            // 开始请求
+            var arr={"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"goNowTravel",setOrderDom,function(){
+                $(".js_set_order_p").hide();
+                $(".js_set_order_error").show();
+                $(".js_order_ele").hide();
+            });
+        }
     });
     // 资费详情
     $(".js_get_detail").on("tap",function(){
@@ -739,60 +753,7 @@ function ms(){
 	}
 
 	this.init1=function(arr,txt,oEle){
-		
-		// var _html1='<li class="tag jp_A">搜索结果</li>';
-		// var _html2='<li class="tag jp_A">搜索结果</li>';
-		// var _html3='<li class="tag jp_A">搜索结果</li>';
-		// var _html4='<li class="tag jp_A">搜索结果</li>';
-  //       var a={"jp":"","qp":"","hp":""};
-  //       var b={"jp":"","qp":"","hp":""};
-  //       // 获取简拼
-  //       b.fw=Pinyin.GetQP(txt)[0];
-  //       b.jp=Pinyin.GetJP(txt);
-  //       // 全拼
-  //       b.qp=Pinyin.GetQP(txt);
-  //       // 混拼
-  //       b.hp=Pinyin.GetHP(txt);
-  //       for(var i=0,len=arr.length;i<len;i++){
-  //       	a.fw=Pinyin.GetQP(arr[i]["name"])[0];
-  //           a.jp=Pinyin.GetJP(arr[i]["name"]);
-  //           a.qp=Pinyin.GetQP(arr[i]["name"]);
-  //           a.hp=Pinyin.GetHP(arr[i]["name"]);
-  //           if(a.fw==b.fw){
-  //           	// 首字母匹配
-  //           	if(a.qp==b.qp){
-  //                   // 匹配
-  //                   _html1+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
-  //                   oEle.html("");
-  //                   oEle.html(_html1);
-  //                   return false;
-  //               }else if(a.jp==b.jp){
-  //                   _html2+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
-  //                   oEle.html(_html2);
-  //                   return false;
-  //               }
-  //               else if(a.hp==b.hp){
-  //                   _html3+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
-  //                   oEle.html(_html3);
-  //                   return false;
-  //               }else{
-  //               	_html4+='<li class="opt js_'+Pinyin.GetJP(arr[i]["name"])[0].toUpperCase()+'" data-id="'+arr[i]["id"]+'"><span>'+arr[i]["name"]+'</span></li>';
-  //                   oEle.html(_html4);
-  //               }
-  //           }
-            
-  //       }
-  //       if(oEle.children("li").length==0){
-		// 	$(".c_list").siblings(".n_list").children(".at2").show().siblings().hide();
-		// 	$(".c_list").hide().siblings(".n_list").show();
-		// }else{
-		// 	oEle.show();
-		// 	$(".c_list").hide();
-		// }
-		ttscroll15.refresh();
 	}
-
-
 	this.init2=function(arr,txt,oEle){
 		var _html1='<li class="tag jp_A">搜索结果</li>';
 		var _html2='<li class="tag jp_A">搜索结果</li>';
@@ -949,7 +910,11 @@ function subAjax(arr,url,successFunc,errorFunc){
             }
         },
         error: function(XMLHttpRequest,textStatus,errorThrown){
-            msg("请求失败，请稍后重试！","确定");
+            msg("请求失败，请稍后重试！","确定",function(){
+                if(typeof errorFunc==="function" && errorFunc instanceof Function){
+                    errorFunc();
+                }
+            });
             $("#atten_box").fadeOut(100);
             $(".bg_div").fadeOut(200);
         }
@@ -1153,32 +1118,43 @@ function aboutInfo(func){
     }
 }
 // 生成订单详情
-function setOrderDom(){
-    $.ajax({
-        type: "POST",
-        url: url,
-        data:arr,
-        dataType: "json",
-        success: function(data){
-            if(data["status"]==0){
-                msg(data["data"],"确定",function(){
-                    $m.toPrev($(".page6"),function(){
-                        $m.active_scroll=1;
-                        $m.refreshPage();
-                    });
-                },true);
-            }else if(data["status"]==1){
-                $m.active_scroll=6;
-                $m.refreshPage();
-            }
-        },
-        error: function(XMLHttpRequest,textStatus,errorThrown){
-            msg("请求失败，请稍后重试！","确定",function(){
-                $m.toPrev($(".page6"),function(){
-                    $m.active_scroll=1;
-                    $m.refreshPage();
-                });
-            },true);
+function setOrderDom(data){
+
+    $(".js_set_order_p").hide();
+    $(".js_set_order_error").hide();
+    $(".js_order_ele").show();
+    $m.refreshPage();
+}
+
+// 设置本地存储
+function setLocalStorage(options){
+    if(window.localStorage){
+        for(var key in options){
+            localStorage.setItem(key,options[key]);
         }
-    });
+    }else{
+
+    }
+}
+// 获取本地存储
+function getLocalStorage(key){
+    var val="";
+    if(window.localStorage){
+        val=localStorage.getItem(key)?localStorage.getItem(key):"";
+    }else{
+
+    }
+    return val;
+}
+// 删除本地存储
+function delLocalStorage(arr){
+    if(window.localStorage){
+        for(var i=0,len=arr.length;i<len;i++){
+            if(localStorage.getItem(arr[i])){
+                localStorage.removeItem(arr[i]);
+            }
+        }
+    }else{
+
+    }
 }

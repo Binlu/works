@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/call_car.css">
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=892561bed1fcc4ef0f1b5e5ae031c64b&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+        <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=892561bed1fcc4ef0f1b5e5ae031c64b&plugin=AMap.Autocomplete,AMap.PlaceSearch,AMap.Geocoder"></script>
     </head>
     <body>
         <!-- 模拟屏幕 -->
@@ -89,7 +90,7 @@
                 <!-- 标题 -->
                 <h3 class="head_tit">
                     <!-- 返回前页 -->
-                    <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
+                    <a class="btn1 return_btn js_back js_page_back" href="javascript:;" title="返回" data-return="page1"><img src="images/icon10.png" alt="返回"></a>
                     <span>城市选择</span>
                     <!-- <div class="pos_div js_pos_div"><span class="pos_name js_pos_spn"></span><img src="images/icon29.png"/></div> -->
                 </h3>
@@ -281,6 +282,7 @@
                             </ul>
                         </div>
                         <p class="txt_c js_set_order_p">正在为您派单中,请耐心等待。</p>
+                        <p class="txt_c hide js_set_order_error">派单失败，请返回重试。</p>
                         <h3 class="txt_c js_order_ele hide">为您服务的司机师傅</h3>
                         <div class="order_box js_drver js_order_ele hide">
                             <h3 class="n_b txt_c"><img class="head_pic" src="images/defult_pic.jpg" alt="头像"/></h3>

@@ -155,6 +155,7 @@ var $m={
 var link_obj=GetRequest();
 // 用户id
 var user_id=link_obj["user_id"]?link_obj["user_id"]:"";
+var page_link=link_obj["page_link"]?link_obj["page_link"]:"";
 $(function(){
     // 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click:true,bounce:false,tap:true});
@@ -889,15 +890,22 @@ $(function(){
     $(".js_sign_btn").on("tap",function(){
         signInFuc($(this),function(re){
             msg("登录成功！",800);
-            $m.toPrev($(".page15"),function(){
-                $m.active_scroll=1;
-            });
-            $("#atten_box").fadeIn(100);
-            $(".bg_div").fadeIn(200);
-            // 获取个人信息
-            user_id=re["data"]["id"]?re["data"]["id"]:"";
-            setLocalStorage({"id":user_id,"is_sign":true});
-            setUserInfo(re);
+            if(page_link && page_link!=""){
+                var id=re["data"]["id"]?re["data"]["id"]:"";
+                var phone=re["data"]["user_login"]?re["data"]["user_login"]:"";
+                window.location.replace("call_car.html?user_id="+id+"&phone="+phone);
+            }else{
+                $m.toPrev($(".page15"),function(){
+                    $m.active_scroll=1;
+                });
+                $("#atten_box").fadeIn(100);
+                $(".bg_div").fadeIn(200);
+                // 获取个人信息
+                user_id=re["data"]["id"]?re["data"]["id"]:"";
+                setLocalStorage({"id":user_id,"is_sign":true});
+                setUserInfo(re);
+            }
+            
         });
     });
     // 注册
