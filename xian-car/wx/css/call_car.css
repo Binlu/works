@@ -70,6 +70,10 @@ textarea{
     margin: 0 1em;
     background-color: #000;
 }
+.p1_pos_spn{
+    display: inline-block;
+    width: 75%;
+}
 /*page2*/
 .tag{width:94%;padding:0 3%;line-height:2.3em;font-size:0.8em;color:#3b81c6}
 .opt{background:#fff;border-bottom:1px solid #eef;width:90%;padding:0.3em 5%;font-size:0.85em;font-weight:bold;line-height:2.5em}
@@ -328,6 +332,12 @@ textarea{
 .tel_btn>img{
     width: 1.8em;
 }
+.page6 .header_info>div{
+    display: block;
+}
+.p6_at_p{
+    margin-bottom: 2em;
+}
 .page6 .head_pic{
     width: 4em;
     height: 4em;
@@ -489,7 +499,7 @@ div.p6_form_change_div{
     vertical-align: middle;
 }
 .page8 .detail_list{
-    margin-left: 6em;
+    /*margin-left: 6em;*/
 }
 .page8 .detail_list>li{
     line-height: 1.8em;
@@ -548,6 +558,12 @@ div.p6_form_change_div{
     margin-top: 0.8em;
     border-radius: 0.2em;
     text-align: center;
+}
+.page8 .star_list{
+    margin-left: 0;
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
 }
 /*page21*/
 .page21 .content_box>h3{
@@ -624,6 +640,11 @@ li.now_choice_li{
     margin-top: 0.8em;
     border-radius: 0.2em;
     text-align: center;
+}
+.p6_attention_p{
+    display: none;
+    text-align: center;
+    margin-top: 2em;
 }
 /*page10*/
 .page10 .weui_cell{
@@ -783,3 +804,5 @@ div.p6_form_change_div{
 .page15 .c_search{
     background-image: url(../images/icon42.png);
 }
+
+.dis_ib{display: inline-block;}

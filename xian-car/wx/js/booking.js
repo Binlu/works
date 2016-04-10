@@ -53,8 +53,6 @@ var $m={
             myScroll14.refresh();
         }
     },
-    // ajax 请求地址
-    ajax_link: ["deal_info","is_set_info"],
     // 居中显示
     toCenter:function(obj,par){
         var dh=par.height();
@@ -135,162 +133,52 @@ var $m={
         "city":"",
         "district":"",
     },
-    s_arr2:[                         //城市数据
-        {
-            "id": "2",
-            "name": "西安市",
-            "level": "2",
-            "keyword": "xa",
-            "code": "A",
-            "servicedesc": "",
-            "addtime": "1456731385",
-            "listorder": "1",
-            "upid": "1",
-            "status": "1"
-        },
-        {
-            "id": "3",
-            "name": "榆林市",
-            "level": "3",
-            "keyword": "wy",
-            "code": "02",
-            "servicedesc": "未央服务站10Km免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "2",
-            "status": "1"
-        },
-        {
-            "id": "4",
-            "name": "宝鸡市",
-            "level": "2",
-            "keyword": "bj",
-            "code": "bj",
-            "servicedesc": "",
-            "addtime": "1456731385",
-            "listorder": "2",
-            "upid": "1",
-            "status": "1"
-        },
-        {
-            "id": "66",
-            "name": "太原市",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "23",
-            "name": "咸阳",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "55",
-            "name": "汉中",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "654",
-            "name": "延安",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "525",
-            "name": "商洛",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "52",
-            "name": "铜川",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-        {
-            "id": "223",
-            "name": "兰州",
-            "level": "3",
-            "keyword": "jt",
-            "code": "01",
-            "servicedesc": "金台区服务站10KM免费接送",
-            "addtime": "1456731385",
-            "listorder": "100",
-            "upid": "4",
-            "status": "1"
-        },
-    ],
+    s_arr2:[],
     now_city:"",           //当前定位城市
+    // ajax 请求地址前缀
+    ajax_link:"http://120.25.68.163/citytravel/index.php?g=admin&m=app&a=",
 }
 // 获取连接数据
 var link_obj=GetRequest();
-var page=link_obj["page"]?link_obj["page"]:1;
+var user_id=link_obj["user_id"]?link_obj["user_id"]:"";
 $(function(){
+    // 判断登录
+    (function(){
+        var id=getLocalStorage("id");
+        var phone=getLocalStorage("phone");
+        if(id=="" || phone==""){
+            window.location.href="member_center.html?page_link=call_car.html";
+        }else{
+            $m.return_arr["user_id"]=id;
+            user_id=id;
+            $m.return_arr["phone"]=phone;
+        }
+    })();
     $m.rs();
     // 绑定滚动
     // 绑定滚动
-    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false});
-    myScroll2=new IScroll('.js_city_box',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click: true});
-    myScroll15=new IScroll('.js_detail_box',{mouseWheel: true,hideScrollbar: true,click: true});
+    myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false,tap:true});
+    myScroll2=new IScroll('.js_city_box',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll3=new IScroll('.page3',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll4=new IScroll('.page4',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll5=new IScroll('.page5',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll6=new IScroll('.page6',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll7=new IScroll('.page7',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll8=new IScroll('.page8',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll9=new IScroll('.page9',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll10=new IScroll('.page10',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll12=new IScroll('.page12',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll13=new IScroll('.page13',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll14=new IScroll('.page14',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
+    myScroll15=new IScroll('.js_detail_box',{mouseWheel: true,hideScrollbar: true,click: true,tap:true});
     $m.showPage(function(){});
     // 绑定返回事件
-    $(".js_back").on("click",function(){
+    $(".js_back").on("tap",function(){
         $m.toPrev($(this).parents(".page"));
     });
-    (function(){
-        var d=new Date();
-        var h=d.getHours();
-        var m=d.getMinutes();
-        $(".js_time").text(h+":"+m);
-    })();
+    $(".js_page_back").on("click",function(){
+        $m.toPrev($(this).parents(".page"));
+    });
     // 高德地图
     new_city=new ms();
     //初始化地图对象，加载地图
@@ -309,10 +197,26 @@ $(function(){
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
         $m.now_city=city;
-        new_city.init_cs($m.s_arr2,city);
+        $m.return_arr["city"]=city;
+        $m.return_arr["district"]=district;
+        // 开始提交
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getCityList",function(data){
+            if(data && data["data"]){
+                $m.s_arr2=data["data"];
+                new_city.init_cs(data["data"],city);
+            }
+        });
+        // new_city.init_cs($m.s_arr2,city);
+        // 判断线路
+        var arr={"startName":city,"endName":city};
+        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+            console.log(re);
+            $m.return_arr["lineId"]=re["data"]["lineId"];
+        });
     });
     // 点击选择出发地
-    $(".js_get_address").on("click",function(){
+    $(".js_get_address").on("tap",function(){
         $(".js_get_address").removeClass("js_now_address");
         $(this).addClass("js_now_address");
         var s_city=$(".js_now_city").text()?$(".js_now_city").text():$m.now_city;
@@ -327,7 +231,7 @@ $(function(){
     // 显示
     $m.showPage(function(){});
     // 绑定返回事件
-    $(".js_back").on("click",function(){
+    $(".js_back").on("tap",function(){
         $m.toPrev($(this).parents(".page"));
     });
     searchbg1=$(".js_detail_search").css("background-image");
@@ -354,11 +258,11 @@ $(function(){
         }
         stopBubble(event);
     });
-    $(".js_city_box").on("click",function(event){
+    $(".js_city_box").on("tap",function(event){
         $(".js_city_search").blur();
         stopBubble(event);
     });
-    $(".js_azban_city td").on("click",function(event){
+    $(".js_azban_city td").on("tap",function(event){
         var x=$(this).html();
         // try{ttscroll1.scrollToElement(".jp_"+x,10);}catch(e){}
         $(".js_azban_city td").css({"color":"grey","font-weight":"normal"});
@@ -390,7 +294,7 @@ $(function(){
         }
         stopBubble(event);
     });
-    $(".js_detail_box").on("click",function(event){
+    $(".js_detail_box").on("tap",function(event){
         $(".js_detail_search").blur();
         stopBubble(event);
     });
@@ -403,7 +307,7 @@ $(function(){
         stopBubble(event);
     });
     // 选择城市
-    $(".js_get_city").on("click",function(){
+    $(".js_get_city").on("tap",function(){
         $(".js_city_search").val("");
         $(".js_detail_search").val("");
         $(".target_list").show().siblings().hide();
@@ -415,44 +319,140 @@ $(function(){
         });
     });
     // 确认选择
-    $(".js_city_box").on("click",".js_city_list .opt",function(){
+    $(".js_city_box").on("tap",".js_city_list .opt",function(){
         var txt=$(this).children("span").text()?$(this).children("span").text():"";
-        $(".js_now_city").text(txt);
+        var ncity=$(".page1 .js_now_city").text()?$(".page1 .js_now_city").text():"";
+        $(".page1 .js_now_city").text(txt);
+        var type=$(".page1 .js_now_city").attr("data-type")?$(".page1 .js_now_city").attr("data-type"):"";
+        var txt1,txt2;
+        if(type==1){
+            if(ncity!="" && ncity!=txt){
+                $m.return_arr["startName"]="";
+                $m.return_arr["startPoint"]="";
+                $(".page1 .js_now_city").siblings(".js_get_address").text("出发地址");
+            }
+            $m.return_arr["city"]=txt;
+            txt1=txt;
+            txt2=$(".js_get_city").eq(1).text();
+        }else{
+            // 选择了终点城市
+            if(ncity!="" && ncity!=txt){
+                $m.return_arr["endName"]="";
+                $m.return_arr["endPoint"]="";
+                $(".page1 .js_now_city").siblings(".js_get_address").text("目的地址");
+            }
+            txt2=txt;
+            txt1=$(".js_get_city").eq(0).text();
+        }
+        var arr={"startName":txt1,"endName":txt2};
+        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+            $m.return_arr["lineId"]=re["data"]["lineid"];
+        });
+        $m.toPrev($(".page2"),function(){
+            $m.active_scroll=1;
+        });
+    });
+    $(".js_city_box").on("tap",".js_search_city .opt",function(){
+        var txt=$(this).children("span").text()?$(this).children("span").text():"";
+        txt=pcformat(txt);
+        $(".page1 .js_now_city").text(txt);
+        var type=$(".page1 .js_now_city").attr("data-type")?$(".page1 .js_now_city").attr("data-type"):"";
+        var txt1,txt2;
+        if(type==1){
+            $m.return_arr["city"]=txt;
+            txt1=txt;
+            txt2=$(".js_get_city").eq(1).text();
+        }else{
+            // 选择了终点城市
+            txt2=txt;
+            txt1=$(".js_get_city").eq(0).text();
+        }
+        var arr={"startName":txt1,"endName":txt2};
+        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+            $m.return_arr["lineId"]=re["data"]["lineid"];
+        });
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
         });
     });
     // 确认选择地址
-    $(".js_detail_box").on("click",".js_detail_list .opt",function(){
+    $(".js_detail_box").on("tap",".js_detail_list .opt",function(){
         var txt=$(this).children("span").text()?$(this).children("span").text():"";
-        $(".js_now_address").text(txt);
+        var district=$(this).attr("data-district")?$(this).attr("data-district"):"";
+        var lat=$(this).attr("data-lat")?$(this).attr("data-lat"):"";
+        var lng=$(this).attr("data-lng")?$(this).attr("data-lng"):"";
+        var district=$(this).attr("data-district")?$(this).attr("data-district"):"";
+        $(".page1 .js_now_address").text(txt);
+        var type=$(".page1 .js_now_address").attr("data-type")?$(".page1 .js_now_address").attr("data-type"):"";
+        if(type==1){
+            $m.return_arr["startName"]=txt;
+            $m.return_arr["district"]=district;
+            $m.return_arr["startPoint"]=lng+","+lat;
+        }else if(type==2){
+            $m.return_arr["endName"]=txt;
+            $m.return_arr["endPoint"]=lng+","+lat;
+        }else{}
         $m.toPrev($(".page15"),function(){
             $m.active_scroll=1;
         });
+    });
+    // 切换约车方式
+    
+    $(".js_list>li").on("tap",function(){
+        var index=$(".js_list>li").index($(this));
+        $(this).children("a").addClass("now_choice_a");
+        $(this).siblings("li").children("a").removeClass("now_choice_a");
+        if(index==1){
+            $(".page1 .js_end_pos_btn").css({"display":"none"});
+            $(".page1 .js_car_day_btn").css({"display":"flex"});
+            $(".page1 .js_member").css({"display":"none"});
+        }else{
+            $(".page1 .js_end_pos_btn").css({"display":"flex"});
+            $(".page1 .js_car_day_btn").css({"display":"none"});
+            $(".page1 .js_member").css({"display":"flex"});
+        }
+        $m.return_arr["type"]=index+1;
+        $(".page1 .js_detail_div").eq(index).show().siblings(".js_detail_div").hide();
+        myScroll1.refresh();
     });
     // 时间插件
     var tt=new Date();
     var yy=tt.getFullYear();
     $('.js_date').date({theme:"datetime",beginyear:yy},function(obj,result){
         obj.find(".js_time_spn").text(result);
+        
     });
     // 有话说
-    $(".js_get_words").on("click",function(){
+    $(".js_get_words").on("tap",function(){
         $m.toNext($(".page3"),function(){
             $m.active_scroll=3;
             $m.refreshPage();
         });
     });
-    // 提交语音
-    $(".js_message_btn").on("click",function(){
-        msg("恭喜，提交成功！","确定",function(){
+    // 选择图片
+    $(".js_album_btn").on("tap",function(){
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original','compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album','camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                $(".js_occupying_image").attr("src",localIds);
+                
+            }
+        });
+    });
+    // 提交留言
+    $(".js_message_btn").on("tap",function(){
+        subMessage(function(){
+            msg("恭喜，提交成功！",800);
             $m.toPrev($(".page3"),function(){
                 $m.active_scroll=1;
             });
-        },true);
+        });
     });
     // 选择附加条件
-    $(".js_check_condition>a").on("click",function(){
+    $(".js_check_condition>a").on("tap",function(){
         if(!$(this).hasClass("now_choice_a")){
             $(this).addClass("now_choice_a");
         }else{
@@ -460,11 +460,11 @@ $(function(){
         }
     });
     // 预约天数数量控制
-    $(".js_add_num").on("click",function(){
+    $(".js_add_num").on("tap",function(){
         
         setNumFunc($(this),1);
     });
-    $(".js_red_num").on("click",function(){
+    $(".js_red_num").on("tap",function(){
         setNumFunc($(this),2);
     });
     $(".js_day_num").on("blur",function(){
@@ -486,7 +486,7 @@ $(function(){
         $(this).val(txt.replace(regx,''));
     });
     // 立即叫车
-    $(".js_call_btn").on("click",function(){
+    $(".js_call_btn").on("tap",function(){
         // 开始请求
         // setOrderDom();
         $m.toNext($(".page6"),function(){
@@ -500,23 +500,23 @@ $(function(){
         });
     });
     // 资费详情
-    $(".js_get_detail").on("click",function(){
+    $(".js_get_detail").on("tap",function(){
         $m.toNext($(".page5"),function(){
             $m.active_scroll=5;
             $m.refreshPage();
         });
     });
     // 填写取消订单框
-    $(".js_del_order").on("click",function(){
+    $(".js_del_order").on("tap",function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 取消修改
-    $(".js_cancel_btn").on("click",function(){
+    $(".js_cancel_btn").on("tap",function(){
         $(this).parent().parent().fadeOut(200);
         $(".bg_div").fadeOut(400);
     });
     // 确认取消订单
-    $(".js_order_btn").on("click",function(){
+    $(".js_order_btn").on("tap",function(){
         var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
         if(txt==""){
             msg("内容不能为空。",800);
@@ -534,28 +534,28 @@ $(function(){
         }
     });
     // 车辆详情
-    $(".js_drver").on("click",function(){
+    $(".js_drver").on("tap",function(){
         $m.toNext($(".page7"),function(){
             $m.active_scroll=7;
             $m.refreshPage();
         });
     });
     // 确认并立即约车
-    $(".js_called_btn").on("click",function(){
+    $(".js_called_btn").on("tap",function(){
         $m.toNext($(".page8"),function(){
             $m.active_scroll=8;
             $m.refreshPage();
         });
     });
     // 去支付剩余
-    $(".js_to_pay").on("click",function(){
+    $(".js_to_pay").on("tap",function(){
         $m.toNext($(".page20"),function(){
             $m.active_scroll=20;
             $m.refreshPage();
         });
     });
     // 去选择优惠券
-    $(".js_to_get_coupon").on("click",function(){
+    $(".js_to_get_coupon").on("tap",function(){
         $(".p9_btn_div").show();
         $(".coupon_list").addClass("js_coupon_list");
         $(".coupon_list>li").removeClass("now_choice_li");
@@ -565,7 +565,7 @@ $(function(){
         });
     });
     // 选择优惠券
-    $(".page9").on("click",".js_coupon_list>li",function(){
+    $(".page9").on("tap",".js_coupon_list>li",function(){
         if(!$(this).hasClass("now_choice_li")){
             $(this).addClass("now_choice_li");
         }else{
@@ -573,7 +573,7 @@ $(function(){
         }
     });
     // 确认选择优惠券
-    $(".js_choice_btn").on("click",function(){
+    $(".js_choice_btn").on("tap",function(){
         $m.toPrev($(".page9"),function(){
             $m.active_scroll=20;
             $m.refreshPage();
@@ -581,21 +581,21 @@ $(function(){
         });
     });
     // 使用详情
-    $(".js_rule").on("click",function(){
+    $(".js_rule").on("tap",function(){
         $m.toNext($(".page11"),function(){
             m.active_scroll=11;
             $m.refreshPage();
         });
     });
     // 添加优惠券
-    $(".js_add_coupon").on("click",function(){
+    $(".js_add_coupon").on("tap",function(){
         $m.toNext($(".page10"),function(){
             m.active_scroll=10;
             $m.refreshPage();
         });
     });
     // 确认添加优惠券
-    $(".js_add_coupon_btn").on("click",function(){
+    $(".js_add_coupon_btn").on("tap",function(){
         var arr=[];
         $(".page10 .js_input_area").each(function(){
             var txt=$(this).val()?$(this).val():"";
@@ -618,13 +618,13 @@ $(function(){
     });
     
     // 选择支付方式
-    $(".js_pay_list>li").on("click",function(){
+    $(".js_pay_list>li").on("tap",function(){
         var a=$(this).children("a").children("span");
         a.addClass("now_choice_spn");
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
     // 确认支付按钮
-    $(".js_pay_sure_btn").on("click",function(){
+    $(".js_pay_sure_btn").on("tap",function(){
         var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
         if(type==2){
             // 余额支付
@@ -645,18 +645,18 @@ $(function(){
         }
     });
     // 找回密码
-    $(".js_get_pass").on("click",function(){
+    $(".js_get_pass").on("tap",function(){
         $m.toNext($(".page13"),function(){
             $m.active_scroll=13;
             $m.refreshPage();
         });
     });
     // 获取验证码
-    $(".page13 .js_get_code").on("click",function(){
+    $(".page13 .js_get_code").on("tap",function(){
         checkpost($(this),"page13 .js_mobile");
     });
     // 确认修改密码
-    $(".js_sure_resetpass").on("click",function(){
+    $(".js_sure_resetpass").on("tap",function(){
         toSubPass($(this),function(){
             $m.toPrev($(".page13"),function(){
                 $m.active_scroll=14;
@@ -671,7 +671,7 @@ $(function(){
         $(this).val(txt.replace(regx,''));
     });
     // 余额支付
-    $(".js_pay_balance_now").on("click",function(){
+    $(".js_pay_balance_now").on("tap",function(){
         var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
@@ -689,7 +689,7 @@ $(function(){
         }
     });
     // 线下支付
-    $(".js_offline_btn").on("click",function(){
+    $(".js_offline_btn").on("tap",function(){
         $(".js_del_order").hide();
         $(".p3_btn_div").children(".js_to_pay").hide();
         $m.toPrev($(".page20"),function(){
@@ -703,7 +703,7 @@ $(function(){
         // });
     });
     // 评星星数量
-    $(".page").on("click",".js_star_list>li",function(){
+    $(".page").on("tap",".js_star_list>li",function(){
         var a=$(this),b=a.children("img"),c=a.parent();
         var leven=a.attr("data-star")?a.attr("data-star"):"3";
         c.children("li").each(function(i){
@@ -715,7 +715,7 @@ $(function(){
         });
     });
     // 提交评价
-    $(".js_sub_evaluate").on("click",function(){
+    $(".js_sub_evaluate").on("tap",function(){
         msg("评论成功",800);
         $(this).hide();
         $(".js_can_star").removeClass("js_star_list");
@@ -729,11 +729,45 @@ $(function(){
     });
     $(window).on("resize",function(){$m.rs()});
 });
+// 请求数据
+function subAjax(arr,url,successFunc,errorFunc){
+    $.ajax({
+        type: "POST",
+        url: url,
+        data:arr,
+        dataType: "json",
+        success: function(data){
+            if(data["status"]==1){
+                if(typeof successFunc==="function" && successFunc instanceof Function){
+                    successFunc(data);
+                }
+            }else{
+                if(typeof errorFunc==="function" && errorFunc instanceof Function){
+                    errorFunc();
+                }
+                msg(data["data"],800);
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+            }
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            msg("请求失败，请稍后重试！","确定",function(){
+                if(typeof errorFunc==="function" && errorFunc instanceof Function){
+                    errorFunc();
+                }
+            });
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+        }
+    });
+}
 function ms(){
     // 初始化
     this.init=function(){
         $(".js_city_search").val("");
         $(".js_search_city").html("").hide();
+        $(".js_detail_list").html("").show();
+        $(".js_detail_att").hide();
         if($(".js_city_list>li").length>0){
             $(".js_city_list").show().siblings(".n_list").hide();
         }else{
@@ -928,6 +962,28 @@ function setCityDetail(){
 function pcformat(txt){
     return txt.replace("省","").replace("市","").replace("维吾尔族自治区","").replace("特别行政区","").replace("自治区","");
 }
+// 提交留言
+function subMessage(func){
+    var input_txt=$(".page3 .js_txt_area").val();
+    if(input_txt=="" || input_txt==null || input_txt=="undefined"){
+        msg("请填写留言内容",800);
+    }else{
+        var ch_obj=$(".page3 .js_check_condition>a");
+        var isbag=0,ischildren=0;
+        if(ch_obj.eq(0).hasClass("now_choice_a")){
+            isbag=1;
+        }
+        if(ch_obj.eq(1).hasClass("now_choice_a")){
+            ischildren=1;
+        }
+        $m.return_arr["desc"]=input_txt;
+        $m.return_arr["isBag"]=isbag;
+        $m.return_arr["isChildren"]=ischildren;
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+    }
+}
 // 阻止事件冒泡
 function stopBubble(e){
 	if(e && e.stopPropagation){
@@ -1021,4 +1077,111 @@ function setNumFunc(obj,type){
         num=max;
     }
     a.val(num);
+}
+// 设置本地存储
+function setLocalStorage(options){
+    if(window.localStorage){
+        for(var key in options){
+            localStorage.setItem(key,options[key]);
+        }
+    }else{
+
+    }
+}
+// 获取本地存储
+function getLocalStorage(key){
+    var val="";
+    if(window.localStorage){
+        val=localStorage.getItem(key)?localStorage.getItem(key):"";
+    }else{
+
+    }
+    return val;
+}
+// 删除本地存储
+function delLocalStorage(arr){
+    if(window.localStorage){
+        for(var i=0,len=arr.length;i<len;i++){
+            if(localStorage.getItem(arr[i])){
+                localStorage.removeItem(arr[i]);
+            }
+        }
+    }else{
+
+    }
+}
+/*--------------------微信配置-------------------------*/
+// 微信配置接口
+function weSet(arr){
+    wx.config({
+        debug: false,
+        appId: arr["appid"], 
+        timestamp: arr["timestamp"], 
+        nonceStr: arr["nonceStr"], 
+        signature: arr["signature"], 
+        jsApiList:[
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'hideMenuItems',
+            'chooseImage',               //拍照或从手机相册中选图接口
+            'previewImage',              //预览图片接口
+            'uploadImage',               //上传图片接口
+            'downloadImage',             //下载图片接口
+            'scanQRCode',                //调起微信扫一扫接口
+            'chooseWXPay',               //调起微信支付接口
+        ] 
+    });
+    wx.ready(function(){
+
+        wx.onMenuShareTimeline({
+            title: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享标题
+            link: "http://cdn.wemediacn.com/webpage_laneige/api/CoverService.aspx?r_url=http://weapp.wemediacn.com/laneige/applyinfo/201603/index.html", // 分享链接
+            imgUrl: "http://bos.bj.baidubce.com/we-sh2/laneige/applyinfo/yun/201603/images/share.jpg", // 分享图标
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareAppMessage({
+            title: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享标题
+            desc: '#兰芝2016明星礼赠#快来领取最受欢迎的兰芝明星产品四件套~', // 分享描述
+            link: "http://cdn.wemediacn.com/webpage_laneige/api/CoverService.aspx?r_url=http://weapp.wemediacn.com/laneige/applyinfo/201603/index.html", // 分享链接
+            imgUrl: "http://bos.bj.baidubce.com/we-sh2/laneige/applyinfo/yun/201603/images/share.jpg", // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () { 
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () { 
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        // 隐藏按钮
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:readMode', // 阅读模式
+                'menuItem:copyUrl' ,// 复制链接
+                'menuItem:share:qq',//分享qq
+                'menuItem:share:weiboApp',//分享微博
+                'menuItem:share:facebook',//分享到FB
+                'menuItem:jsDebug',//调试
+                'menuItem:editTag',//编辑标签
+                'menuItem:delete',//删除
+                'menuItem:originPage',//原网页
+                'menuItem:openWithQQBrowser',//qq浏览器打开
+                'menuItem:openWithSafari',//safari浏览器打开
+                'menuItem:share:email',//邮件
+                'menuItem:share:brand',//特殊公众号
+            ],
+            success: function (res) {
+                console.log("ok");
+            },
+            fail: function (res) {
+                console.log(JSON.stringify(res));
+            }
+        });
+    });
 }

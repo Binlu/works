@@ -880,7 +880,7 @@ $(function(){
     });
     // 退出登录
     $(".js_sign_out").on("tap",function(){
-        delLocalStorage(["is_sign"]);
+        delLocalStorage(["is_sign","id"]);
         $m.toNext($(".page15"),function(){
             $m.active_scroll=15;
             $m.refreshPage();
@@ -890,10 +890,11 @@ $(function(){
     $(".js_sign_btn").on("tap",function(){
         signInFuc($(this),function(re){
             msg("登录成功！",800);
+            user_id=re["data"]["id"]?re["data"]["id"]:"";
+            var phone=re["data"]["user_login"]?re["data"]["user_login"]:"";
+            setLocalStorage({"id":user_id,"is_sign":true,"phone":phone});
             if(page_link && page_link!=""){
-                var id=re["data"]["id"]?re["data"]["id"]:"";
-                var phone=re["data"]["user_login"]?re["data"]["user_login"]:"";
-                window.location.replace("call_car.html?user_id="+id+"&phone="+phone);
+                window.location.replace(page_link);
             }else{
                 $m.toPrev($(".page15"),function(){
                     $m.active_scroll=1;
@@ -901,8 +902,7 @@ $(function(){
                 $("#atten_box").fadeIn(100);
                 $(".bg_div").fadeIn(200);
                 // 获取个人信息
-                user_id=re["data"]["id"]?re["data"]["id"]:"";
-                setLocalStorage({"id":user_id,"is_sign":true});
+                
                 setUserInfo(re);
             }
             
@@ -1885,7 +1885,7 @@ function setMyCoupon(arr){
             _html+='</li>';
         }
         $(".js_mycoupon_list").append(_html);
-        $(".page6 js_co.upon_list").show().siblings(".p6_attention_p").hide().siblings(".js_p6_btn_div").show();
+        $(".page6 js_coupon_list").show().siblings(".p6_attention_p").hide().siblings(".js_p6_btn_div").show();
         if(!$m.my_coupon["is_add"]){
             $m.my_coupon["is_add"]=true;
         }

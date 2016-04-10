@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <span class="js_get_city" data-type="1">出发城市</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_get_address" data-type="1">出发地址</span>
+                                    <span class="js_get_address p1_pos_spn" data-type="1">出发地址</span>
                                 </div>
                             </a>
                             <a class="weui_cell" href="#" data-type="end">
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <span class="js_get_city" data-type="2">到达城市</span><span class="division_spn">&nbsp;</span>
-                                    <span class="js_get_address" data-type="2">目的地址</span>
+                                    <span class="js_get_address p1_pos_spn" data-type="2">目的地址</span>
                                 </div>
                                 <div class="weui_cell_ft">
                                     <!-- 说明文字 -->
@@ -275,33 +275,40 @@
                         <div class="order_box">
                             <h3 class="color6 txt_c">订单详情</h3>
                             <ul>
-                                <li><img src="images/icon12.png" alt="icon"><span>今天</span><span>22:00</span></li>
-                                <li><img src="images/icon12.png" alt="icon"><span>神木</span></li>
-                                <li><img src="images/icon13.png" alt="icon"><span>大柳塔</span></li>
-                                <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li>
+                                <li><img src="images/icon12.png" alt="icon"><span class="dis_ib js_now_times"></span>
+                                    <div class="f_r">
+                                        <span>乘车人数：</span>
+                                        <span class="color5 js_pers_num_spn">1</span>
+                                        <span>人</span>
+                                    </div>
+                                </li>
+                                <li><img src="images/icon12.png" alt="icon"><span class="js_start_spn">神木</span></li>
+                                <li><img src="images/icon13.png" alt="icon"><span class="js_end_spn">大柳塔</span></li>
+                                <li class="js_add_condition hide"><img src="images/icon15.png" alt="icon"><span>有小孩</span></li>
+                                <li class="js_add_condition hide"><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li>
                             </ul>
                         </div>
-                        <p class="txt_c js_set_order_p">正在为您派单中,请耐心等待。</p>
+                        <p class="txt_c p6_at_p js_set_order_p">正在为您派单中,请耐心等待。</p>
                         <p class="txt_c hide js_set_order_error">派单失败，请返回重试。</p>
                         <h3 class="txt_c js_order_ele hide">为您服务的司机师傅</h3>
                         <div class="order_box js_drver js_order_ele hide">
-                            <h3 class="n_b txt_c"><img class="head_pic" src="images/defult_pic.jpg" alt="头像"/></h3>
+                            <h3 class="n_b txt_c"><img class="head_pic js_driver_head_pic" src="images/defult_pic.jpg" alt="头像"/></h3>
                             <div class="header_info">
-                                <span>陕A8888</span><span class="color4">王师傅</span><br/>
+                                <span class="car_number">陕A8888</span><span class="color4 js_driver_name">王师傅</span><br/>
                                 <div class="clear">
-                                    <ul class="star_list">
-                                        <li><img src="images/icon11.png" alt="星星"></li>
-                                        <li><img src="images/icon11.png" alt="星星"></li>
-                                        <li><img src="images/icon11.png" alt="星星"></li>
-                                        <li><img src="images/icon11.png" alt="星星"></li>
-                                        <li><img src="images/icon11.png" alt="星星"></li>
+                                    <ul class="star_list js_driver_star">
+                                        <li><img src="images/icon16.png" alt="星星"></li>
+                                        <li><img src="images/icon16.png" alt="星星"></li>
+                                        <li><img src="images/icon16.png" alt="星星"></li>
+                                        <li><img src="images/icon16.png" alt="星星"></li>
+                                        <li><img src="images/icon16.png" alt="星星"></li>
                                     </ul>
-                                    <a class="btn2 tel_btn f_r" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
+                                    <a class="btn2 tel_btn f_r js_driver_mobile" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
                                 </div>
                                 <!-- 服务信息 -->
                                 <div class="driver_rank">
-                                    <label>服务次数：</label><span>200</span>
-                                    <div class="f_r"><label>司机排名：</label><span>10</span></div>
+                                    <label>服务次数：</label><span class="js_service_num">200</span>
+                                    <div class="f_r"><label>司机排名：</label><span class="js_driver_ranking">10</span></div>
                                 </div>
                             </div>
                         </div>
@@ -374,9 +381,9 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
+                            <img class="head_pic js_driver_head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
-                                <span style="margin-right: 0.5em">陕A8888</span><span class="color4">王师傅</span><br/>
+                                <span class="car_number" style="margin-right: 0.5em">陕A8888</span><span class="color4 js_driver_name">王师傅</span><br/>
                                 <div class="clear">
                                     <ul class="star_list">
                                         <li><img src="images/icon11.png" alt="星星"></li>
@@ -385,38 +392,47 @@
                                         <li><img src="images/icon11.png" alt="星星"></li>
                                         <li><img src="images/icon11.png" alt="星星"></li>
                                     </ul>
-                                    <a class="btn2 tel_btn f_r" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
+                                    <a class="btn2 tel_btn f_r js_driver_mobile" href="javascript:;" title="电话"><img src="images/icon14.png" alt="电话"></a>
                                 </div>
                                 <!-- 服务信息 -->
                                 <div class="driver_rank">
-                                    <label>服务次数：</label><span>200</span>
-                                    <div class="f_r"><label>司机排名：</label><span>10</span></div>
+                                    <label>服务次数：</label><span class="js_service_num">200</span>
+                                    <div class="f_r"><label>司机排名：</label><span class="js_driver_ranking">10</span></div>
                                 </div>
                             </div>
                         </div>
                         <h3><label class="f_l">&nbsp;</label><span class="color6">订单详情</span><label class="f_r">&nbsp;</label></h3>
                         <ul class="detail_list">
-                            <li class="clear"><img src="images/icon12.png" alt="icon"><span>今天</span><span>22:00</span><div class="f_r">乘车人数<span class="color5">1</span>人</div></li>
-                            <li><img src="images/icon12.png" alt="icon"><span>神木</span></li>
-                            <li><img src="images/icon13.png" alt="icon"><span>大柳塔</span></li>
-                            <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li>
+                            <li class="clear"><img src="images/icon12.png" alt="icon"><span class="js_order_time">22:00</span>
+                                <div class="f_r js_customer_div">乘车人数：<span class="color5 v_base">1</span>人</div>
+                                <div class="f_r js_customer_div">包车天数：<span class="color5 v_base">1</span>天</div>
+                            </li>
+                            <li><img src="images/icon12.png" alt="icon"><span class="js_start_address">神木</span></li>
+                            <li><img src="images/icon13.png" alt="icon"><span class="js_end_address">大柳塔</span></li>
+                            <!-- <li><img src="images/icon15.png" alt="icon"><span>需要捎一件行李</span></li> -->
                         </ul>
-                        <div class="txt_c"><span>预计司机</span><span>15min</span><span>后到达</span></div>
+                        <ul class="trip_de_list js_additional_list">
+                            <li>
+                                <img src="images/icon13.png" alt="icon"/>
+                                <span>需要捎一件行李</span>
+                            </li>
+                        </ul>
+                        <!-- <div class="txt_c"><span>预计司机</span><span>15min</span><span>后到达</span></div> -->
                         <h3><label class="f_l">&nbsp;</label><span class="color6">车费支付</span><label class="f_r">&nbsp;</label></h3>
                         <div class="pay_box">
                             <a class="btn2 js_to_get_coupon" href="javascript:;" title="优惠券">
                                 <label>优惠券</label>
-                                已使用<span class="color6 font12 v_base">5</span>元
+                                已使用<span class="color6 font12 v_base">0</span>元
                             </a>
                             <div class="txt_c">
-                                还需支付 <span class="font18 color6 v_base">25</span> 元
+                                还需支付 <span class="font18 color6 v_base js_pay_price">25</span> 元
                             </div>
                             <ul class="pay_type_list js_pay_list">
-                                <li>
+                                <li class="js_now" data-type="1">
                                     <a class="btn2" href="javascript:;" title="微信支付">
                                         <img src="images/icon33.png" alt="微信"><br/>
                                         微信<br/>
-                                        <span class="" data-type="1">&nbsp;</span>
+                                        <span class="now_choice_spn">&nbsp;</span>
                                     </a>
                                 </li>
                                 <!-- <li>
@@ -433,11 +449,11 @@
                                         <span>&nbsp;</span>
                                     </a>
                                 </li> -->
-                                <li>
+                                <li class="" data-type="2">
                                     <a class="btn2" href="javascript:;" title="余额支付">
                                         <img src="images/icon36.png" alt="余额"><br/>
                                         余额<br/>
-                                        <span class="now_choice_spn" data-type="2">&nbsp;</span>
+                                        <span class="">&nbsp;</span>
                                     </a>
                                 </li>
                             </ul>
@@ -546,7 +562,7 @@
                         <div class="txt_r">
                             <a class="btn2 js_rule" href="javascript:;" title="使用规则">使用规则</a>
                         </div>
-                        <ul class="coupon_list">
+                        <ul class="coupon_list js_mycoupon_list">
                             <li>
                                 <div class="txt_r"><label class="font08">编号：</label><span class="font08">HG23456777</span></div>
                                 <div><label class="v_base">优惠券</label><span class="font18 color6 v_base">5</span><span class="v_base">元</span></div>
@@ -566,6 +582,7 @@
                                 <div class="font08">有效期至 2016-01-21</div>
                             </li>
                         </ul>
+                        <p class="p6_attention_p">暂时没有优惠券。</p>
                         <div class="p9_btn_div hide">
                             <a class="btn btn1 b_color3 js_choice_btn" href="javascript:;" title="确定">确定</a>
                         </div>
@@ -615,7 +632,7 @@
                     <!-- 标题 -->
                     <h3 class="head_tit">
                         <!-- 返回前页 -->
-                        <a class="btn1 return_btn js_back" href="javascript:;" title="返回" data-return="page7"><img src="images/icon10.png" alt="返回"></a>
+                        <a class="btn1 return_btn js_back js_page_back" href="javascript:;" title="返回" data-return="page7"><img src="images/icon10.png" alt="返回"></a>
                         <span>使用规则</span>
                     </h3>
                     <!-- 内容 -->
@@ -646,7 +663,7 @@
                     <!-- 内容 -->
                     <div class="content_box">
                         <div class="header_info">
-                            <img class="head_pic" src="images/defult_pic.jpg" alt="头像"/>
+                            <img class="head_pic js_driver_head_pic" src="images/defult_pic.jpg" alt="头像"/>
                             <div>
                                 <span>陕A8888</span><span class="color4">王师傅</span><br/>
                                 <ul class="star_list">
@@ -677,7 +694,7 @@
                                         <img src="images/icon12.png" alt="icon"/>
                                         <span>20:25</span>
                                         <div class="f_r">
-                                            <label>包车天数：</label><span class="color5">1</span><span>天</span>
+                                            <label class="v_base">乘车人数：</label><span class="color5 v_base">1</span><span class="v_base">天</span>
                                         </div>
                                     </li>
                                     <li>
@@ -820,6 +837,7 @@
         <script src="js/pinyin.js"></script>
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript" src="js/frame.js"></script>
+        <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
         <script type="text/javascript" src="js/call_car.js"></script>
     </body>
    
