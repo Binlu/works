@@ -38,15 +38,18 @@
                         <!-- 展示钟表 -->
                         <div class="p1_div1">
                             <img class="top_pic" src="images/1.jpg" alt="钟表"/>
-                            <a class="btn3 btn_type1 js_sub" href="javascript:;" title="点击抢券"><img class="top_pic" src="images/btn1.png" alt="点击抢券"/><span>点击<br/>抢券</span></a>
+                            <a class="btn3 btn_type1 js_sub" href="javascript:;" title="点击抢券"><img class="top_pic" src="images/btn1.png" alt="点击抢券"/><span class="animate1">点击<br/>抢券</span></a>
                         </div>
                         <!-- 倒计时 -->
                         <div class="p1_div2">
-                            <p>距离活动开始还有：</p>
+                            <!-- 后台时间 -->
+                            <input id="date" type="hidden" value="2016-03-29 10:00:55">
+                            <input id="stock" type="hidden" value="2">
+                            <p class="js_status_txt">距离活动开始还有：</p>
                             <ul class="time_list">
-                                <li><div><img class="js_time_pic" src="images/1.png" alt="0"></div><div><img class="js_time_pic" src="images/0.png" alt="0"></div>
+                                <li><div><img class="js_time_pic" src="images/0.png" alt="0"></div><div><img class="js_time_pic" src="images/0.png" alt="0"></div>
                                 </li>
-                                <li><div><img class="js_time_pic" src="images/0.png" alt="0"></div><div><img class="js_time_pic" src="images/3.png" alt="0"></div>
+                                <li><div><img class="js_time_pic" src="images/0.png" alt="0"></div><div><img class="js_time_pic" src="images/0.png" alt="0"></div>
                                 </li>
                                 <li><div><img class="js_time_pic" src="images/0.png" alt="0"></div><div><img class="js_time_pic" src="images/0.png" alt="0"></div>
                                 </li>
@@ -70,8 +73,6 @@
                     <div class="header">
                         <h3 class="tit">
                             活动规则
-                            <!-- 规则关闭 -->
-                            <a class="btn2 js_close_btn" href="javascript:;" title="关闭规则"><img src="images/icon1.png" alt="关闭规则"/></a>
                         </h3>
                     </div>
                     <div class="content">
@@ -92,6 +93,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- 规则关闭 -->
+                <a class="btn2 js_close_btn" href="javascript:;" title="关闭规则"><img src="images/icon1.png" alt="关闭规则"/></a>
             </div>
             <!-- 背景 -->
             <div class="bg_div"></div>
@@ -113,23 +116,6 @@
             // 定义滚动
             var myScroll1 = new IScroll('.page1',{mouseWheel: true,hideScrollbar: false,click: true});
             var myScroll2 = new IScroll('.page2',{mouseWheel: true,hideScrollbar: false,click: true});
-            // 提示信息
-            // 获取连接数据
-            // var link_obj=GetRequest();
-            // var openid=link_obj["openid"]?link_obj["openid"]:"";
-            // // 获取页面url数据
-            // function GetRequest(){ 
-            //     var url = location.search; //获取url中"?"符后的字串 
-            //     var theRequest = new Object(); 
-            //     if (url.indexOf("?") != -1) { 
-            //         var str = url.substr(1); 
-            //         strs = str.split("&"); 
-            //         for(var i = 0; i < strs.length; i ++) { 
-            //             theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
-            //         }
-            //     } 
-            //     return theRequest; 
-            // };
             // 自定义方法
             var $m={
                 // 分享链接
@@ -161,14 +147,17 @@
                     obj.css({"margin-top": (dh-oh)/2-50+"px"});
                 },
             }
+            var ntime=null;              //倒计时对象
             $(function(){
-                var aaa=[23,34];
                 // 绑定滚动
                 $m.rs();
                 $("#atten_box").fadeOut(200,function(){
                 });
-                m.setcss({"butbg":"#4278b9"});
-                var ntime=new countDown();
+                //设置按钮颜色
+                m.setcss({"butbg":"#e60a4b"});
+                // 实例化倒计时
+                var n_date=$("#date").val()?$("#date").val():new Date();
+                ntime=new countDown(n_date);
                 ntime.init();
                 // 查看活动规则
                 $(".js_rule_btn").on("click",function(){
@@ -184,24 +173,26 @@
                     });
                     $(".bg_div").fadeOut(400);
                 });
-                // 申领
-                $(".js_get_btn").on("click",function(){
-                    // 已申领
-                    window.location.href="form.html?openid="+openid;
+                // 点击抢券
+                $(".js_sub").on("click",function(){
+                    subFunc($(this));
                 });
                 $(window).on("resize",function(){$m.rs()});
             });
 // 倒计时
-function countDown(){
-    this.ndate  =new Date();            //当前日期对象
-    this.start_t="2016-1-5";            //开始日期
+function countDown(date){
+    this.ndate  =new Date(date);        //当前服务器时间
+    this.ntimes =this.ndate.getTime();  //当前服务器时间长
+    this.start_t="2016-4-5";            //开始日期
     this.end_t  ="2016-5-5 23:59:59";            //结束日期
-    this.begin_t=[10,14,20];            //开抢时间点
+    this.begin_t=["10:00","14:00","20:00"];            //开抢时间点
     this.time_spot=[];
     this.length_t=5*60*1000;                 //开抢时长 单位毫秒
-    this.day="0,1,2,3,4";                 //活动具体星期
+    this.day="1,2,3,4";                 //活动具体星期
     this.status=null;                   //当前时间的活动状态   1=没有到日子，2=星期没对应，3=没到时间点，4=活动过期了，5=正在开抢中；以上几个状态依次判断来
     this.timer=null;                    //计时器
+    this.change_txt1=true;               //是否需要修改dom
+    this.change_txt2=true;               //是否需要修改dom
 }
 countDown.prototype={
     init:function(){                 //初始化数据
@@ -213,12 +204,19 @@ countDown.prototype={
         var nd=a.ndate.getDate();
         var str=ny+"-"+nm+"-"+nd;
         for(var i=0,len=a.begin_t.length;i<len;i++){
-            var times=a.getTimes(str+" "+a.begin_t[i]+":00:00");
+            var times=a.getTimes(str+" "+a.begin_t[i]+":00");
             a.time_spot.push(times);
         }
-        a.getStatus();
+        // 先执行一次
+        // var arr=a.getStatus();
+        // arr=arr.length==0?[0,0,0]:arr;
+        // setDom(a.status,arr);
+        // 开始计时
         a.timer=setInterval(function(){
-            a.getStatus();
+            var arr=a.getStatus();
+            arr=arr.length==0?[0,0,0]:arr;
+            setDom(a.status,arr);
+            a.ntimes+=1000;
         },1000);
     },
     getTimes:function(str){          //转换时间
@@ -228,10 +226,9 @@ countDown.prototype={
     },
     getStatus:function(){
         var a=this;
-        var ndate=new Date();
-        var ntimes=ndate.getTime();          //当前总ms
-        var nday=ndate.getDay();             //当前星期
-        var nh=ndate.getHours();             //当前时间点
+        var ntimes=a.ntimes;          //当前总ms
+        var nday=a.ndate.getDay();             //当前星期
+        var nh=a.ndate.getHours();             //当前时间点
         var times_num=0;                     //时间差 s
         var return_arr=[];                   //返回数据
         if(ntimes<a.start_t){
@@ -246,35 +243,35 @@ countDown.prototype={
                     a.status=5;
                 }else{
                     a.status=3;
-                    if(a.begin_t[0]>nh){
+                    if(a.time_spot[0]>ntimes){
                         // 未到8点
                         times_num=(a.time_spot[0]-ntimes)/1000;
                         var h=Math.floor(times_num/3600)
                         var m=Math.floor((times_num-h*3600)/60);
                         var s=Math.floor(times_num-h*3600-m*60);
                         return_arr=[h,m,s];
-                        setDom(a.status,return_arr);
-                    }else if(a.begin_t[1]>nh){
+                        // setDom(a.status,return_arr);
+                    }else if(a.time_spot[1]>ntimes){
                         // 未到14点
                         times_num=(a.time_spot[1]-ntimes)/1000;
                         var h=Math.floor(times_num/3600)
                         var m=Math.floor((times_num-h*3600)/60);
                         var s=Math.floor(times_num-h*3600-m*60);
                         return_arr=[h,m,s];
-                        setDom(a.status,return_arr);
-                    }else if(a.begin_t[2]>nh){
+                        // setDom(a.status,return_arr);
+                    }else if(a.time_spot[2]>ntimes){
                         // 未到20点
                         times_num=(a.time_spot[2]-ntimes)/1000;
                         var h=Math.floor(times_num/3600)
                         var m=Math.floor((times_num-h*3600)/60);
                         var s=Math.floor(times_num-h*3600-m*60);
                         return_arr=[h,m,s];
-                        setDom(a.status,return_arr);
+                        // setDom(a.status,return_arr);
                     }else{
                         // 过了20点
                         var ny=a.ndate.getFullYear();
                         var nm=a.ndate.getMonth()+1;
-                        var nd=a.ndate.getDate()+1;
+                        var nd=a.ndate.getDate();
                         var str="";
                         var td=null;
                         if(nday==4){
@@ -289,14 +286,14 @@ countDown.prototype={
                             // 4月判断
                             nd+=1;
                         }
-                        str=ny+"-"+nm+"-"+nd+a.begin_t[0]+":00:00";
+                        str=ny+"-"+nm+"-"+nd+" "+a.begin_t[0]+":00";
                         td=new Date(str);
                         times_num=(td.getTime()-ntimes)/1000;
                         var h=Math.floor(times_num/3600)
                         var m=Math.floor((times_num-h*3600)/60);
                         var s=Math.floor(times_num-h*3600-m*60);
                         return_arr=[h,m,s];
-                        setDom(a.status,return_arr);
+                        // setDom(a.status,return_arr);
                     }
                 }
             }else{
@@ -317,6 +314,25 @@ countDown.prototype={
 }
 // 显示dom
 function setDom(status,arr){
+    // 1=没有到日子，2=星期没对应，3=没到时间点，4=活动过期了，5=正在开抢中；以上几个状态依次判断来
+    if(status==1 || status==2 || status==4){
+        // 不能抢不必计时了
+        clearInterval(ntime.timer);
+    }else if(status==3){
+        // 没开始，倒计时
+        if(ntime.change_txt1){
+            ntime.change_txt2=true;
+            ntime.change_txt1=false;
+            $(".js_status_txt").text("距离活动开始还有：");
+        }
+    }else if(status==5){
+        // 开始抢中
+        if(ntime.change_txt2){
+            ntime.change_txt1=true;
+            ntime.change_txt2=false;
+            $(".js_status_txt").text("活动已经开始，赶快点击抢券！");
+        }
+    }
     var t_arr=[];
     for(var i=0,len=arr.length;i<len;i++){
         if(arr[i]<10){
@@ -331,6 +347,43 @@ function setDom(status,arr){
     for(var j=0,len=t_arr.length;j<len;j++){
         $(".js_time_pic").eq(j).attr("src",$m.img_url+t_arr[j]+".png");
     }
+}
+// 点击抢券
+function subFunc(obj){
+    var status=ntime.status;
+        // 已申领
+        if(status==1 || status==4){
+            msg("活动时间为4月5日至5月5日期间！","我知道了");
+        }else if(status==2){
+            msg("<h3>还没有到抢券时间哦！</h3><p class='font08' style='margin-bottom:1em;margin-top:0.3em'>抢券时间为：每周一到周四</p><span class='color4 font12 fw_b'>10:00</span><br/><span class='color4 font12 fw_b'>14:00</span><br/><span class='color4 font12 fw_b'>20:00</span>","我知道了");
+        }else if(status==3){
+            msg("<p class='fw_b' style='line-height:1.5em'>请于<br/>10:00、14:00、20:00<br/>准时抢券</p>","我知道了");
+        }else if(status==5){
+            // 可以抢券
+            var stock=$("#stock").val()?$("#stock").val():1;
+            if(stock==1){
+                // 有库存
+                obj.off("click");
+                obj.children("span").removeClass("animate1").html("正在<br/>出券").css({"color":"#555"});
+                // 后台判断是否抢中   假设返回字段是 return_data;
+                var return_data=2;
+                if(return_data==1){
+                    // 成功
+                    window.location.href="success.html";
+                }else if(return_data==2){
+                    // 没抢到
+                    msg("<p class='fw_b' style='line-height:1.5em'>很遗憾！<br/>您没有中奖，<br/>在下一个时间段再接再厉吧！</p>","我知道了",function(){
+                        obj.children("span").addClass("animate1").html("点击<br/>抢券").css({"color":"#b42a49"});
+                        obj.on("click",function(){
+                            subFunc($(this));
+                        });
+                    },true);
+                }
+            }else{
+                // 没有库存
+                msg("<p class='fw_b' style='line-height:1.5em'>本时段所有礼券<br/>已经全部抢光了！<br/>下个时间段再试试哦！</p>","我知道了");
+            }
+        }
 }
 /*----------------微信分享-----------------*/
 // 分享函数

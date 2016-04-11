@@ -15,19 +15,33 @@
         <!-- 模拟屏幕 -->
         <section id="container">
             <!-- 首页 -->
-            <div class="page page3">
+            <div class="page page4">
                 <div class="scroll">
                     <!-- 头部 -->
                     <div class="header">
                     </div>
                     <!-- 中间 -->
                     <div class="content">
-                        <p>恭喜您获得<br/>
-                            通用抵用券：<span>价值80元品牌节日代金劵(满799抵用）</span><br/>
-                            本券仅限使用一次。<br/>
-                            使用代码为：<span>12345678</span><br/>
-                            使用时间：<span>2016.5.1-5.10 </span>
-                        </p>    
+                        <ul class="coupon_list">
+                            <li>
+                                <label>抢券时间：</label><span>2016.4.5 14:00</span><br/>
+                                <label>通用抵用券：</label><span>价值80元品牌节日代金劵(满799抵用）本券仅限使用一次。</span><br/>
+                                <label>使用代码为：</label><span>12345678</span><br/>
+                                <label>使用专柜：</label><span>全国MGPIN专柜</span>
+                            </li>
+                            <li>
+                                <label>抢券时间：</label><span>2016.4.5 14:00</span><br/>
+                                <label>通用抵用券：</label><span>价值80元品牌节日代金劵(满799抵用）本券仅限使用一次。</span><br/>
+                                <label>使用代码为：</label><span>12345678</span><br/>
+                                <label>使用专柜：</label><span>全国MGPIN专柜</span>
+                            </li>
+                            <li>
+                                <label>抢券时间：</label><span>2016.4.5 14:00</span><br/>
+                                <label>通用抵用券：</label><span>价值80元品牌节日代金劵(满799抵用）本券仅限使用一次。</span><br/>
+                                <label>使用代码为：</label><span>12345678</span><br/>
+                                <label>使用专柜：</label><span>全国MGPIN专柜</span>
+                            </li>
+                        </ul>  
                     </div>
                     <!-- 底部 -->
                     <div class="footer">
@@ -50,7 +64,7 @@
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript">
             // 定义滚动
-            var myScroll = new IScroll('.page3',{mouseWheel: true,hideScrollbar: false,click: true});
+            var myScroll = new IScroll('.page4',{mouseWheel: true,hideScrollbar: false,click: true});
             // 自定义方法
             var $m={
                 // 分享链接
@@ -71,8 +85,7 @@
                     if(dw>limit){
                         $(".center_box").css({"left":(dw-limit)/2+"px"});
                     };
-                    $(".header").height(dh*0.27*ratio+"px");
-                    $(".footer").css({"margin-top":ratio*40+"%"});
+                    $(".coupon_list>li").css({"font-size":ratio*0.8+"em"});
                     myScroll.refresh();
                 },
                 // 居中显示
@@ -86,7 +99,10 @@
                 // 绑定滚动
                 $m.rs();
                 $("#atten_box").fadeOut(200,function(){
-                    
+                });
+                // 点击抢券
+                $(".js_sub").on("click",function(){
+                    subFunc($(this));
                 });
                 $(window).on("resize",function(){$m.rs()});
             });
