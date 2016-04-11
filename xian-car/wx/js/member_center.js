@@ -186,7 +186,9 @@ $(function(){
         // 判断是否登录
         var is_sign=getLocalStorage("is_sign")?getLocalStorage("is_sign"):"";
         var id=getLocalStorage("id")?getLocalStorage("id"):"";
-        if(is_sign==""){
+        var phone=getLocalStorage("phone")?getLocalStorage("phone"):"";
+        console.log(id,is_sign,phone)
+        if(is_sign=="" || id=="" || phone==""){
             // 没登录
             $m.toDirect($(".page15"),function(){
                 $m.showPage();

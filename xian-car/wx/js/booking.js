@@ -6,6 +6,7 @@ var $m={
     share_href: window.location.href,
     // 图片地址前缀
     img_url:"images/",
+    head_place: "defult_pic.jpg",   //头像占位图片
     // 当前页面
     active_scroll:1,
     // 重新布局
@@ -113,7 +114,7 @@ var $m={
         "startPoint":"",             //起点经纬度21,32
         "endName":"",                //终点地址
         "endPoint":"",               //终点经纬度51,65
-        "personNumber":"",           //乘车人数
+        "personNumber":1,            //乘车人数
         "isHelp":"",                 //是否帮人约车
         "helpBookPhone":"",          //帮人约车的人电话
         "helpBookName":"",           //帮人约车的人姓名
@@ -125,8 +126,14 @@ var $m={
         "desc":"",                   //捎话描述文字
         "isBag":"",                  //是否有行李
         "isChildren":"",             //是否有小孩
-        "orderSource":"",             //订单来源
-        "type":1                     //预约类型 1=线路预约
+        "orderSource":3,             //订单来源
+        "orderType":3,               //拼车   、包车
+        "type":1,                    //预约类型 1=线路预约
+        "goTime":"",                 //出发时间
+        "days":1,                   //用车天数
+        "carId":"",                  //车辆id
+        "bookPrice":"",              //线路预约价格
+        "can_order":false,           //是否可以下单
     },
     search_arr:{
         "citycode":"",
@@ -137,6 +144,18 @@ var $m={
     now_city:"",           //当前定位城市
     // ajax 请求地址前缀
     ajax_link:"http://120.25.68.163/citytravel/index.php?g=admin&m=app&a=",
+    ncity_arr:{                   //当前选择数据
+        "l_scity":"",
+        "l_sad":"出发地址",
+        "l_ecity":"",
+        "l_ead":"目的地址",
+        "l_time":"请选择预约时间",
+        "o_scity":"",
+        "o_sad":"出发地址",
+        "o_time":"请选择预约时间",
+        "ntype":1,                 //线路预约类型 1=拼车 2=包车
+        "type":1,                  //线路预约
+    }
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -146,8 +165,9 @@ $(function(){
     (function(){
         var id=getLocalStorage("id");
         var phone=getLocalStorage("phone");
+
         if(id=="" || phone==""){
-            window.location.href="member_center.html?page_link=call_car.html";
+            window.location.href="member_center.html?page_link=booking.html";
         }else{
             $m.return_arr["user_id"]=id;
             user_id=id;
@@ -199,27 +219,27 @@ $(function(){
         $m.now_city=city;
         $m.return_arr["city"]=city;
         $m.return_arr["district"]=district;
+        $m.ncity_arr["l_scity"]=city;
+        $m.ncity_arr["l_ecity"]=city;
+        $m.ncity_arr["o_scity"]=city;
         // 开始提交
         var arr={"user_id":user_id};
         subAjax(arr,$m.ajax_link+"getCityList",function(data){
             if(data && data["data"]){
                 $m.s_arr2=data["data"];
                 new_city.init_cs(data["data"],city);
-            }
+            }4
         });
-        // new_city.init_cs($m.s_arr2,city);
-        // 判断线路
-        var arr={"startName":city,"endName":city};
-        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
-            console.log(re);
-            $m.return_arr["lineId"]=re["data"]["lineId"];
-        });
+        // 获得并设置显示价格
+        setPrice(city,city,$m.ncity_arr["ntype"]);
     });
     // 点击选择出发地
     $(".js_get_address").on("tap",function(){
+        $(".js_detail_search").val("").css({"background-image":searchbg1});
+        new_city.init();
         $(".js_get_address").removeClass("js_now_address");
         $(this).addClass("js_now_address");
-        var s_city=$(".js_now_city").text()?$(".js_now_city").text():$m.now_city;
+        var s_city=$(this).siblings(".js_get_city").text()?$(this).siblings(".js_get_city").text():$m.now_city;
         map.setCity(s_city+"市",function(data){
             setCityDetail();
         });
@@ -227,12 +247,6 @@ $(function(){
             $m.active_scroll=15;
             $m.refreshPage();
         });
-    });
-    // 显示
-    $m.showPage(function(){});
-    // 绑定返回事件
-    $(".js_back").on("tap",function(){
-        $m.toPrev($(this).parents(".page"));
     });
     searchbg1=$(".js_detail_search").css("background-image");
     searchbg2=$(".js_city_search").css("background-image");
@@ -320,6 +334,7 @@ $(function(){
     });
     // 确认选择
     $(".js_city_box").on("tap",".js_city_list .opt",function(){
+        var ntype=$(".js_list>li>a.now_choice_a").attr("data-type")?$(".js_list>li>a.now_choice_a").attr("data-type"):1;
         var txt=$(this).children("span").text()?$(this).children("span").text():"";
         var ncity=$(".page1 .js_now_city").text()?$(".page1 .js_now_city").text():"";
         $(".page1 .js_now_city").text(txt);
@@ -334,6 +349,11 @@ $(function(){
             $m.return_arr["city"]=txt;
             txt1=txt;
             txt2=$(".js_get_city").eq(1).text();
+            if(ntype==1){
+                $m.ncity_arr["l_scity"]=txt;
+            }else{
+                $m.ncity_arr["o_scity"]=txt;
+            }
         }else{
             // 选择了终点城市
             if(ncity!="" && ncity!=txt){
@@ -343,11 +363,14 @@ $(function(){
             }
             txt2=txt;
             txt1=$(".js_get_city").eq(0).text();
+            if(ntype==1){
+                $m.ncity_arr["l_ecity"]=txt;
+            }
         }
-        var arr={"startName":txt1,"endName":txt2};
-        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
-            $m.return_arr["lineId"]=re["data"]["lineid"];
-        });
+        // 获得并设置显示价格
+        if(ntype==1){
+            setPrice(txt1,txt2,$m.ncity_arr["ntype"]);
+        }
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
         });
@@ -355,22 +378,43 @@ $(function(){
     $(".js_city_box").on("tap",".js_search_city .opt",function(){
         var txt=$(this).children("span").text()?$(this).children("span").text():"";
         txt=pcformat(txt);
-        $(".page1 .js_now_city").text(txt);
+        var ncity=$(".page1 .js_now_city").text()?$(".page1 .js_now_city").text():"";
         var type=$(".page1 .js_now_city").attr("data-type")?$(".page1 .js_now_city").attr("data-type"):"";
         var txt1,txt2;
+        var ntype=$(".js_list>li>a.now_choice_a").attr("data-type")?$(".js_list>li>a.now_choice_a").attr("data-type"):1;
         if(type==1){
+            if(ncity!="" && ncity!=txt){
+                $m.return_arr["startName"]="";
+                $m.return_arr["startPoint"]="";
+                $(".page1 .js_now_city").siblings(".js_get_address").text("出发地址");
+            }
             $m.return_arr["city"]=txt;
             txt1=txt;
             txt2=$(".js_get_city").eq(1).text();
+            if(ntype==1){
+                $m.ncity_arr["l_scity"]=txt;
+            }else{
+                $m.ncity_arr["o_scity"]=txt;
+            }
         }else{
             // 选择了终点城市
+            if(ncity!="" && ncity!=txt){
+                $m.return_arr["endName"]="";
+                $m.return_arr["endPoint"]="";
+                $(".page1 .js_now_city").siblings(".js_get_address").text("目的地址");
+                $m.ncity_arr["l_ecity"]=txt;
+            }
             txt2=txt;
             txt1=$(".js_get_city").eq(0).text();
+            if(ntype==1){
+                $m.ncity_arr["l_ecity"]=txt;
+            }
         }
-        var arr={"startName":txt1,"endName":txt2};
-        subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
-            $m.return_arr["lineId"]=re["data"]["lineid"];
-        });
+        $(".page1 .js_now_city").text(txt);
+        // 获得并设置显示价格
+        if(ntype==1){
+            setPrice(txt1,txt2,$m.ncity_arr["ntype"]);
+        }
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
         });
@@ -382,8 +426,14 @@ $(function(){
         var lat=$(this).attr("data-lat")?$(this).attr("data-lat"):"";
         var lng=$(this).attr("data-lng")?$(this).attr("data-lng"):"";
         var district=$(this).attr("data-district")?$(this).attr("data-district"):"";
+        var ntype=$(".js_list>li>a.now_choice_a").attr("data-type")?$(".js_list>li>a.now_choice_a").attr("data-type"):1;
         $(".page1 .js_now_address").text(txt);
         var type=$(".page1 .js_now_address").attr("data-type")?$(".page1 .js_now_address").attr("data-type"):"";
+        if(ntype==1){
+            $m.ncity_arr["l_sad"]=txt;
+        }else{
+            $m.ncity_arr["o_sad"]=txt;
+        }
         if(type==1){
             $m.return_arr["startName"]=txt;
             $m.return_arr["district"]=district;
@@ -397,7 +447,6 @@ $(function(){
         });
     });
     // 切换约车方式
-    
     $(".js_list>li").on("tap",function(){
         var index=$(".js_list>li").index($(this));
         $(this).children("a").addClass("now_choice_a");
@@ -405,13 +454,24 @@ $(function(){
         if(index==1){
             $(".page1 .js_end_pos_btn").css({"display":"none"});
             $(".page1 .js_car_day_btn").css({"display":"flex"});
+            $(".page1 .js_call_type_btn").css({"display":"none"});
             $(".page1 .js_member").css({"display":"none"});
+            $(".page1 .js_time_spn").text($m.ncity_arr["o_time"]);
+            $(".page1 .js_get_city").eq(0).text($m.ncity_arr["o_scity"]);
+            $(".page1 .js_get_address").eq(0).text($m.ncity_arr["o_sad"]);
         }else{
             $(".page1 .js_end_pos_btn").css({"display":"flex"});
             $(".page1 .js_car_day_btn").css({"display":"none"});
+            $(".page1 .js_call_type_btn").css({"display":"flex"});
             $(".page1 .js_member").css({"display":"flex"});
+            $(".page1 .js_time_spn").text($m.ncity_arr["l_time"]);
+            $(".page1 .js_get_city").eq(0).text($m.ncity_arr["l_scity"]);
+            $(".page1 .js_get_city").eq(1).text($m.ncity_arr["l_ecity"]);
+            $(".page1 .js_get_address").eq(0).text($m.ncity_arr["l_sad"]);
+            $(".page1 .js_get_address").eq(1).text($m.ncity_arr["l_ead"]);
         }
         $m.return_arr["type"]=index+1;
+        $m.ncity_arr["type"]=index+1;
         $(".page1 .js_detail_div").eq(index).show().siblings(".js_detail_div").hide();
         myScroll1.refresh();
     });
@@ -419,8 +479,14 @@ $(function(){
     var tt=new Date();
     var yy=tt.getFullYear();
     $('.js_date').date({theme:"datetime",beginyear:yy},function(obj,result){
+        var ntype=$(".js_list>li>a.now_choice_a").attr("data-type")?$(".js_list>li>a.now_choice_a").attr("data-type"):1;
+        if(ntype==1){
+            $m.ncity_arr["l_time"]=result;
+        }else{
+            $m.ncity_arr["o_time"]=result;
+        }
+        $m.return_arr["goTime"]=result;
         obj.find(".js_time_spn").text(result);
-        
     });
     // 有话说
     $(".js_get_words").on("tap",function(){
@@ -461,7 +527,6 @@ $(function(){
     });
     // 预约天数数量控制
     $(".js_add_num").on("tap",function(){
-        
         setNumFunc($(this),1);
     });
     $(".js_red_num").on("tap",function(){
@@ -478,6 +543,7 @@ $(function(){
             msg("约车天数达到极限"+max+"了！",800);
         }
         $(this).val(num);
+        $m.return_arr["days"]=num;
     });
     // 数量限制
     $(".js_day_num").bind("input propertychange",function(){
@@ -485,19 +551,179 @@ $(function(){
         var regx=/\D/g;
         $(this).val(txt.replace(regx,''));
     });
+    // 手机限制输入字母和汉字
+    $(".js_mobile").bind("input propertychange",function(){
+        var txt=$(this).val();
+        var regx=/\D/g;
+        $(this).val(txt.replace(regx,''));
+    });
+    // 乘车人数
+    $(".js_member").on("tap",function(){
+        var num=$(".page1 .js_person_num").val()?$(".page1 .js_person_num").val():1;
+        $(".page4 .js_num").val(num);
+        $m.toNext($(".page4"),function(){
+            $m.active_scroll=4;
+            $m.refreshPage();
+        });
+    });
+    // 确认人数
+    $(".js_sure_num_btn").on("tap",function(){
+        $m.toPrev($(".page4"),function(){
+            var num=$(".js_num").val()?$(".js_num").val():1;
+            $m.return_arr["personNumber"]=num;
+            $(".js_person_num").text(num);
+            $m.active_scroll=1;
+        });
+    });
+
+    // 取消返回
+    $(".js_cancel").on("tap",function(){
+        $m.toPrev($(".page4"),function(){
+            $m.active_scroll=1;
+        });
+    });
+    // 选择人数
+    $(".js_num_list>li").on("tap",function(){
+        var _index=$(".js_num_list>li").index($(this));
+        $(this).addClass("now_choice").siblings("li").removeClass("now_choice");
+        var txt=$(this).text()?$(this).text():1;
+        $(".js_num").val(txt);
+    });
+    // 帮人约车
+    $(".js_help_about").on("tap",function(){
+        if(!$(this).hasClass("js_now")){
+            $(this).addClass("js_now");
+            $(this).find("img").attr("src",$m.img_url+"icon15.png");
+            $(this).siblings(".contact_div").show();
+            $(".js_btn_div").show();
+        }else{
+            $(this).removeClass("js_now");
+            $(this).find("img").attr("src",$m.img_url+"icon32.png");
+            $(this).siblings(".contact_div").hide();
+            $(".js_btn_div").hide();
+        }
+    });
+    // 提交帮人约车信息
+    $(".js_sure_about_btn").on("tap",function(){
+        if($(".page4 .js_help_about").hasClass("js_now")){
+            aboutInfo(function(){
+                $m.toPrev($(".page4"),function(){
+                    var num=$(".js_num").val()?$(".js_num").val():1;
+                    $(".js_person_num").text(num);
+                    $m.return_arr["personNumber"]=num;
+                    $m.active_scroll=1;
+                });
+            });
+        }else{
+            $m.return_arr["isHelp"]=0;
+            $m.toPrev($(".page4"),function(){
+                var num=$(".js_num").val()?$(".js_num").val():1;
+                $(".js_person_num").text(num);
+                $m.return_arr["personNumber"]=num;
+                $m.active_scroll=1;
+            });
+        }
+        
+    });
+    // 选择预约线路的类型
+    $(".js_call_type_box>p").on("tap",function(){
+        // 开始请求
+        var a=$(this);
+        var type=a.attr("data-type")?a.attr("data-type"):1;
+        var txt1=$m.ncity_arr["l_scity"];
+        var txt2=$m.ncity_arr["l_ecity"];  
+        a.children("img").attr("src",$m.img_url+"icon15.png");
+        a.siblings("p").children("img").attr("src",$m.img_url+"icon32.png");
+        setPrice(txt1,txt2,type);
+    });
     // 立即叫车
     $(".js_call_btn").on("tap",function(){
-        // 开始请求
-        // setOrderDom();
-        $m.toNext($(".page6"),function(){
-            $m.active_scroll=6;
-            setTimeout(function(){
-                $(".js_set_order_p").hide();
-                $(".js_order_ele").show();
-                $m.refreshPage();
-            },1000)
-            
-        });
+        console.log($m.return_arr);
+        var return_arr=$m.return_arr;
+        var scity=$(".js_get_city").eq(0).text()?$(".js_get_city").eq(0).text():"";
+        var ecity=$(".js_get_city").eq(1).text()?$(".js_get_city").eq(1).text():"";
+        if(return_arr["type"]==1){
+            // 线路预约
+            if(return_arr["can_order"]===false){
+                msg("您选择的线路，还没有开通。",800);
+            }else if(return_arr["goTime"]==""){
+                msg("请选择出发时间",800);
+            }else if(scity==""){
+                msg("请选择出发城市",800);
+            }else if(return_arr["startName"]==""){
+                msg("请选择出发地点",800);
+            }else if(ecity==""){
+                msg("请选择目的城市",800);
+            }else if(return_arr["endName"]==""){
+                msg("请选择目的地点",800);
+            }else if(return_arr["personNumber"]==0){
+                msg("请选择乘车人数",800);
+            }else{
+                $("#atten_box").fadeIn(100);
+                $(".bg_div").fadeIn(200);
+                $(".page6 .js_set_order_p").text("正在为您派单中,请耐心等待。").show();
+                $(".page6 .js_order_ele").hide();
+                $m.toNext($(".page6"),function(){
+                    $m.active_scroll=6;
+                    $m.refreshPage();
+                });
+                $(".page6 .js_end_li").show();
+                $(".page6 .js_start_spn").text(scity+" "+return_arr["startName"]);
+                $(".page6 .js_end_spn").text(ecity+" "+return_arr["endName"]);
+                if(return_arr["isChildren"]==1){
+                    $(".page6 .js_add_condition").eq(0).show();
+                }
+                if(return_arr["isBag"]==1){
+                    $(".page6 .js_add_condition").eq(1).show();
+                }
+                $(".page6 .js_pers_num_spn").text(return_arr["personNumber"]);
+                $(".page6 .js_call_info_box").eq(0).show().siblings(".js_call_info_box").hide();
+                // 开始请求
+                // var arr={"user_id":user_id};
+                subAjax(return_arr,$m.ajax_link+"goLineBook",setOrderDom,function(){
+                    $(".page6 .js_set_order_p").hide();
+                    $(".page6 .js_order_ele").hide();
+                });
+            }
+        }else if(return_arr["orderType"]==3){
+            // 包天预约
+            // 线路预约
+            if(return_arr["goTime"]==""){
+                msg("请选择出发时间",800);
+            }else if(scity==""){
+                msg("请选择出发城市",800);
+            }else if(return_arr["startName"]==""){
+                msg("请选择出发地点",800);
+            }else if(return_arr["days"]==0){
+                msg("请选择包车天数",800);
+            }else{
+                $("#atten_box").fadeIn(100);
+                $(".bg_div").fadeIn(200);
+                $(".page6 .js_set_order_p").text("正在为您派单中,请耐心等待。").show();
+                $(".page6 .js_order_ele").hide();
+                $m.toNext($(".page6"),function(){
+                    $m.active_scroll=6;
+                    $m.refreshPage();
+                });
+                
+                $(".page6 .js_start_spn").text(scity+" "+return_arr["startName"]);
+                $(".page6 .js_end_li").hide();
+                if(return_arr["isChildren"]==1){
+                    $(".page6 .js_add_condition").eq(0).show();
+                }
+                if(return_arr["isBag"]==1){
+                    $(".page6 .js_add_condition").eq(1).show();
+                }
+                $(".page6 .js_day_num_spn").text(return_arr["days"]);
+                $(".page6 .js_call_info_box").eq(1).show().siblings(".js_call_info_box").hide();
+                // 开始请求
+                // var arr={"user_id":user_id};
+                subAjax(return_arr,$m.ajax_link+"goNerveReservation",setOrderDom,function(){
+                    $(".page6 .js_set_order_p").hide();
+                    $(".page6 .js_order_ele").hide();
+                });
+            }
+        }
     });
     // 资费详情
     $(".js_get_detail").on("tap",function(){
@@ -542,10 +768,16 @@ $(function(){
     });
     // 确认并立即约车
     $(".js_called_btn").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page8"),function(){
             $m.active_scroll=8;
             $m.refreshPage();
         });
+        var arr=$m.order_arr?$m.order_arr:"";
+        if(arr!=""){
+            setPayDom(arr);
+        }
     });
     // 去支付剩余
     $(".js_to_pay").on("tap",function(){
@@ -682,25 +914,40 @@ $(function(){
                 $m.refreshPage();
             });
             // 开始提交
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var arr={"user_id":user_id,"paypwd":pass};
+            subAjax(return_arr,$m.ajax_link+"goUseBalancePay",setOrderDom,function(){
+                $(".page6 .js_set_order_p").hide();
+                $(".page6 .js_order_ele").hide();
+            });
         }
     });
     // 线下支付
     $(".js_offline_btn").on("tap",function(){
-        $(".js_del_order").hide();
-        $(".p3_btn_div").children(".js_to_pay").hide();
-        $m.toPrev($(".page20"),function(){
-            $m.active_scroll=3;
-            $m.refreshPage();
-        });
         // 开始提交
         // var arr={"user_nicename":txt,"user_id":user_id};
         // subAjax(arr,"goModifiedSelfInfo",function(){
         //     $(".js_rename_txt").text(txt);
         // });
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
+        // 开始提交
+        var payType=1;
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=$(".page8 .js_to_get_coupon").attr("data-bonusid")?$(".page8 .js_to_get_coupon").attr("data-bonusid"):"";
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax2(arr,$m.ajax_link+"goPayOrder",function(re){
+            $("#atten_box").fadeOut(50);
+            $(".bg_div").fadeOut(100);
+            msg("提交成功！",800);
+            $(".page").not(".page1").css({"left":"100%"});
+            // $(".page14 .js_del_order").hide();
+            // $(".page14 .js_can_star").addClass("js_star_list");
+            // $m.toNext($(".page14"),function(){
+            //     $m.active_scroll=14;
+            //     $m.refreshPage();
+            // });
+        });
+
     });
     // 评星星数量
     $(".page").on("tap",".js_star_list>li",function(){
@@ -756,6 +1003,31 @@ function subAjax(arr,url,successFunc,errorFunc){
                     errorFunc();
                 }
             });
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+        }
+    });
+}
+// 请求数据
+function subAjax2(arr,url,func){
+    $.ajax({
+        type: "POST",
+        url: url,
+        data:arr,
+        dataType: "json",
+        success: function(data){
+            if(data["status"]==-2){
+                if(typeof func==="function" && func instanceof Function){
+                    func(data);
+                }
+            }else{
+                msg(data["data"],800);
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+            }
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            msg("请求失败，请稍后重试！","确定");
             $("#atten_box").fadeOut(100);
             $(".bg_div").fadeOut(200);
         }
@@ -925,7 +1197,7 @@ function setPos(data){
                         lat=arr[i]["location"]["lat"]?arr[i]["location"]["lat"]:"";
                         lng=arr[i]["location"]["lng"]?arr[i]["location"]["lng"]:"";
                     }
-                    _html1+='<li class="opt" data-id="'+id+'"><span>'+name+'</span></li>';
+                    _html1+='<li class="opt" data-id="'+id+'" data-district="'+district+'" data-lat="'+lat+'" data-lng="'+lng+'"><span>'+name+'</span></li>';
                 }
             }
             if(_html1==''){
@@ -935,11 +1207,11 @@ function setPos(data){
             }
         }
         if(_html!=''){
-            $(".js_detail_list").html(_html);
+            $(".page15 .js_detail_list").html(_html).siblings(".js_detail_att").hide();
         }
     }else{
         // 没有城市
-        $(".n_list").eq(1).show();
+        $(".page15 .js_detail_att").show().siblings(".js_detail_list").hide();
     }
     myScroll15.refresh();
 }
@@ -983,6 +1255,186 @@ function subMessage(func){
             func();
         }
     }
+}
+// 提交帮人约车信息
+function aboutInfo(func){
+    var input_txt=[];
+    var regx=/1[1-9]+[0-9]{9}/;
+    $(".page4 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+        msg("请填写乘车人姓名",800);
+    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
+        msg("请填写正确手机号",800);
+    }else{
+        $m.return_arr["realname"]=input_txt[0];
+        $m.return_arr["helpBookPhone"]=input_txt[1];
+        $m.return_arr["isHelp"]=1;
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+    }
+}
+// 判断线路
+function setPrice(txt1,txt2,type){
+    var a=$(".js_call_type_box").children("p").eq(0);
+    var arr={"startName":txt1,"endName":txt2,"type":type};
+    subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+        var lineid=re["data"]["lineid"]?re["data"]["lineid"]:0;
+        var price=re["data"]["bookprice"]?re["data"]["bookprice"]:0.00;
+        $m.return_arr["lineId"]=lineid;
+        $m.return_arr["bookprice"]=price;
+        if(lineid==0){
+            // 包车
+            $m.return_arr["orderType"]=3;
+            $m.ncity_arr["ntype"]=2;
+            a.children("img").attr("src",$m.img_url+"icon32.png");
+            a.siblings("p").children("img").attr("src",$m.img_url+"icon15.png");
+        }else{
+            if(type==1){
+                $m.ncity_arr["ntype"]=1;
+                $m.return_arr["orderType"]=2;
+                a.children("img").attr("src",$m.img_url+"icon15.png");
+                a.siblings("p").children("img").attr("src",$m.img_url+"icon32.png");
+            }else{
+                $m.ncity_arr["ntype"]=2;
+                $m.return_arr["orderType"]=3;
+                a.children("img").attr("src",$m.img_url+"icon32.png");
+                a.siblings("p").children("img").attr("src",$m.img_url+"icon15.png");
+            }
+            
+        }
+        $(".page1 .js_nprice").text(price);
+        $m.return_arr["can_order"]=true;
+    },function(){
+        if(type==1){
+            a.children("img").attr("src",$m.img_url+"icon32.png");
+            a.siblings("p").children("img").attr("src",$m.img_url+"icon15.png");
+        }
+        $m.return_arr["orderType"]=3;
+        $m.ncity_arr["ntype"]=2;
+        $m.return_arr["can_order"]=false;
+    });
+}
+// 生成订单详情
+function setOrderDom(data){
+    var orderId=data["data"];
+    var arr={"orderId":orderId,"user_id":user_id};
+    subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
+}
+// 生成订单详情
+function setMyTripDetail(arr){
+    var arr=arr["data"];
+    console.log(arr);
+    if(arr!=null && arr!="undefined"){
+        $m.order_arr=arr;
+    }
+    var addtime=arr["addtime"]?arr["addtime"]:"";
+    if(addtime!=""){
+        var ntime=addtime.split(" ");
+        $(".page6 .js_now_times").html(ntime[0]+"<br/>"+ntime[1]);
+    }
+    var driverid=arr["driverid"]?arr["driverid"]:0;
+    if(driverid==0){
+        // 暂时没有司机
+        $(".page6 .js_set_order_p").html("附近暂无空闲车辆，<br/>请耐心等待客服为您指派司机...").show();
+        $(".page6 .js_order_ele").hide();
+        $(".page6 .js_order_ele").eq(2).show();
+    }else{
+        var carno=arr["carno"]?arr["carno"]:"";
+        var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+        var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+        var tel=driver["tel"]?driver["tel"]:"";
+        var drivername=driver["drivername"]?driver["drivername"]:"";
+        var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+        var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+        $(".page6 .js_driver_head_pic").attr("src",pic_src);
+        $(".page6 .car_number").text(carno);
+        $(".page6 .js_driver_name").text(drivername);
+        $(".page6 .js_service_num").text(servicecounts);
+        $(".page6 .js_driver_ranking").text(driverid);
+        $(".page6 .js_driver_mobile").attr("href","tel:"+tel);
+        var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+        for(var i=0;i<driver_star;i++){
+            $(".page6 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+        }
+        $(".page6 .js_set_order_p").hide();
+        $(".page6 .js_order_ele").show();
+    }
+    
+    
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
+// 生成车辆支付详情
+function setPayDom(arr){
+    var ordertype=arr["ordertype"]?arr["ordertype"]:0;
+    var orderid=arr["orderid"]?arr["orderid"]:"";
+    var status=arr["status"]?arr["status"]:6;
+    // var status=5;
+    var carno=arr["carno"]?arr["carno"]:"";
+    var days=arr["days"]?arr["days"]:0;
+    var personnumber=arr["personnumber"]?arr["personnumber"]:0;
+    var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+    var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+    var driverid=driver["driverid"]?driver["driverid"]:0;
+    var tel=driver["tel"]?driver["tel"]:"";
+    var drivername=driver["drivername"]?driver["drivername"]:"";
+    var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+    var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+    $(".page8 .js_driver_head_pic").attr("src",pic_src);
+    $(".page8 .car_number").text(carno);
+    $(".page8 .js_driver_name").text(drivername);
+    $(".page8 .js_service_num").text(servicecounts);
+    $(".page8 .js_driver_ranking").text(driverid);
+    $(".page8 .js_driver_mobile").attr("href","tel:"+tel);
+    var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+    for(var i=0;i<driver_star;i++){
+        $(".page8 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+    }
+    // 订单详情
+    var addtime=arr["addtime"]?arr["addtime"]:"";
+    var startname=arr["startname"]?arr["startname"]:"";
+    var endname=arr["endname"]?arr["endname"]:"";
+    var isbag=arr["isbag"]?arr["isbag"]:0;
+    var ischildren=arr["ischildren"]?arr["ischildren"]:0;
+    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    var days=$m.return_arr["days"]?$m.return_arr["days"]:1;
+    var scity=$(".js_get_city").eq(0).text()?$(".js_get_city").eq(0).text():"";
+    var ecity=$(".js_get_city").eq(1).text()?$(".js_get_city").eq(1).text():"";
+    $(".page8 .js_order_time").text(addtime);
+    $(".page8 .js_start_address").text(scity+" "+startname);
+    if($m.return_arr["type"]==1){
+        $(".page8 .js_end_address").text(ecity+" "+endname);
+        $(".page8 .js_customer_div").eq(0).children("span").text(personnumber);
+        $(".page8 .js_customer_div").eq(0).show().siblings(".js_customer_div").hide();
+    }else{
+        $(".page8 .js_end_li").hide();
+        $(".page8 .js_customer_div").eq(1).children("span").text(days);
+        $(".page8 .js_customer_div").eq(1).show().siblings(".js_customer_div").hide();
+    }
+    
+    // 清空dom先
+    $(".page8 .js_additional_list").html('');
+    if(isbag==1){
+        var _html='<li><img src="'+$m.img_url+'icon13.png" alt="icon"/><span>需要捎一件行李</span></li>';
+        $(".page8 .js_additional_list").append(_html);
+    }
+    if(ischildren==1){
+        var _html='<li><img src="'+$m.img_url+'icon13.png" alt="icon"/><span>有小孩</span></li>';
+        $(".page8 .js_additional_list").append(_html);
+    }
+    $(".page8 .js_pay_price").text(totalprice);
+
+
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
 }
 // 阻止事件冒泡
 function stopBubble(e){
@@ -1077,6 +1529,162 @@ function setNumFunc(obj,type){
         num=max;
     }
     a.val(num);
+    $m.return_arr["days"]=num;
+}
+// 提交修改密码
+function toSubPass(obj,func){    
+    var _this=obj;
+    var input_txt=[];
+    var regx=/1[1-9]+[0-9]{9}/;
+    var re_m = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    $(".page22 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+        msg("请填写姓名",800);
+    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
+        msg("请填写正确手机号",800);
+    }else if(input_txt[2]=="" || input_txt[2]==null || input_txt[2]=="undefined"){
+        msg("请输入验证码",800);
+    }else if(input_txt[2]!=$m.setPassword["autocode"]){
+        msg("验证码错误",800);
+    }else if(input_txt[3]=="" || input_txt[3]==null || input_txt[3]=="undefined"){
+        msg("请设置新密码",800);
+    }else if(input_txt[4]=="" || input_txt[4]==null || input_txt[4]=="undefined"){
+        msg("请再次确认密码",800);
+    }else if(input_txt[3]!=input_txt[4]){
+        msg("前后设置的密码不一致",800);
+    }else{
+        _this.off("click");
+        _this.text("提交中...");
+        // 赋值
+        $m.setPassword["name"]=input_txt[0];
+        $m.setPassword["phone"]=input_txt[1];
+        $m.setPassword["code"]=input_txt[2];
+        $m.setPassword["password"]=input_txt[3];
+        $m.setPassword["user_id"]=user_id;
+        if(typeof func==="function" && func instanceof Function){
+            func();
+        }
+        console.log($m.setPassword);
+        return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: "goFindPwd",
+            dataType: "json",
+            data: $m.setPassword,
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func();
+                    }
+                    _this.text("确认修改");
+                    _this.on("click",function(){
+                        toSub(_this);
+                    });
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    _this.text("确认修改");
+                    _this.on("click",function(){
+                        toSub(_this);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                _this.text("确认修改");
+                _this.on("click",function(){
+                    toSub(_this);
+                });
+            }
+        });
+        
+    }
+}
+// 验证码
+function checkpost(obj,input_class,type){
+    var input_txt="";
+    var regPartton=/1[1-9]+[0-9]{9}/;
+    input_txt=$("."+input_class).val();
+    if(input_txt=="" || input_txt==null || input_txt=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt.length<11 || !regPartton.test(input_txt)){
+        msg("请填写正确手机号",800);
+    }else{
+        obj.off("click");
+        // var timer=null;
+        // var seconds=59;
+        // // 发送验证码后台切入口
+        // obj.css({"color":"#acacac"});
+        // obj.text("已发送(60)");
+        // timer=setInterval(function(){
+        //     obj.text("已发送("+seconds+")");
+        //     seconds--;
+        //     if(seconds<0){
+        //         clearInterval(timer);
+        //         obj.text("重新发送");
+        //         obj.css({"color":"#fff"});
+        //         obj.on("click",function(){
+        //             checkpost(obj,input_class);
+        //         });
+        //     }
+        // },1000);
+        // return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: $m.ajax_link+"getVerifyCode",
+            dataType: "json",
+            data: {"phone":input_txt,"type":type},
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    var timer=null;
+                    var seconds=59;
+                    // 发送验证码后台切入口
+                    obj.css({"color":"#acacac"});
+                    obj.text("已发送(60)");
+                    timer=setInterval(function(){
+                        obj.text("已发送("+seconds+")");
+                        seconds--;
+                        if(seconds<0){
+                            clearInterval(timer);
+                            obj.text("重新发送");
+                            obj.css({"color":"#fff"});
+                            obj.on("click",function(){
+                                checkpost(obj,input_class,type);
+                            });
+                        }
+                    },1000);
+                    $m.setPassword["autocode"]=data["data"];
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    clearInterval(timer);
+                    obj.text("获取验证码");
+                    obj.css({"color":"#fff"});
+                    obj.on("click",function(){
+                        checkpost(obj,input_class,type);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                clearInterval(timer);
+                obj.text("获取验证码");
+                obj.css({"color":"#fff"});
+                obj.on("click",function(){
+                    checkpost(obj,input_class,type);
+                });
+            }
+        });
+    }
 }
 // 设置本地存储
 function setLocalStorage(options){

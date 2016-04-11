@@ -154,6 +154,7 @@ var $m={
     now_city:"",           //当前定位城市
     // ajax 请求地址前缀
     ajax_link:"http://120.25.68.163/citytravel/index.php?g=admin&m=app&a=",
+    
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -217,6 +218,7 @@ $(function(){
         $m.now_city=city;
         $m.return_arr["city"]=city;
         $m.return_arr["district"]=district;
+        
         // 开始提交
         var arr={"user_id":user_id};
         subAjax(arr,$m.ajax_link+"getCityList",function(data){
@@ -343,6 +345,7 @@ $(function(){
     // 确认选择
     $(".js_city_box").on("tap",".js_city_list .opt",function(){
     	var txt=$(this).children("span").text()?$(this).children("span").text():"";
+        var ncity=$(".page1 .js_now_city").text()?$(".page1 .js_now_city").text():"";
     	$(".page1 .js_now_city").text(txt);
         var type=$(".page1 .js_now_city").attr("data-type")?$(".page1 .js_now_city").attr("data-type"):"";
         var txt1,txt2;

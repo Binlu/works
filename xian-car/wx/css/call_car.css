@@ -565,45 +565,6 @@ div.p6_form_change_div{
     float: none;
     vertical-align: middle;
 }
-/*page21*/
-.page21 .content_box>h3{
-    margin-top: 2em;
-}
-.p21_form{
-    width: 80%;
-    margin: 2em auto;
-    text-align: center;
-}
-.p21_form>input{
-    padding-left: 1.6em;
-    margin-bottom: 2em;
-    letter-spacing: 2.5em;
-}
-.p21_form .weui_btn_my1{
-    margin: auto;
-}
-/*page22*/
-.page22 .weui_label{
-    width: 5em;
-    text-align: right;
-}
-.page22 .weui_cell{
-    padding: 0.5em;
-}
-.page22 .weui_cells_form .weui_cell_ft{
-    font-size: 1em;
-}
-.get_code_btn{
-    display: inline-block;
-    padding: 0.4em 1em;
-    background-color: #F11;
-}
-.page22 .weui_btn_my1{
-    margin-top: 2em;
-}
-.page22 .checkbut{
-    position: static;
-}
 /*page9*/
 .page9 .content_box{
     padding-top: 0.5em;
@@ -662,6 +623,28 @@ li.now_choice_li{
 .page11 .content_box>ul{
     margin-left: 0.5em;
     margin-top: 1em;
+}
+/*page13*/
+.page13 .weui_label{
+    width: 5em;
+    text-align: right;
+}
+.page13 .weui_cell{
+    padding: 0.5em;
+}
+.page13 .weui_cells_form .weui_cell_ft{
+    font-size: 1em;
+}
+.get_code_btn{
+    display: inline-block;
+    padding: 0.4em 1em;
+    background-color: #F11;
+}
+.page13 .weui_btn_my1{
+    margin-top: 2em;
+}
+.page13 .checkbut{
+    position: static;
 }
 /*page14*/
 .page14 .content_box{
