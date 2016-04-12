@@ -492,7 +492,7 @@
                             </div>
                             <div class="p8_btn_div">
                                 <a class="btn btn1 b_color3 js_pay_sure_btn" href="javascript:;" title="确认支付">确认支付</a>
-                                <a class="btn btn2 default_btn js_offline_btn" href="javascript:;" title="线下支付">线下支付</a>
+                                <a class="btn btn2 default_btn js_offline_btn hide" href="javascript:;" title="线下支付">线下支付</a>
                             </div>
                         </div>
                     </div>
@@ -510,7 +510,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
-                        <h3 class="txt_c">需支付<span class="color5 font18 v_base">25</span>元</h3>
+                        <h3 class="txt_c">需支付<span class="color5 font18 v_base js_payprice_spn">25</span>元</h3>
                         <div class="p21_form">
                             <div class="txt_l"><label>请输入支付密码：</label></div>
                             <input class="input_area js_pass_area" type="password" maxlength="6" pattern="[0-9]*"/>
@@ -531,7 +531,7 @@
                     <!-- 内容 -->
                     <div class="content_box txt_c">
                         <div class="weui_cells weui_cells_form">
-                            <div class="weui_cell">
+                            <div class="weui_cell hide">
                                 <div class="weui_cell_hd">
                                     <label class="weui_label">姓&nbsp;名：</label>
                                 </div>
@@ -561,7 +561,7 @@
                                     <label class="weui_label">新密码：</label>
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input js_input_area" type="password" placeholder="">
+                                    <input class="weui_input js_input_area" type="password" maxlength="6" placeholder="">
                                 </div>
                             </div>
                             <div class="weui_cell">
@@ -569,7 +569,7 @@
                                     <label class="weui_label">确认密码：</label>
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input js_input_area" type="password" placeholder="">
+                                    <input class="weui_input js_input_area" type="password" maxlength="6" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -856,6 +856,7 @@
         <script type="text/javascript" src="js/date.js"></script>
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript" src="js/frame.js"></script>
+        <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript" src="js/booking.js"></script>
     </body>
    

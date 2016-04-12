@@ -155,7 +155,14 @@ var $m={
         "o_time":"请选择预约时间",
         "ntype":1,                 //线路预约类型 1=拼车 2=包车
         "type":1,                  //线路预约
-    }
+    },
+    setPassword:{                   //修改密码的json
+        "name":"姓名",
+        "phone":"手机号",
+        "code":"验证码",
+        "password":"新密码",
+        "autocode":1515
+    },
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -857,8 +864,11 @@ $(function(){
     });
     // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
+        
         var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
+        var payType=1;
         if(type==2){
+            payType=5;
             // 余额支付
             $m.toNext($(".page12"),function(){
                 $m.active_scroll=12;
@@ -866,8 +876,16 @@ $(function(){
             });
         }else{
             // 微信支付
-
+            payType=3;
         }
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=0;
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+            $m.order_arr["paysn"]=re["data"]["paysn"]?re["data"]["paysn"]:"";
+            $m.order_arr["payprice"]=re["data"]["payprice"]?re["data"]["payprice"]:0;
+            $(".page12 .js_payprice_spn").text($m.order_arr["payprice"]);
+        });
     });
     // 密码输入控制
     $(".js_pass_area").on("keyup",function(){
@@ -885,11 +903,12 @@ $(function(){
     });
     // 获取验证码
     $(".page13 .js_get_code").on("tap",function(){
-        checkpost($(this),"page13 .js_mobile");
+        checkpost($(this),"page13 .js_mobile",2);
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("tap",function(){
-        toSubPass($(this),function(){
+        toSubPass($(this),function(re){
+            msg("修改成功！",800)
             $m.toPrev($(".page13"),function(){
                 $m.active_scroll=14;
                 $m.refreshPage();
@@ -904,20 +923,22 @@ $(function(){
     });
     // 余额支付
     $(".js_pay_balance_now").on("tap",function(){
-        var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
+        var pass=$(".page12 .js_pass_area").val()?$(".page12 .js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
         }else{
-            msg("支付成功",800);
-            $m.toNext($(".page14"),function(){
-                $m.active_scroll=14;
-                $m.refreshPage();
-            });
+            // msg("支付成功",800);
+            // $m.toNext($(".page14"),function(){
+            //     $m.active_scroll=14;
+            //     $m.refreshPage();
+            // });
             // 开始提交
-            var arr={"user_id":user_id,"paypwd":pass};
-            subAjax(return_arr,$m.ajax_link+"goUseBalancePay",setOrderDom,function(){
-                $(".page6 .js_set_order_p").hide();
-                $(".page6 .js_order_ele").hide();
+            var paysn=$m.order_arr["paysn"]?$m.order_arr["paysn"]:"";
+            var arr={"user_id":user_id,"paypwd":md5(pass),"paysn":paysn};
+            subAjax(arr,$m.ajax_link+"goUseBalancePay",function(re){
+                console.log(re);
+                // $(".page6 .js_set_order_p").hide();
+                // $(".page6 .js_order_ele").hide();
             });
         }
     });
@@ -1283,7 +1304,7 @@ function aboutInfo(func){
 function setPrice(txt1,txt2,type){
     var a=$(".js_call_type_box").children("p").eq(0);
     var arr={"startName":txt1,"endName":txt2,"type":type};
-    subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+    subAjax(arr,$m.ajax_link+"getLineBookPrice",function(re){
         var lineid=re["data"]["lineid"]?re["data"]["lineid"]:0;
         var price=re["data"]["bookprice"]?re["data"]["bookprice"]:0.00;
         $m.return_arr["lineId"]=lineid;
@@ -1377,25 +1398,31 @@ function setPayDom(arr){
     var orderid=arr["orderid"]?arr["orderid"]:"";
     var status=arr["status"]?arr["status"]:6;
     // var status=5;
-    var carno=arr["carno"]?arr["carno"]:"";
-    var days=arr["days"]?arr["days"]:0;
-    var personnumber=arr["personnumber"]?arr["personnumber"]:0;
-    var driver=arr["driverinfo"]?arr["driverinfo"]:{};
-    var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
-    var driverid=driver["driverid"]?driver["driverid"]:0;
-    var tel=driver["tel"]?driver["tel"]:"";
-    var drivername=driver["drivername"]?driver["drivername"]:"";
-    var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
-    var avgstar=driver["avgstar"]?driver["avgstar"]:0;
-    $(".page8 .js_driver_head_pic").attr("src",pic_src);
-    $(".page8 .car_number").text(carno);
-    $(".page8 .js_driver_name").text(drivername);
-    $(".page8 .js_service_num").text(servicecounts);
-    $(".page8 .js_driver_ranking").text(driverid);
-    $(".page8 .js_driver_mobile").attr("href","tel:"+tel);
-    var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
-    for(var i=0;i<driver_star;i++){
-        $(".page8 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+    var isdriverid=arr["driverid"]?arr["driverid"]:0;
+    if(isdriverid!=0){
+        var carno=arr["carno"]?arr["carno"]:"";
+        var days=arr["days"]?arr["days"]:0;
+        var personnumber=arr["personnumber"]?arr["personnumber"]:0;
+        var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+        var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+        var driverid=driver["driverid"]?driver["driverid"]:0;
+        var tel=driver["tel"]?driver["tel"]:"";
+        var drivername=driver["drivername"]?driver["drivername"]:"";
+        var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+        var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+        $(".page8 .js_driver_head_pic").attr("src",pic_src);
+        $(".page8 .car_number").text(carno);
+        $(".page8 .js_driver_name").text(drivername);
+        $(".page8 .js_service_num").text(servicecounts);
+        $(".page8 .js_driver_ranking").text(driverid);
+        $(".page8 .js_driver_mobile").attr("href","tel:"+tel);
+        var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+        for(var i=0;i<driver_star;i++){
+            $(".page8 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+        }
+        $(".page8 .header_info").show();
+    }else{
+        $(".page8 .header_info").hide();
     }
     // 订单详情
     var addtime=arr["addtime"]?arr["addtime"]:"";
@@ -1537,13 +1564,14 @@ function toSubPass(obj,func){
     var input_txt=[];
     var regx=/1[1-9]+[0-9]{9}/;
     var re_m = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-    $(".page22 .js_input_area").each(function(){
+    $(".page13 .js_input_area").each(function(){
         input_txt.push($(this).val());
         return input_txt;
     });
-    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
-        msg("请填写姓名",800);
-    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+    // if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+    //     msg("请填写姓名",800);
+    // }else 
+    if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
         msg("请填写手机号",800);
     }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
         msg("请填写正确手机号",800);
@@ -1561,27 +1589,23 @@ function toSubPass(obj,func){
         _this.off("click");
         _this.text("提交中...");
         // 赋值
-        $m.setPassword["name"]=input_txt[0];
+        // $m.setPassword["name"]=input_txt[0];
         $m.setPassword["phone"]=input_txt[1];
         $m.setPassword["code"]=input_txt[2];
-        $m.setPassword["password"]=input_txt[3];
+        $m.setPassword["user_pass"]=md5(input_txt[3]);
         $m.setPassword["user_id"]=user_id;
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        console.log($m.setPassword);
-        return false;
+        console.log($m.setPassword)
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goFindPwd",
+            url: $m.ajax_link+"goFindPwd",
             dataType: "json",
             data: $m.setPassword,
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
-                        func();
+                        func(data);
                     }
                     _this.text("确认修改");
                     _this.on("click",function(){

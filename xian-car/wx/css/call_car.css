@@ -624,6 +624,20 @@ li.now_choice_li{
     margin-left: 0.5em;
     margin-top: 1em;
 }
+/*page12*/
+.p21_form{
+    width: 80%;
+    margin: 2em auto;
+    text-align: center;
+}
+.p21_form>input{
+    padding-left: 1.6em;
+    margin-bottom: 2em;
+    letter-spacing: 2.5em;
+}
+.p21_form .weui_btn_my1{
+    margin: auto;
+}
 /*page13*/
 .page13 .weui_label{
     width: 5em;
