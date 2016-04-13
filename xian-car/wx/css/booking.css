@@ -559,6 +559,9 @@ div.p6_form_change_div{
 .page8 .star_list{
     margin-left: 0;
 }
+.page8 .hide{
+    display: none;
+}
 .pay_box>a{
     display: block;
     position: relative;

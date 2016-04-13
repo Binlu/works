@@ -72,7 +72,7 @@ textarea{
 }
 .p1_pos_spn{
     display: inline-block;
-    width: 75%;
+    max-width: 72%;
 }
 /*page2*/
 .tag{width:94%;padding:0 3%;line-height:2.3em;font-size:0.8em;color:#3b81c6}

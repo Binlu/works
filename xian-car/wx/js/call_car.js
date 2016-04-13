@@ -371,6 +371,8 @@ $(function(){
         var arr={"startName":txt1,"endName":txt2};
         subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
             $m.return_arr["lineId"]=re["data"]["lineid"];
+            var nprice=re["data"]["lineprice"]?re["data"]["lineprice"]:0.00;
+            $(".page1 .js_nprice_spn").text(nprice);
         });
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
@@ -513,7 +515,6 @@ $(function(){
     });
     // 立即叫车
     $(".js_call_btn").on("tap",function(){
-        console.log($m.return_arr);
         var return_arr=$m.return_arr;
         if(return_arr["city"]==""){
             msg("请选择出发城市",800);
@@ -734,18 +735,19 @@ $(function(){
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
     // 确认支付按钮
-    // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
         var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
-        console.log(type)
+        var payType=1;
         if(type==2){
             // 余额支付
+            payType=5;
             $m.toNext($(".page12"),function(){
                 $m.active_scroll=12;
                 $m.refreshPage();
             });
         }else{
             // 微信支付
+            payType=3;
             var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
             // 商户id
             var partnerId=$m.order_arr["partnerId"]?$m.order_arr["partnerId"]:"";
@@ -764,6 +766,14 @@ $(function(){
                 }
             });
         }
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=0;
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+            $m.order_arr["paysn"]=re["data"]["paysn"]?re["data"]["paysn"]:"";
+            $m.order_arr["payprice"]=re["data"]["payprice"]?re["data"]["payprice"]:0;
+            $(".page12 .js_payprice_spn").text($m.order_arr["payprice"]);
+        });
     });
     // 密码输入控制
     $(".js_pass_area").on("keyup",function(){
@@ -1057,9 +1067,9 @@ function setCityDetail(){
         $m.search_arr["city"]=city;
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
-        $m.now_city=city;
+        // $m.now_city=city;
         // console.log(re);
-        new_city.init_cs($m.s_arr2,city);
+        // new_city.init_cs($m.s_arr2,city);
     });
 }
 // 请求数据
@@ -1318,6 +1328,7 @@ function aboutInfo(func){
 }
 // 生成订单详情
 function setOrderDom(data){
+    console.log(data);
     var orderId=data["data"];
     var arr={"orderId":orderId,"user_id":user_id};
     subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
@@ -1330,6 +1341,7 @@ function setMyTripDetail(arr){
         $m.order_arr=arr;
     }
     var addtime=arr["addtime"]?arr["addtime"]:"";
+    console.log(addtime)
     if(addtime!=""){
         var ntime=addtime.split(" ");
         $(".page6 .js_now_times").html(ntime[0]+"<br/>"+ntime[1]);

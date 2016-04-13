@@ -466,6 +466,14 @@ $(function(){
             $(".page1 .js_time_spn").text($m.ncity_arr["o_time"]);
             $(".page1 .js_get_city").eq(0).text($m.ncity_arr["o_scity"]);
             $(".page1 .js_get_address").eq(0).text($m.ncity_arr["o_sad"]);
+            var nprice=0.00;
+            var arr={"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"getIndexData",function(re){
+                nprice=re["data"]["bookdayset"]["bookprice"]?re["data"]["bookdayset"]["bookprice"]:0.00;
+                var num=$(".page1 .js_day_num").val()?$(".page1 .js_day_num").val():1;
+                $(".page1 .js_nprice").text(num*nprice);
+            });
+            
         }else{
             $(".page1 .js_end_pos_btn").css({"display":"flex"});
             $(".page1 .js_car_day_btn").css({"display":"none"});
@@ -476,6 +484,10 @@ $(function(){
             $(".page1 .js_get_city").eq(1).text($m.ncity_arr["l_ecity"]);
             $(".page1 .js_get_address").eq(0).text($m.ncity_arr["l_sad"]);
             $(".page1 .js_get_address").eq(1).text($m.ncity_arr["l_ead"]);
+            var type=$m.ncity_arr["ntype"];
+            var txt1=$m.ncity_arr["l_scity"];
+            var txt2=$m.ncity_arr["l_ecity"];  
+            setPrice(txt1,txt2,type);
         }
         $m.return_arr["type"]=index+1;
         $m.ncity_arr["type"]=index+1;
@@ -858,15 +870,16 @@ $(function(){
     
     // 选择支付方式
     $(".js_pay_list>li").on("tap",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
         var a=$(this).children("a").children("span");
         a.addClass("now_choice_spn");
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
     // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
-        
-        var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
+        var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
         var payType=1;
+        console.log(type);
         if(type==2){
             payType=5;
             // 余额支付
@@ -1248,7 +1261,7 @@ function setCityDetail(){
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
         $m.now_city=city;
-        new_city.init_cs($m.s_arr2,city);
+        // new_city.init_cs($m.s_arr2,city);
     });
 }
 //格式化省市自治区
@@ -1430,7 +1443,7 @@ function setPayDom(arr){
     var endname=arr["endname"]?arr["endname"]:"";
     var isbag=arr["isbag"]?arr["isbag"]:0;
     var ischildren=arr["ischildren"]?arr["ischildren"]:0;
-    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    var bookprice=arr["bookprice"]?arr["bookprice"]:0;
     var days=$m.return_arr["days"]?$m.return_arr["days"]:1;
     var scity=$(".js_get_city").eq(0).text()?$(".js_get_city").eq(0).text():"";
     var ecity=$(".js_get_city").eq(1).text()?$(".js_get_city").eq(1).text():"";
@@ -1456,7 +1469,7 @@ function setPayDom(arr){
         var _html='<li><img src="'+$m.img_url+'icon13.png" alt="icon"/><span>有小孩</span></li>';
         $(".page8 .js_additional_list").append(_html);
     }
-    $(".page8 .js_pay_price").text(totalprice);
+    $(".page8 .js_pay_price").text(bookprice);
 
 
     $("#atten_box").fadeOut(100);
