@@ -236,6 +236,8 @@ div.p3_form_change_div{
     padding: 1em;
     margin-top: 2em;
     margin-bottom: 2em;
+    max-width: 10em;
+    max-height: 10em;
     text-align: center;
     border-radius: 50%;
 }
@@ -349,6 +351,9 @@ li.now_choice_li{
     margin-top: 1em;
     letter-spacing: 0.2em;
 }
+.p9_atten_p{
+    margin-top: 2em;
+}
 /*page10*/
 .page10 .scroll{
     padding-bottom: 2em;
@@ -429,6 +434,10 @@ a.share_btn{
 }
 a.share_btn>img{
     width: 2.2em;
+}
+.p12_atten_p{
+    padding-top: 2em;
+    text-align: center;
 }
 /*page13*/
 .logo_div{
@@ -575,6 +584,9 @@ a.share_btn>img{
     top: 1.3em;
 }
 /*page17*/
+.page17 .checkbut{
+    top: 1.3em;
+}
 .page17 .weui_btn_my1{
     margin-top: 1em;
 }
@@ -911,7 +923,34 @@ div.year_section{
 .page22 .checkbut{
     position: static;
 }
-
+/*取消订单*/
+div.p_cancel_div{
+    height: 18em;
+}
+.del_reason{
+    margin-bottom: 1em;
+}
+.del_reason>li{
+    border-bottom: 1px solid #aaa;
+    padding: 0.3em 0.5em;
+    text-align: left;
+    font-size: 0.8em;
+    position: relative;
+}
+.del_reason>li>img{
+    position: absolute;
+    right: 0;
+    top: 0.7em;
+    display: inline-block;
+    width: 0.8em;
+    background-color: #ff4e00;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 10;
+}
+.del_reason img.now_choice_img{
+    opacity: 1;
+}
 
 
 

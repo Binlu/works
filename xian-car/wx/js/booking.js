@@ -163,6 +163,7 @@ var $m={
         "password":"新密码",
         "autocode":1515
     },
+    set_order:{},                   //价格数据
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -578,8 +579,9 @@ $(function(){
     });
     // 乘车人数
     $(".js_member").on("tap",function(){
-        var num=$(".page1 .js_person_num").val()?$(".page1 .js_person_num").val():1;
-        $(".page4 .js_num").val(num);
+        // var num=$m.return_arr["personnumber"]?$m.return_arr["personnumber"]:1;
+        // console.log(num)
+        // $(".page4 .js_num").val(num);
         $m.toNext($(".page4"),function(){
             $m.active_scroll=4;
             $m.refreshPage();
@@ -588,9 +590,11 @@ $(function(){
     // 确认人数
     $(".js_sure_num_btn").on("tap",function(){
         $m.toPrev($(".page4"),function(){
-            var num=$(".js_num").val()?$(".js_num").val():1;
+            var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
             $m.return_arr["personNumber"]=num;
             $(".js_person_num").text(num);
+            var nprice=$m.return_arr["bookprice"]?$m.return_arr["bookprice"]:0;
+            $(".page1 .js_nprice").text(num*nprice);
             $m.active_scroll=1;
         });
     });
@@ -624,10 +628,10 @@ $(function(){
     });
     // 提交帮人约车信息
     $(".js_sure_about_btn").on("tap",function(){
+        var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
         if($(".page4 .js_help_about").hasClass("js_now")){
             aboutInfo(function(){
                 $m.toPrev($(".page4"),function(){
-                    var num=$(".js_num").val()?$(".js_num").val():1;
                     $(".js_person_num").text(num);
                     $m.return_arr["personNumber"]=num;
                     $m.active_scroll=1;
@@ -636,12 +640,14 @@ $(function(){
         }else{
             $m.return_arr["isHelp"]=0;
             $m.toPrev($(".page4"),function(){
-                var num=$(".js_num").val()?$(".js_num").val():1;
+                
                 $(".js_person_num").text(num);
                 $m.return_arr["personNumber"]=num;
                 $m.active_scroll=1;
             });
         }
+        var nprice=$m.return_arr["bookprice"]?$m.return_arr["bookprice"]:0;
+        $(".page1 .js_nprice").text(num*nprice);
         
     });
     // 选择预约线路的类型
@@ -746,6 +752,11 @@ $(function(){
     });
     // 资费详情
     $(".js_get_detail").on("tap",function(){
+        var num=$(".page1 .js_person_num").text()?$(".page1 .js_person_num").text():1;
+        var nprice=$m.return_arr["bookprice"];
+        $(".page5 .js_npay").text(nprice*num);
+        $(".page5 .js_all_price").text(nprice*num);
+        $(".page5 .js_order_price").text(nprice);
         $m.toNext($(".page5"),function(){
             $m.active_scroll=5;
             $m.refreshPage();
@@ -756,26 +767,34 @@ $(function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 取消修改
-    $(".js_cancel_btn").on("tap",function(){
+    $(".js_cancel_btn").on("click",function(){
         $(this).parent().parent().fadeOut(200);
         $(".bg_div").fadeOut(400);
     });
+    // 选择取消订单原因
+    $(".js_del_reason>li").on("click",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
+        $(this).children("img").addClass("now_choice_img");
+        $(this).siblings("li").children("img").removeClass("now_choice_img");
+    });
     // 确认取消订单
-    $(".js_order_btn").on("tap",function(){
-        var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
-        if(txt==""){
-            msg("内容不能为空。",800);
+    $(".js_order_btn").on("click",function(){
+        var a=$(".js_del_reason>li.js_now");
+        if(a.length==0){
+            msg("请先选择取消订单原因",800);
         }else{
-            $(".js_del_order_box").fadeOut(200);
-            $(".bg_div").fadeOut(400);
-            $m.toPrev($(".page6"),function(){
-                $m.active_scroll=1;
-                $m.refreshPage();
-            })
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var type=a.attr("data-id")?a.attr("data-id"):1;
+            var orderid=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+            var arr={"orderId":orderid,"user_id":user_id,"type":type};
+            subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
+                msg("取消订单成功",800);
+                $(".js_del_order_box").fadeOut(200);
+                $(".bg_div").fadeOut(400,function(){
+                    $m.toPrev($(".page6"),function(){
+                    });
+                });
+
+            });
         }
     });
     // 车辆详情
@@ -879,7 +898,6 @@ $(function(){
     $(".js_pay_sure_btn").on("tap",function(){
         var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
         var payType=1;
-        console.log(type);
         if(type==2){
             payType=5;
             // 余额支付
@@ -916,7 +934,7 @@ $(function(){
     });
     // 获取验证码
     $(".page13 .js_get_code").on("tap",function(){
-        checkpost($(this),"page13 .js_mobile",2);
+        checkpost($(this),"page13 .js_mobile",3);
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("tap",function(){
@@ -936,22 +954,27 @@ $(function(){
     });
     // 余额支付
     $(".js_pay_balance_now").on("tap",function(){
+        var a=$(this);
         var pass=$(".page12 .js_pass_area").val()?$(".page12 .js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
         }else{
-            // msg("支付成功",800);
-            // $m.toNext($(".page14"),function(){
-            //     $m.active_scroll=14;
-            //     $m.refreshPage();
-            // });
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
             // 开始提交
             var paysn=$m.order_arr["paysn"]?$m.order_arr["paysn"]:"";
             var arr={"user_id":user_id,"paypwd":md5(pass),"paysn":paysn};
-            subAjax(arr,$m.ajax_link+"goUseBalancePay",function(re){
-                console.log(re);
-                // $(".page6 .js_set_order_p").hide();
-                // $(".page6 .js_order_ele").hide();
+            subAjax2(arr,$m.ajax_link+"goUseBalancePay",function(re){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                msg("支付成功！","确定",function(){
+                    a.siblings(".js_pass_area").val("");
+                    $(".page").not(".page1,.page12").css({"left":"100%"});
+                    $m.toPrev($(".page12"),function(){
+                        $m.active_scroll=1;
+                        $m.refreshPage();
+                    });
+                },true);
             });
         }
     });
@@ -1342,7 +1365,8 @@ function setPrice(txt1,txt2,type){
             }
             
         }
-        $(".page1 .js_nprice").text(price);
+        var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
+        $(".page1 .js_nprice").text(price*num);
         $m.return_arr["can_order"]=true;
     },function(){
         if(type==1){
@@ -1363,7 +1387,6 @@ function setOrderDom(data){
 // 生成订单详情
 function setMyTripDetail(arr){
     var arr=arr["data"];
-    console.log(arr);
     if(arr!=null && arr!="undefined"){
         $m.order_arr=arr;
     }

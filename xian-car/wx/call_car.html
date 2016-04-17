@@ -7,7 +7,7 @@
         <meta name="description" content="线上拼车平台"/>
         <meta name="format-detection" content="telephone=no"/>
         <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-        <title>weui</title>
+        <title>立即约车</title>
         <link rel="stylesheet" type="text/css" href="css/weui.min.css">
         <link rel="stylesheet" href="css/main.css"/>
         <link rel="stylesheet" type="text/css" href="css/call_car.css">
@@ -187,7 +187,7 @@
                                     <label class="weui_label" style="width:8em;">请选择乘车人数：</label>
                                 </div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input js_num" type="tel" placeholder="" value="1">
+                                    <input class="weui_input js_num" type="text" placeholder="" value="1">
                                 </div>
                             </div>
                             <ul class="num_list js_num_list">
@@ -228,7 +228,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="txt_c js_btn_div hide">
+                        <div class="txt_c js_btn_div">
                             <a href="javascript:;" class="btn2 btn_type2 b_color1 js_cancel" title="取消">取消</a>
                             <a href="javascript:;" class="btn1 btn_type1 weui_btn_my1 b_color3 js_sure_about_btn" title="確定">確定</a>
                         </div>
@@ -248,14 +248,13 @@
                     <div class="content_box txt_c">
                         <h3><label class="f_l">&nbsp;</label><span>合计</span><label class="f_r">&nbsp;</label></h3>
                         <div class="detail_div">
-                            <span class="font18">25</span>元
+                            <span class="font18 js_npay">0</span>元
                             <ul>
-                                <li class="clear"><label>基本车费：</label><span class="f_r">20元</span></li>
-                                <li class="clear"><label>接乘客费：</label><span class="f_r">0元</span></li>
-                                <li class="clear"><label>送乘客费：</label><span class="f_r">10元</span></li>
+                                <li class="clear"><label>总费用：</label><span class="f_r">元</span><span class="f_r js_all_price">0</span></li>
+                                <li class="clear"><label>预约定金：</label><span class="f_r">元</span><span class="f_r js_order_price">0</span></li>
                             </ul>
                             <div class="color5 clear">
-                                <label>优惠券抵扣：</label><span class="f_r">5元</span>
+                                <label>优惠券抵扣：</label><span class="f_r">0元</span>
                             </div>
                         </div>
                     </div>
@@ -269,7 +268,7 @@
                         <!-- 返回前页 -->
                         <a class="btn1 return_btn js_back" href="javascript:;" title="返回"><img src="images/icon10.png" alt="返回"></a>
                         <span>系统派单中</span>
-                        <a class="btn2 r_btn js_del_order hide" href="javascript:;" title="取消订单" data-return="page4">取消订单</a>
+                        <a class="btn2 r_btn js_del_order" href="javascript:;" title="取消订单" data-return="page4">取消订单</a>
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
@@ -481,7 +480,7 @@
                     </h3>
                     <!-- 内容 -->
                     <div class="content_box">
-                        <h3 class="txt_c">需支付<span class="color5 font18 v_base">25</span>元</h3>
+                        <h3 class="txt_c">需支付<span class="color5 font18 v_base js_payprice_spn">0</span>元</h3>
                         <div class="p21_form">
                             <div class="txt_l"><label>请输入支付密码：</label></div>
                             <input class="input_area js_pass_area" type="password" maxlength="6" pattern="[0-9]*"/>
@@ -814,13 +813,21 @@
             </div>
         </section>
         <!-- 填写取消订单原因 -->
-        <div class="form_change_div p6_form_change_div ab_div js_del_order_box">
-            <label>请填写取消原因：</label><br/>
-            <textarea class="js_order_area" style="width: 86%;display: block;margin: 1em auto 0" rows="6"></textarea>
-            <br/>
+        <div class="form_change_div p6_form_change_div ab_div txt_c js_del_order_box">
+            <label>取消原因</label>
+            <!-- <textarea class="js_order_area" style="width: 86%;display: block;margin: 1em auto 0" rows="6"></textarea>
+            <br/> -->
+            <ul class="del_reason js_del_reason">
+                <li data-id="1"><img src="images/icon22.png" alt="alt">态度差</li>
+                <li data-id="2"><img src="images/icon22.png" alt="alt">服务不好</li>
+                <li data-id="3"><img src="images/icon22.png" alt="alt">等待时间太长</li>
+                <li data-id="4"><img src="images/icon22.png" alt="alt">我有事</li>
+                <li data-id="5"><img src="images/icon22.png" alt="alt">车内环境差</li>
+                <li class="n_b" data-id="6"><span>&nbsp;</span>不需要用车了</li>
+            </ul>
             <div class="txt_c">
                 <a class="btn5 btn_type4 js_cancel_btn" href="javascript:;" title="取消">取消</a>
-                <a class="btn1 btn_type5 js_order_btn" href="javascript:;" title="保存">保存</a>
+                <a class="btn1 btn_type5 js_order_btn" href="javascript:;" title="确定">确定</a>
             </div>
         </div>
         <!--  -->
@@ -839,6 +846,7 @@
         <script type="text/javascript" src="js/iscroll.js"></script>
         <script type="text/javascript" src="js/frame.js"></script>
         <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+        <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript" src="js/call_car.js"></script>
     </body>
    

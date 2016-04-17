@@ -142,7 +142,9 @@ var $m={
     },
     user_info:{
         "phone":      18821725490,                  //手机号码
-        "page":       1                             //我的行程当前页面
+        "page":       1,                             //我的行程当前页面
+        "is_add":     false,                             
+        "is_get":     false,                            
     },
     order_arr:null,
     my_coupon:{                                     //我的优惠券去当前信息
@@ -150,11 +152,12 @@ var $m={
         npage:1,
         is_get: false,
     },
+    invoice:{},                                     //发票提交信息
 }
 // 获取连接数据
 var link_obj=GetRequest();
 // 用户id
-var user_id=link_obj["user_id"]?link_obj["user_id"]:"";
+var user_id="";
 var page_link=link_obj["page_link"]?link_obj["page_link"]:"";
 $(function(){
     // 绑定滚动
@@ -187,7 +190,6 @@ $(function(){
         var is_sign=getLocalStorage("is_sign")?getLocalStorage("is_sign"):"";
         var id=getLocalStorage("id")?getLocalStorage("id"):"";
         var phone=getLocalStorage("phone")?getLocalStorage("phone"):"";
-        console.log(id,is_sign,phone)
         if(is_sign=="" || id=="" || phone==""){
             // 没登录
             $m.toDirect($(".page15"),function(){
@@ -197,7 +199,8 @@ $(function(){
             });
         }else{
             // 获取个人信息
-            var user_id=getLocalStorage("id");
+            user_id=id;
+            $m.user_info["phone"]=phone;
             var arr={"user_id":user_id};
             subAjax(arr,$m.ajax_link+"getSelfInfos",setUserInfo);
         }
@@ -208,9 +211,35 @@ $(function(){
     });
     // 个人信息
     $(".js_personal_info").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page19"),function(){
             $m.active_scroll=19;
             $m.refreshPage();
+        });
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getSelfInfos",function(re){
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+            var avatar=re["data"]["avatar"]?re["data"]["avatar"]:$m.img_url+$m.head_place;
+            var user_nicename=re["data"]["user_nicename"]?re["data"]["user_nicename"]:"请填写";
+            var sex=re["data"]["sex"]?re["data"]["sex"]:0;
+            var signature=re["data"]["signature"]?re["data"]["signature"]:"";
+            var phone=$m.user_info["phone"];
+            var q=phone.substr(0,3);
+            var h=phone.substr(7);
+            var str=q+"****"+h;
+            $(".page19 .js_mobile_txt1").text(str).attr("data-mobile",phone);
+            $(".page19 .js_header_pic").attr("src",avatar);
+            $(".page19 .js_nicename").text(user_nicename);
+            $(".page19 .js_autograph_txt").text(signature);
+            var txt="";
+            if(sex==1){
+                txt="男";
+            }else if(sex==2){
+                txt="女";
+            }else{}
+            $(".page19 .js_sex_txt").text(txt);
         });
     });
     // 点击修改头像
@@ -256,7 +285,7 @@ $(function(){
     });
     // 修改昵称
     $(".js_rename").on("tap",function(){
-        var txt=$(this).find(".js_rename_txt").text()?$(this).find(".js_rename_txt").text():"";
+        var txt=$(this).find(".js_nicename").text()?$(this).find(".js_nicename").text():"";
         txt=txt.reSpace();
         $(".js_rename_box").find(".js_rename_area").val(txt);
         $(".js_rename_box").show().siblings(".bg_div").fadeIn(400);;
@@ -269,19 +298,21 @@ $(function(){
         }else{
             $(".js_rename_box").fadeOut(200);
             $(".bg_div").fadeOut(400);
-            $(".js_rename_txt").text(txt);
+            $(".js_nicename").text(txt);
             var arr={"user_nicename":txt,"user_id":user_id};
             subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-                $(".js_rename_txt").text(txt);
+                $(".js_nicename").text(txt);
             });
         }
     });
     // 修改性别
     $(".js_sex").on("tap",function(){
         var sex=$(".js_sex").attr("data-sex")?$(".js_sex").attr("data-sex"):1;
+        console.log(sex)
         if(sex==1){
             $(".js_sex_div>a").eq(0).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
         }else{
+
             $(".js_sex_div>a").eq(1).addClass("now_choice_a").siblings("a").removeClass("now_choice_a");
         }
         $(".js_sex_box").show().siblings(".bg_div").fadeIn(400);;
@@ -295,10 +326,10 @@ $(function(){
         var txt=num==2?"女":"男";
         $(".js_sex").attr("data-sex",num);
         $(".js_sex_txt").text(txt);
-        // var arr={"sex":txt,"user_id":user_id};
-        // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-        //     $(".js_sex_txt").text(txt);
-        // });
+        var arr={"sex":num,"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+            $(".js_sex_txt").text(txt);
+        });
     });
     // 修改年龄
     $('.js_birthday').date({theme:"date",ylen:70},function(obj,re){
@@ -361,14 +392,10 @@ $(function(){
             $(".js_change_autograph").fadeOut(200);
             $(".bg_div").fadeOut(400);
             $(".js_autograph").find(".js_autograph_txt").text(txt);
-            // var arr={"signature":txt,"user_id":user_id};
-            // subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-            //     $(".js_change_mobile").fadeOut(200);
-            //     $(".bg_div").fadeOut(400);
-            //     var q=txt.substr(0,3);
-            //     var h=txt.substr(0,4);
-            //     var str=q+"****"+h;
-            // });
+            var arr={"signature":txt,"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
+                $(".page19 .js_autograph_txt").text(txt);
+            });
         }
     });
     // 取消修改
@@ -385,22 +412,41 @@ $(function(){
     $(".js_my_trip").on("tap",function(){
         $("#atten_box").fadeIn(100);
         $(".bg_div").fadeIn(200);
-        var is_add=$(this).attr("data-add")?$(this).attr("data-add"):2;
-        if(is_add==2){
-            // 没有加载
-            $m.toNext($(".page2"),function(){
-                $m.active_scroll=2;
-                $m.refreshPage();
+        $m.toNext($(".page2"),function(){
+            $m.active_scroll=2;
+            $m.refreshPage();
+        });
+        if(!$m.user_info["is_add"]){
+            var arr={"phone":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
+            $m.user_info["is_get"]=true;
+            subAjax(arr,$m.ajax_link+"getOrderListByPhone",setMyTrip,function(){
+                $m.user_info["is_get"]=false;
             });
-            getMyTrip();
         }else{
-            $m.toNext($(".page2"),function(){
-                $("#atten_box").fadeOut(100);
-                $(".bg_div").fadeOut(200);
-                $m.active_scroll=2;
-                $m.refreshPage();
-            });
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
         }
+    });
+    // 优惠券滚动监听
+    myScroll2.on("scrollEnd",function(){
+        var ph=this.wrapperHeight;
+        var oh=this.scrollerHeight;
+        var y=this.y;
+        if(y<ph-oh+10){
+            // 开始请求
+            if(!$m.user_info["is_get"]){
+                $m.user_info["is_get"]=true;
+                $("#atten_box").fadeIn(100);
+                $(".bg_div").fadeIn(200);
+                var arr={"phone":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
+                subAjax(arr,$m.ajax_link+"getOrderListByPhone",setMyTrip,function(){
+                    $m.user_info["is_get"]=false;
+                    myScroll2.refresh();
+                });
+            }else{
+                myScroll2.refresh();
+            }
+        }  
     });
     // 行程详情
     $(".page2").on("tap",".js_trip_list>li",function(){
@@ -414,19 +460,27 @@ $(function(){
         var arr={"orderId":orderId,"user_id":user_id};
         subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
     });
-    // 填写取消订单框
+    // 取消订单框
     $(".js_del_order").on("tap",function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);
     });
+    // 选择取消订单原因
+    $(".js_del_reason>li").on("click",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
+        $(this).children("img").addClass("now_choice_img");
+        $(this).siblings("li").children("img").removeClass("now_choice_img");
+    });
     // 确认取消订单
     $(".js_order_btn").on("click",function(){
-        var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
-        if(txt==""){
-            msg("内容不能为空。",800);
+        var a=$(".js_del_reason>li.js_now");
+        var txt=a.text();
+        if(a.length==0){
+            msg("请先选择取消订单原因",800);
         }else{
             var orderid=$(".page3 .js_del_order").attr("data-orderid");
             var arr={"orderId":orderid,"user_id":user_id,"type":1};
             subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
+                msg("取消订单成功",800);
                 $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
                 $(".page3 .js_del_order").hide();
                 $(".p3_btn_div").hide();
@@ -468,6 +522,8 @@ $(function(){
             var txt=re["data"]?re["data"]:"评论成功！";
             msg(re["data"],800);
             a.parent().hide();
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
             $(".js_can_star").removeClass("js_star_list");
             myScroll3.refresh();
         });
@@ -563,15 +619,17 @@ $(function(){
     // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
         var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
-        console.log(type)
+        var payType=1;
         if(type==2){
             // 余额支付
+            payType=5;
             $m.toNext($(".page21"),function(){
                 $m.active_scroll=21;
                 $m.refreshPage();
             });
         }else{
             // 微信支付
+            payType=3;
             var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
             // 商户id
             var partnerId=$m.order_arr["partnerId"]?$m.order_arr["partnerId"]:"";
@@ -590,6 +648,14 @@ $(function(){
                 }
             });
         }
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=0;
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+            $m.order_arr["paysn"]=re["data"]["paysn"]?re["data"]["paysn"]:"";
+            $m.order_arr["payprice"]=re["data"]["payprice"]?re["data"]["payprice"]:0;
+            $(".page21 .js_payprice_spn").text($m.order_arr["payprice"]);
+        });
     });
     // 密码输入控制
     $(".js_pass_area").on("keyup",function(){
@@ -607,7 +673,7 @@ $(function(){
     });
     // 获取验证码
     $(".page22 .js_get_code").on("tap",function(){
-        checkpost($(this),"page22 .js_mobile");
+        checkpost($(this),"page22 .js_mobile",3);
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("tap",function(){
@@ -626,30 +692,47 @@ $(function(){
     });
     // 确认余额支付
     $(".js_pay_balance_now").on("tap",function(){
-        var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
+        var a=$(this);
+        var pass=$(".page21 .js_pass_area").val()?$(".page21 .js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
         }else{
-            msg("支持成功",800);
-            $(".js_can_star").addClass("js_star_list");
-            $(".p3_btn_div").children(".js_to_pay").hide();
-            $(".page20").css({"left":"100%"});
-            $m.toPrev($(".page21"),function(){
-                $m.active_scroll=20;
-                $m.refreshPage();
-            });
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
             // 开始提交
-            var arr={"user_nicename":txt,"user_id":user_id};
-            subAjax(arr,$m.ajax_link+"goModifiedSelfInfo",function(){
-                $(".js_rename_txt").text(txt);
+            var paysn=$m.order_arr["paysn"]?$m.order_arr["paysn"]:"";
+            var arr={"user_id":user_id,"paypwd":md5(pass),"paysn":paysn};
+            subAjax2(arr,$m.ajax_link+"goUseBalancePay",function(re){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                msg("支付成功！","确定",function(){
+                    a.siblings(".js_pass_area").val("");
+                    $(".page3").css({"left":"100%"});
+                    $(".page20").css({"left":"100%"});
+                    $m.toPrev($(".page21"),function(){
+                        $m.active_scroll=2;
+                        $m.refreshPage();
+                    });
+                },true);
             });
         }
     });
     // 我的钱包
     $(".js_my_wallet").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page4"),function(){
             $m.active_scroll=4;
             $m.refreshPage();
+        });
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getMyWalletData",function(re){
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+            var user_money=re["data"]["user_money"]?re["data"]["user_money"]:0;
+            var user_bonuscount=re["data"]["user_bonuscount"]?re["data"]["user_bonuscount"]:0;
+            $(".js_balance_spn").text(user_money);
+            $(".page4 .js_coupon_num").text(user_bonuscount);
         });
     });
     // 钱包余额
@@ -666,6 +749,14 @@ $(function(){
         //     $m.setHeight($(".circular_div").eq(0),1);
         // });
         $m.setHeight($(".circular_div").eq(0),1);
+    });
+    // 充值
+    $(".page4 .js_recharge").on("tap",function(){
+        msg("此功能暂时未开通。",800);
+    });
+    // 提现
+    $(".page4 .js_cash").on("tap",function(){
+        msg("此功能暂时未开通。",800);
     });
     // 优惠券
     $(".js_coupon").on("tap",function(){
@@ -693,16 +784,15 @@ $(function(){
         if(y<ph-oh+10){
             // 开始请求
             if(!$m.my_coupon["is_get"]){
+                $m.my_coupon["is_get"]=true;
                 $("#atten_box").fadeIn(100);
                 $(".bg_div").fadeIn(200);
-                $m.my_coupon["is_get"]=true;
                 var arr={"user_id":user_id,"page":$m.my_coupon["npage"]};
                 subAjax(arr,$m.ajax_link+"getMyBonus",setMyCoupon,function(){
                     $m.my_coupon["is_get"]=false;
                 });
             }
-        }
-        
+        }  
     });
     // 使用详情
     $(".js_rule").on("tap",function(){
@@ -759,38 +849,87 @@ $(function(){
     });
     // 开发票
     $(".js_invoice").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page9"),function(){
             $m.active_scroll=9;
             $m.refreshPage();
         });
+        var arr={"phone":$m.user_info["phone"],"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getNoIssueInvoice",setMyInvoice);
     });
     // 选择发票订单
     $(".page9").on("tap",".js_invoice_list>li",function(){
-        // if(!$(this).hasClass("now_choice_li")){
-        //     $(this).addClass("now_choice_li");
-        // }else{
-        //     $(this).removeClass("now_choice_li");
-        // }
-        $(this).addClass("now_choice_li").siblings("li").removeClass("now_choice_li");
+        var all_price=$(".page9 .js_invoice_price").text()?$(".page9 .js_invoice_price").text():0;
+        all_price=Number(all_price)?Number(all_price):0;
+        var all_count=$(".page9 .js_invoice_num").text()?$(".page9 .js_invoice_num").text():0;
+        var nprice=$(this).attr("data-price")?$(this).attr("data-price"):0;
+        nprice=Number(nprice)?Number(nprice):0;
+        var id=$(this).attr("data-orderid")?$(this).attr("data-orderid"):"";
+        if(!$(this).hasClass("now_choice_li")){
+            $(this).addClass("now_choice_li");
+            all_price+=nprice;
+            all_count++;
+        }else{
+            all_price=(all_price-nprice)<0?0:all_price-nprice;
+            all_count=all_price==0?0:all_count--;
+            $(this).removeClass("now_choice_li");
+        }
+        // var nprice=$(this).attr("data-price")?$(this).attr("data-price"):0;
+        // var id=$(this).attr("data-orderid")?$(this).attr("data-orderid"):"";
+        // $(this).addClass("now_choice_li").siblings("li").removeClass("now_choice_li");
+        $(".page9 .js_invoice_price").text(all_price);
+        $(".page9 .js_invoice_num").text(all_count);
     });
     // 全选
     $(".js_choice_all_invoice").on("tap",function(){
-        // if(!$(this).hasClass("all_chocie_btn")){
-        //     $(this).addClass("all_chocie_btn").removeClass("all_nchocie_btn");
-        //     $(".page9 .js_invoice_list>li").addClass("now_choice_li");
-        // }else{
-        //     $(this).addClass("all_nchocie_btn").removeClass("all_chocie_btn");
-        //     $(".page9 .js_invoice_list>li").removeClass("now_choice_li");
-        // }
-
+        var type=0;
+        if(!$(this).hasClass("all_chocie_btn")){
+            type=1;
+            $(this).addClass("all_chocie_btn").removeClass("all_nchocie_btn");
+            $(".page9 .js_invoice_list>li").addClass("now_choice_li");
+        }else{
+            type=2
+            $(this).addClass("all_nchocie_btn").removeClass("all_chocie_btn");
+            $(".page9 .js_invoice_list>li").removeClass("now_choice_li");
+        }
+        var all_price=0;
+        var all_count=$(".page9 .js_invoice_list>li").length;
+        $(".page9 .js_invoice_list>li").each(function(){
+            var nprice=$(this).attr("data-price")?$(this).attr("data-price"):0;
+            nprice=Number(nprice)?Number(nprice):0;
+            all_price+=nprice;
+        });
+        if(type==2){
+            all_price=0;
+            all_count=0;
+        }
+        $(".page9 .js_invoice_price").text(all_price);
+        $(".page9 .js_invoice_num").text(all_count);
     });
     // 填写信息
     $(".js_fill_info").on("tap",function(){
         if($(".js_invoice_list").children("li.now_choice_li").length<1){
             msg("请先选择订单。",800);
         }else{
-            var price=$(".js_invoice_price").text()?$(".js_invoice_price").text():0;
-            $(".page10").find(".js_input_area").eq(0).val(price);
+            var all_price=0;
+            var all_count=$(".page9 .js_invoice_list>li").length;
+            var idstr="";
+            $(".page9 .js_invoice_list>li.now_choice_li").each(function(i){
+                var nprice=$(this).attr("data-price")?$(this).attr("data-price"):0;
+                var id=$(this).attr("data-orderid")?$(this).attr("data-orderid"):"";
+                nprice=Number(nprice)?Number(nprice):0;
+                all_price+=nprice;
+                if(i==0){
+                    idstr=id;
+                }else{
+                    idstr+=","+id;
+                }
+            });
+            $m.invoice["price"]=all_price;
+            $m.invoice["orderIds"]=idstr;
+            $m.invoice["getType"]=1;
+            $(".page10").find(".js_input_area").eq(0).val(all_price);
             $m.toNext($(".page10"),function(){
                 $m.active_scroll=10;
                 $m.refreshPage();
@@ -799,44 +938,105 @@ $(function(){
     });
     // 送达服务站
     $(".js_to_service_station").on("tap",function(){
+        $m.invoice["getType"]=1;
         $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
-        $(".js_service_station").show();
+        // $(".js_service_station").show();
         $(".js_address_ele").hide();
         myScroll10.refresh();
     });
-    // 选择服务站
-    $(".page10").on("tap",".js_choice_service_station",function(){
-        $(this).find(".js_choice_pic").attr("src",$m.img_url+"icon22.png");
-        $(this).siblings(".js_choice_service_station").find(".js_choice_pic").attr("src",$m.img_url+"icon21.png");
-    });
+    // 服务站选择
+    // $(".page10").on("tap",".js_choice_service_station",function(){
+    //     $(this).find(".js_choice_pic").attr("src",$m.img_url+"icon22.png");
+    //     $(this).siblings(".js_choice_service_station").find(".js_choice_pic").attr("src",$m.img_url+"icon21.png");
+    // });
     // 快递
     $(".js_to_express").on("tap",function(){
+        $m.invoice["getType"]=2;
         $(this).addClass("choice_btn").siblings("a").removeClass("choice_btn");
-        $(".js_service_station").hide();
+        // $(".js_service_station").hide();
         $(".js_address_ele").show();
+        $(".page10 .js_address_txt").focus();
         myScroll10.refresh();
     });
     // 提交发票信息
     $(".js_save_info").on("tap",function(){
-        msg("恭喜，提交成功！","确定",function(){
-            $m.toPrev($(".page10"),function(){
-                $m.active_scroll=9;
+        var a=$(".page10 .js_input_area");
+        var invoiceTitle=a.eq(1).val()?a.eq(1).val():"";
+        var service=a.eq(2).val()?a.eq(2).val():"";
+        var consignee=a.eq(3).val()?a.eq(3).val():"";
+        var phone=a.eq(4).val()?a.eq(4).val():"";
+        var address=$(".page10 .js_address_txt").val()?$(".page10 .js_address_txt").val():"";
+        var regx=/1[1-9]+[0-9]{9}/;
+        if(invoiceTitle==""){
+            msg("请填写发票抬头",800);
+        }else if(consignee==""){
+            msg("请填写收件人姓名",800);
+        }else if(phone==""){
+            msg("请填写手机号",800);
+        }else if(phone.length<11 || !regx.test(phone)){
+            msg("请填写正确手机号",800);
+        }else if($m.invoice["getType"]==2 && address==""){
+            msg("请填写邮寄地址",800);
+        }else{
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
+            $m.invoice["user_id"]=user_id;
+            $m.invoice["invoiceTitle"]=invoiceTitle;
+            $m.invoice["service"]=service;
+            $m.invoice["consignee"]=consignee;
+            $m.invoice["phone"]=phone;
+            $m.invoice["address"]=address;
+            subAjax($m.invoice,$m.ajax_link+"goIssueInvoice",function(){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                $(".page9").css({"left":"100%"});
+                msg("提交成功","确定",function(){
+                    $m.toPrev($(".page10"),function(){
+                        $m.active_scroll=4;
+                    });
+                },true);
             });
-        },true);
+        }
     });
     // 我的积分
     $(".js_integral").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.setHeight($(".circular_div").eq(1),1);
         $m.toNext($(".page11"),function(){
             $m.active_scroll=11;
             $m.refreshPage();
         });
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getSelfInfos",function(re){
+            $("#atten_box").fadeOut(100);
+            $(".bg_div").fadeOut(200);
+            var score=re["data"]["score"]?re["data"]["score"]:0;
+            $(".page11 .js_integral_spn").text(score);
+        });
+    });
+    // 使用积分
+    $(".js_use_integral").on("tap",function(){
+        msg("暂时未开通此业务。",800);
+        // var arr={"user_id":user_id};
+        // subAjax(arr,$m.ajax_link+"getSelfInfos",function(re){
+        //     $("#atten_box").fadeOut(100);
+        //     $(".bg_div").fadeOut(200);
+        //     var score=re["data"]["score"]?re["data"]["score"]:0;
+        //     $(".page11 .js_integral_spn").text(score);
+        // });
     });
     // 我的分享
     $(".js_share").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page12"),function(){
             $m.active_scroll=12;
             $m.refreshPage();
+        });
+        var arr={"user_id":user_id};
+        subAjax(arr,$m.ajax_link+"getMyShare",setMyShare,function(){
+
         });
     });
     // 切换分享
@@ -846,12 +1046,28 @@ $(function(){
         $(".js_detail_div").eq(_index).show().siblings(".js_detail_div").hide();
         myScroll12.refresh();
     });
+    // 申请提现
+    $(".js_get_cash_btn").on("tap",function(){
+        msg("暂时未开通此业务。",800);
+        // $("#atten_box").fadeIn(100);
+        // $(".bg_div").fadeIn(200);
+        // var arr={"user_id":user_id};
+        // subAjax(arr,$m.ajax_link+"getMyShare",setMyShare,function(){
+
+        // });
+    });
     // 关于我们
     $(".js_about").on("tap",function(){
+        $("#atten_box").fadeIn(100);
+        $(".bg_div").fadeIn(200);
         $m.toNext($(".page13"),function(){
             $m.active_scroll=13;
             $m.refreshPage();
         });
+        // var arr={};
+        // subAjax(arr,$m.ajax_link+"abount",function(re){
+        //     console.log(re)
+        // });
     });
     // 意见反馈
     $(".js_feedback").on("tap",function(){
@@ -894,6 +1110,7 @@ $(function(){
             msg("登录成功！",800);
             user_id=re["data"]["id"]?re["data"]["id"]:"";
             var phone=re["data"]["user_login"]?re["data"]["user_login"]:"";
+            $m.user_info["phone"]=phone;
             setLocalStorage({"id":user_id,"is_sign":true,"phone":phone});
             if(page_link && page_link!=""){
                 window.location.replace(page_link);
@@ -917,6 +1134,10 @@ $(function(){
             $m.refreshPage();
         });
     });
+    // 获取验证码
+    $(".page16 .js_get_code").on("tap",function(){
+        checkpost($(this),"page16 .js_mobile",1);
+    });
     // 提交注册
     $(".js_register_btn").on("tap",function(){
         registerFunc($(this),function(){
@@ -927,14 +1148,13 @@ $(function(){
             },true);
         });
     });
-    // 获取验证码
-    $(".page16 .js_get_code").on("tap",function(){
-        checkpost($(this),"page16 .js_mobile",1);
-    });
+    
     // 找回密码
     $(".js_get_ps").on("tap",function(){
+        var phone=$(".page15 .js_input_area").eq(0).val()?$(".page15 .js_input_area").eq(0).val():"";
         $("#atten_box").fadeIn(100);
         $(".bg_div").fadeIn(200);
+        $(".page17 .js_input_area").eq(0).val(phone);
         $m.toNext($(".page17"),function(){
             $("#atten_box").fadeOut(100);
             $(".bg_div").fadeOut(200);
@@ -942,11 +1162,16 @@ $(function(){
         });
         
     });
+    // 获取验证码
+    $(".page17 .js_get_code").on("tap",function(){
+        checkpost($(this),"page17 .js_mobile",2);
+    });
     // 提交找密码
     $(".js_get_ps_btn").on("tap",function(){
         getSignPass($(this),function(){
-            $m.toNext($(".page17"),function(){
-                $m.active_scroll=17;
+            msg("密码找回成功。",800);
+            $m.toPrev($(".page17"),function(){
+                $m.active_scroll=15;
                 $m.refreshPage();
             });
         });
@@ -1021,27 +1246,24 @@ function subAjax2(arr,url,func){
 }
 // 生成dom
 function setUserInfo(re){
+    console.log(re)
     var re_arr=re["data"]?re["data"]:{};
-    console.log(re_arr);
     var avatar=re_arr["avatar"]?re_arr["avatar"]:$m.img_url+$m.head_place;
     var age=re_arr["age"]?re_arr["age"]:0;
-    var balance=re_arr["balance"]?re_arr["balance"]:0.00;
+    var sex=re_arr["sex"]?re_arr["sex"]:0;
     var score=re_arr["score"]?re_arr["score"]:0;
-    var sex=re_arr["sex"]?re_arr["sex"]:1;
-    var signature=re_arr["signature"]?re_arr["signature"]:"未填写";
     var star=re_arr["star"]?re_arr["star"]:0;
     var user_login=re_arr["user_login"]?re_arr["user_login"]:"";
     var user_nicename=re_arr["user_nicename"]?re_arr["user_nicename"]:"";
     var user_star=parseInt(star)?parseInt(star):0;
-    console.log(user_star);
     for(var i=0;i<user_star;i++){
-        console.log(i)
         $(".page1 .js_user_star>li").eq(i).children("img").attr("src",$m.img_url+"icon17.png");
     }
+    $(".page19 .js_sex").attr("data-sex",sex);
     $(".js_header_pic").attr("src",avatar);
     $(".js_nicename").text(user_nicename);
     $(".js_integral_spn").text(score);
-    $(".js_balance_spn").text(balance);
+    // $(".js_balance_spn").text(balance);
     $("#atten_box").fadeOut(100);
     $(".bg_div").fadeOut(200);
     $m.showPage();
@@ -1070,11 +1292,12 @@ function signInFuc(obj,func){
         // }
         // return false;
         // 请求开始
+        var pass=md5(input_txt[1]);
         $.ajax({
             type: "POST",
             url: $m.ajax_link+"goLogin",
             dataType: "json",
-            data: {"phone":input_txt[0],"user_pass":input_txt[1]},
+            data: {"phone":input_txt[0],"user_pass":pass},
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
@@ -1132,12 +1355,13 @@ function registerFunc(obj,func){
         //     func();
         // }
         // return false;
+        var pass=md5(input_txt[2]);
         // 请求开始
         $.ajax({
             type: "POST",
             url: $m.ajax_link+"goRegister",
             dataType: "json",
-            data: {"phone":input_txt[0],"code":input_txt[1],"user_pass":input_txt[2]},
+            data: {"phone":input_txt[0],"code":input_txt[1],"user_pass":pass},
             success: function(data){
                 if(data["status"]==1){
                     user_id=data["data"];
@@ -1172,27 +1396,40 @@ function registerFunc(obj,func){
 // 找回密码
 function getSignPass(obj,func){
     var _this=obj;
-    var input_txt=$(".page17 .js_input_area").val();
+    var input_txt=[];
     var regx=/1[1-9]+[0-9]{9}/;
-    if(input_txt=="" || input_txt==null || input_txt=="undefined"){
+    $(".page17 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
         msg("请填写手机号",800);
-    }else if(input_txt.length<11 || !regx.test(input_txt)){
+    }else if(input_txt[0].length<11 || !regx.test(input_txt[0])){
         msg("请填写正确手机号",800);
+    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请输入验证码",800);
+    }else if(input_txt[1]!=$m.setPassword["autocode"]){
+        msg("验证码错误",800);
+    }else if(input_txt[2]=="" || input_txt[2]==null || input_txt[2]=="undefined"){
+        msg("请输入密码",800);
     }else{
         _this.off("click");
         _this.text("提交中...");
+        // 赋值
         // if(typeof func==="function" && func instanceof Function){
         //     func();
         // }
         // return false;
+        var pass=md5(input_txt[2]);
         // 请求开始
         $.ajax({
             type: "POST",
             url: $m.ajax_link+"goFindPwd",
             dataType: "json",
-            data: {"user_id":user_id,"phone":input_txt},
+            data: {"phone":input_txt[0],"code":input_txt[1],"user_pass":pass},
             success: function(data){
                 if(data["status"]==1){
+                    user_id=data["data"];
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
                         func();
@@ -1232,9 +1469,10 @@ function toSubPass(obj,func){
         input_txt.push($(this).val());
         return input_txt;
     });
-    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
-        msg("请填写姓名",800);
-    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+    // if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+    //     msg("请填写姓名",800);
+    // }else 
+    if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
         msg("请填写手机号",800);
     }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
         msg("请填写正确手机号",800);
@@ -1252,27 +1490,23 @@ function toSubPass(obj,func){
         _this.off("click");
         _this.text("提交中...");
         // 赋值
-        $m.setPassword["name"]=input_txt[0];
+        // $m.setPassword["name"]=input_txt[0];
         $m.setPassword["phone"]=input_txt[1];
         $m.setPassword["code"]=input_txt[2];
-        $m.setPassword["password"]=input_txt[3];
+        $m.setPassword["user_pass"]=md5(input_txt[3]);
         $m.setPassword["user_id"]=user_id;
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        console.log($m.setPassword);
-        return false;
+        console.log($m.setPassword)
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goFindPwd",
+            url: $m.ajax_link+"goFindPwd",
             dataType: "json",
             data: $m.setPassword,
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
-                        func();
+                        func(data);
                     }
                     _this.text("确认修改");
                     _this.on("click",function(){
@@ -1461,15 +1695,9 @@ function format(txt){
     var tempdate=new Date(Date.parse(txt.replace(/-/g,"/")));
     return tempdate;
 }
-// 请求我的行程
-function getMyTrip(){
-    var arr={"phone":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
-    subAjax(arr,$m.ajax_link+"getOrderListByPhone",setMyTrip);
-}
 // 生成行程dom
 function setMyTrip(arr){
     var arr=arr["data"];
-    $(".js_my_trip").attr("data-add",1);
     if(arr.length<1){
         // 没有数据
         $(".page2").find(".no_list").show().siblings(".trip_box").hide();
@@ -1552,12 +1780,11 @@ function setMyTrip(arr){
     }
     $("#atten_box").fadeOut(100);
     $(".bg_div").fadeOut(200);
-    $m.refreshPage();
-}
-// 请求订单详情
-function getMyTripDetail(){
-    var arr={"orderId":$m.user_info["phone"],"user_id":user_id,"page":$m.user_info["page"]};
-    subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTrip);
+    myScroll2.refresh();
+    $m.user_info["is_get"]=false;
+    var page=$m.user_info["page"];
+    page++;
+    $m.user_info["page"]=page;
 }
 // 生成订单详情
 function setMyTripDetail(arr){
@@ -1605,6 +1832,7 @@ function setMyTripDetail(arr){
         // 未支付
         tit="订单未完成";
         status_txt="需要支付";
+        totalprice=arr["totalprice"]?arr["totalprice"]:0;
         $(".page3 .js_order_time").text(addtime);
         if(ordertype==4){
             // 包天
@@ -1661,7 +1889,7 @@ function setMyTripDetail(arr){
             txt="不需要用车了";
         }
         $(".page3 .js_cancel_div").show();
-        $(".page3 .js_refund_val").text(txt);
+        $(".page3 .js_cancel_reason").text(txt);
         $(".page3 .evaluate_box").hide();
         $(".page3 .js_del_order").hide().attr({"data-orderid":orderid,"data-driverid":driverid});
         $(".page3 .p3_btn_div").hide();
@@ -1670,6 +1898,8 @@ function setMyTripDetail(arr){
         // 订单已交定金
         status_txt="还需支付";
         $(".page3 .js_order_time").text(addtime);
+        
+        totalprice=arr["finalprice"]?arr["finalprice"]:0;
         if(ordertype==4){
             // 包天
             var days=arr["days"]?arr["days"]:0;
@@ -1738,7 +1968,7 @@ function setMyTripDetail(arr){
         // 隐藏/显示其他状态的元素
         $(".page3 .js_cancel_div").hide();
         $(".page3 .js_refund_div").hide();
-        $(".page3 .evaluate_box").show();
+        $(".page3 .evaluate_box").hide();
         $(".page3 .js_del_order").show().attr({"data-orderid":orderid,"data-driverid":driverid});
         $(".page3 .p3_btn_div").hide();
         $(".page3 .js_order_detail_box").show();
@@ -1791,6 +2021,9 @@ function setMyTripDetail(arr){
             $(".js_can_star").addClass("js_star_list");
             $(".page3 .p3_btn_div").show();
             $(".page3 .js_sub_evaluate").show().siblings("a").hide();
+        }else{
+            // 已经评价了
+            $(".page3 .evaluate_box").hide();
         }
         $(".page3 .js_order_detail_box").show();
     }else{
@@ -1833,7 +2066,12 @@ function setPayDom(arr){
     var endname=arr["endname"]?arr["endname"]:"";
     var isbag=arr["isbag"]?arr["isbag"]:0;
     var ischildren=arr["ischildren"]?arr["ischildren"]:0;
-    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    var totalprice=0;
+    if(status==2){
+        totalprice=arr["finalprice"]?arr["finalprice"]:0;
+    }else{
+        totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    }
     $(".page20 .js_order_time").text(addtime);
     $(".page20 .js_start_address").text(startname);
     if(ordertype==4){
@@ -1868,7 +2106,7 @@ function setPayDom(arr){
 function setMyCoupon(arr){
     var arr=arr["data"];
     var len=arr.length;
-    if(len<0){
+    if(len>0){
         var bonusid,bonussn,bonusamount,condition,endtime;
         var _html='';
         for(i=0;i<len;i++){
@@ -1900,8 +2138,113 @@ function setMyCoupon(arr){
     $(".bg_div").fadeOut(200);
     $m.refreshPage();
 }
-
-
+// 获取未开发票列表
+function setMyInvoice(arr){
+    var arr=arr["data"];
+    var len=arr.length;
+    if(len>0){
+        var orderid,addtime,totalprice,startname,endname;
+        var _html='';
+        for(i=0;i<len;i++){
+            orderid=arr[i]["orderid"]?arr[i]["orderid"]:"";
+            addtime=arr[i]["addtime"]?arr[i]["addtime"]:"";
+            totalprice=arr[i]["totalprice"]?arr[i]["totalprice"]:0;
+            startname=arr[i]["startname"]?arr[i]["startname"]:"";
+            endname=arr[i]["endname"]?arr[i]["endname"]:"";
+            _html+='<li data-orderid="'+orderid+'" data-price="'+totalprice+'">';
+            _html+='<ul class="trip_de_list">';
+            _html+='<li><img src="'+$m.img_url+'icon12.png" alt="icon">';
+            _html+='<span>'+addtime+'</span>';
+            _html+='<div class="f_r">';
+            _html+='<label>车费</label><span class="color5">'+totalprice+'</span><label>元</label>';
+            _html+='</div></li>';
+            _html+='<li><img src="'+$m.img_url+'icon12.png" alt="icon">';
+            _html+='<span>'+startname+'</span>';
+            _html+='</li>';
+            _html+='<li><img src="images/icon13.png" alt="icon">';
+            _html+='<span>'+endname+'</span>';
+            _html+='</li></ul></li>';
+        }
+        $(".page9 .js_invoice_list").html(_html);
+        $(".page9 .js_invoice_list").show().siblings(".p9_atten_p").hide();
+    }else{
+        $(".page9 .p9_atten_p").show().siblings(".js_invoice_list").hide();
+    }
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
+// 我的分享
+function setMyShare(arr){
+    console.log(arr);
+    var arr=arr["data"];
+    var allmemcount=arr["allmemcount"]?arr["allmemcount"]:0;
+    var monthmemcount=arr["monthmemcount"]?arr["monthmemcount"]:0;
+    var totalyjmoney=arr["totalyjmoney"]?arr["totalyjmoney"]:0;
+    $(".page12 .js_btn_div").eq(0).children("span").text(allmemcount);
+    $(".page12 .js_btn_div").eq(1).children("span").text(monthmemcount);
+    $(".page12 .js_btn_div").eq(2).children("span").text('￥'+totalyjmoney);
+    $(".page12 .js_cash_num").text(totalyjmoney);
+    // 全部
+    var arr1=arr["alluser"]?arr["alluser"]:[];
+    var len1=arr1.length;
+    if(len1>0){
+        var id,user_nicename,avatar,totalcount,totalmoney,yjmoney;
+        var _html1='';
+        for(i=0;i<len1;i++){
+            id=arr1[i]["id"]?arr1[i]["id"]:"";
+            user_nicename=arr1[i]["user_nicename"]?arr1[i]["user_nicename"]:"";
+            avatar=arr1[i]["avatar"]?arr1[i]["avatar"]:$m.img_url+$m.head_place;
+            totalcount=arr1[i]["totalcount"]?arr1[i]["totalcount"]:0;
+            totalmoney=arr1[i]["totalmoney"]?arr1[i]["totalmoney"]:0;
+            yjmoney=arr1[i]["yjmoney"]?arr1[i]["yjmoney"]:0;
+            _html1+='<div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">';
+            _html1+='<img class="head_pic" src="'+avatar+'" alt="头像"/>';
+            _html1+='<div class="weui_media_bd">';
+            _html1+='<h4 class="weui_media_title"><span>'+user_nicename+'</span>';
+            _html1+='<span class="f_r">累计提成</span></h4>';
+            _html1+='<p class="weui_media_desc"><label>订单数量：</label><span>'+totalcount+'次</span>';
+            _html1+='<span class="f_r color6">'+yjmoney+'元</span></p>';
+            _html1+='<p class="weui_media_desc"><label>订单金额：</label><span>'+totalmoney+'元</span></p>';
+            _html1+='</div></div>';
+        }
+        $(".page12 .js_share_list").eq(0).children(".weui_panel_bd").html(_html1);
+        $(".page12 .js_share_list").eq(0).show().siblings(".p12_atten_p").hide();
+    }else{
+        $(".page12 .p12_atten_p").eq(0).show().siblings(".js_share_list").hide();
+    }
+    // 本月
+    var arr2=arr["monthuser"]?arr["monthuser"]:[];
+    var len2=arr1.length;
+    if(len2>0){
+        var id,user_nicename,avatar,totalcount,totalmoney,yjmoney;
+        var _html2='';
+        for(i=0;i<len2;i++){
+            id=arr2[i]["id"]?arr2[i]["id"]:"";
+            user_nicename=arr2[i]["user_nicename"]?arr2[i]["user_nicename"]:"";
+            avatar=arr2[i]["avatar"]?arr2[i]["avatar"]:0;
+            totalcount=arr2[i]["totalcount"]?arr2[i]["totalcount"]:0;
+            totalmoney=arr2[i]["totalmoney"]?arr2[i]["totalmoney"]:0;
+            yjmoney=arr2[i]["yjmoney"]?arr2[i]["yjmoney"]:0;
+            _html2+='<div href="javascript:void(0);" class="weui_media_box weui_media_appmsg">';
+            _html2+='<img class="head_pic" src="'+avatar+'" alt="头像"/>';
+            _html2+='<div class="weui_media_bd">';
+            _html2+='<h4 class="weui_media_title"><span>'+user_nicename+'</span>';
+            _html2+='<span class="f_r">累计提成</span></h4>';
+            _html2+='<p class="weui_media_desc"><label>订单数量：</label><span>'+totalcount+'次</span>';
+            _html2+='<span class="f_r color6">'+yjmoney+'元</span></p>';
+            _html2+='<p class="weui_media_desc"><label>订单金额：</label><span>'+totalmoney+'元</span></p>';
+            _html2+='</div></div>';
+        }
+        $(".page12 .js_share_list").eq(1).children(".weui_panel_bd").html(_html2);
+        $(".page12 .js_share_list").eq(1).show().siblings(".p12_atten_p").hide();
+    }else{
+        $(".page12 .p12_atten_p").eq(1).show().siblings(".js_share_list").hide();
+    }
+    $("#atten_box").fadeOut(100);
+    $(".bg_div").fadeOut(200);
+    $m.refreshPage();
+}
 // 设置本地存储
 function setLocalStorage(options){
     if(window.localStorage){
