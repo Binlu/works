@@ -155,7 +155,15 @@ var $m={
         "o_time":"请选择预约时间",
         "ntype":1,                 //线路预约类型 1=拼车 2=包车
         "type":1,                  //线路预约
-    }
+    },
+    setPassword:{                   //修改密码的json
+        "name":"姓名",
+        "phone":"手机号",
+        "code":"验证码",
+        "password":"新密码",
+        "autocode":1515
+    },
+    set_order:{},                   //价格数据
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -459,6 +467,14 @@ $(function(){
             $(".page1 .js_time_spn").text($m.ncity_arr["o_time"]);
             $(".page1 .js_get_city").eq(0).text($m.ncity_arr["o_scity"]);
             $(".page1 .js_get_address").eq(0).text($m.ncity_arr["o_sad"]);
+            var nprice=0.00;
+            var arr={"user_id":user_id};
+            subAjax(arr,$m.ajax_link+"getIndexData",function(re){
+                nprice=re["data"]["bookdayset"]["bookprice"]?re["data"]["bookdayset"]["bookprice"]:0.00;
+                var num=$(".page1 .js_day_num").val()?$(".page1 .js_day_num").val():1;
+                $(".page1 .js_nprice").text(num*nprice);
+            });
+            
         }else{
             $(".page1 .js_end_pos_btn").css({"display":"flex"});
             $(".page1 .js_car_day_btn").css({"display":"none"});
@@ -469,6 +485,10 @@ $(function(){
             $(".page1 .js_get_city").eq(1).text($m.ncity_arr["l_ecity"]);
             $(".page1 .js_get_address").eq(0).text($m.ncity_arr["l_sad"]);
             $(".page1 .js_get_address").eq(1).text($m.ncity_arr["l_ead"]);
+            var type=$m.ncity_arr["ntype"];
+            var txt1=$m.ncity_arr["l_scity"];
+            var txt2=$m.ncity_arr["l_ecity"];  
+            setPrice(txt1,txt2,type);
         }
         $m.return_arr["type"]=index+1;
         $m.ncity_arr["type"]=index+1;
@@ -559,8 +579,9 @@ $(function(){
     });
     // 乘车人数
     $(".js_member").on("tap",function(){
-        var num=$(".page1 .js_person_num").val()?$(".page1 .js_person_num").val():1;
-        $(".page4 .js_num").val(num);
+        // var num=$m.return_arr["personnumber"]?$m.return_arr["personnumber"]:1;
+        // console.log(num)
+        // $(".page4 .js_num").val(num);
         $m.toNext($(".page4"),function(){
             $m.active_scroll=4;
             $m.refreshPage();
@@ -569,9 +590,11 @@ $(function(){
     // 确认人数
     $(".js_sure_num_btn").on("tap",function(){
         $m.toPrev($(".page4"),function(){
-            var num=$(".js_num").val()?$(".js_num").val():1;
+            var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
             $m.return_arr["personNumber"]=num;
             $(".js_person_num").text(num);
+            var nprice=$m.return_arr["bookprice"]?$m.return_arr["bookprice"]:0;
+            $(".page1 .js_nprice").text(num*nprice);
             $m.active_scroll=1;
         });
     });
@@ -605,10 +628,10 @@ $(function(){
     });
     // 提交帮人约车信息
     $(".js_sure_about_btn").on("tap",function(){
+        var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
         if($(".page4 .js_help_about").hasClass("js_now")){
             aboutInfo(function(){
                 $m.toPrev($(".page4"),function(){
-                    var num=$(".js_num").val()?$(".js_num").val():1;
                     $(".js_person_num").text(num);
                     $m.return_arr["personNumber"]=num;
                     $m.active_scroll=1;
@@ -617,12 +640,14 @@ $(function(){
         }else{
             $m.return_arr["isHelp"]=0;
             $m.toPrev($(".page4"),function(){
-                var num=$(".js_num").val()?$(".js_num").val():1;
+                
                 $(".js_person_num").text(num);
                 $m.return_arr["personNumber"]=num;
                 $m.active_scroll=1;
             });
         }
+        var nprice=$m.return_arr["bookprice"]?$m.return_arr["bookprice"]:0;
+        $(".page1 .js_nprice").text(num*nprice);
         
     });
     // 选择预约线路的类型
@@ -727,6 +752,11 @@ $(function(){
     });
     // 资费详情
     $(".js_get_detail").on("tap",function(){
+        var num=$(".page1 .js_person_num").text()?$(".page1 .js_person_num").text():1;
+        var nprice=$m.return_arr["bookprice"];
+        $(".page5 .js_npay").text(nprice*num);
+        $(".page5 .js_all_price").text(nprice*num);
+        $(".page5 .js_order_price").text(nprice);
         $m.toNext($(".page5"),function(){
             $m.active_scroll=5;
             $m.refreshPage();
@@ -737,26 +767,34 @@ $(function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 取消修改
-    $(".js_cancel_btn").on("tap",function(){
+    $(".js_cancel_btn").on("click",function(){
         $(this).parent().parent().fadeOut(200);
         $(".bg_div").fadeOut(400);
     });
+    // 选择取消订单原因
+    $(".js_del_reason>li").on("click",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
+        $(this).children("img").addClass("now_choice_img");
+        $(this).siblings("li").children("img").removeClass("now_choice_img");
+    });
     // 确认取消订单
-    $(".js_order_btn").on("tap",function(){
-        var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
-        if(txt==""){
-            msg("内容不能为空。",800);
+    $(".js_order_btn").on("click",function(){
+        var a=$(".js_del_reason>li.js_now");
+        if(a.length==0){
+            msg("请先选择取消订单原因",800);
         }else{
-            $(".js_del_order_box").fadeOut(200);
-            $(".bg_div").fadeOut(400);
-            $m.toPrev($(".page6"),function(){
-                $m.active_scroll=1;
-                $m.refreshPage();
-            })
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var type=a.attr("data-id")?a.attr("data-id"):1;
+            var orderid=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+            var arr={"orderId":orderid,"user_id":user_id,"type":type};
+            subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
+                msg("取消订单成功",800);
+                $(".js_del_order_box").fadeOut(200);
+                $(".bg_div").fadeOut(400,function(){
+                    $m.toPrev($(".page6"),function(){
+                    });
+                });
+
+            });
         }
     });
     // 车辆详情
@@ -851,14 +889,17 @@ $(function(){
     
     // 选择支付方式
     $(".js_pay_list>li").on("tap",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
         var a=$(this).children("a").children("span");
         a.addClass("now_choice_spn");
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
     // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
-        var type=$(".js_pay_list>li").find("now_choice_spn").attr("data-type")?$(".js_pay_list>li").find("now_choice_spn").attr("data-type"):2;
+        var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
+        var payType=1;
         if(type==2){
+            payType=5;
             // 余额支付
             $m.toNext($(".page12"),function(){
                 $m.active_scroll=12;
@@ -866,8 +907,16 @@ $(function(){
             });
         }else{
             // 微信支付
-
+            payType=3;
         }
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=0;
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+            $m.order_arr["paysn"]=re["data"]["paysn"]?re["data"]["paysn"]:"";
+            $m.order_arr["payprice"]=re["data"]["payprice"]?re["data"]["payprice"]:0;
+            $(".page12 .js_payprice_spn").text($m.order_arr["payprice"]);
+        });
     });
     // 密码输入控制
     $(".js_pass_area").on("keyup",function(){
@@ -885,11 +934,12 @@ $(function(){
     });
     // 获取验证码
     $(".page13 .js_get_code").on("tap",function(){
-        checkpost($(this),"page13 .js_mobile");
+        checkpost($(this),"page13 .js_mobile",3);
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("tap",function(){
-        toSubPass($(this),function(){
+        toSubPass($(this),function(re){
+            msg("修改成功！",800)
             $m.toPrev($(".page13"),function(){
                 $m.active_scroll=14;
                 $m.refreshPage();
@@ -904,20 +954,27 @@ $(function(){
     });
     // 余额支付
     $(".js_pay_balance_now").on("tap",function(){
-        var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
+        var a=$(this);
+        var pass=$(".page12 .js_pass_area").val()?$(".page12 .js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
         }else{
-            msg("支付成功",800);
-            $m.toNext($(".page14"),function(){
-                $m.active_scroll=14;
-                $m.refreshPage();
-            });
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
             // 开始提交
-            var arr={"user_id":user_id,"paypwd":pass};
-            subAjax(return_arr,$m.ajax_link+"goUseBalancePay",setOrderDom,function(){
-                $(".page6 .js_set_order_p").hide();
-                $(".page6 .js_order_ele").hide();
+            var paysn=$m.order_arr["paysn"]?$m.order_arr["paysn"]:"";
+            var arr={"user_id":user_id,"paypwd":md5(pass),"paysn":paysn};
+            subAjax2(arr,$m.ajax_link+"goUseBalancePay",function(re){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                msg("支付成功！","确定",function(){
+                    a.siblings(".js_pass_area").val("");
+                    $(".page").not(".page1,.page12").css({"left":"100%"});
+                    $m.toPrev($(".page12"),function(){
+                        $m.active_scroll=1;
+                        $m.refreshPage();
+                    });
+                },true);
             });
         }
     });
@@ -1227,7 +1284,7 @@ function setCityDetail(){
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
         $m.now_city=city;
-        new_city.init_cs($m.s_arr2,city);
+        // new_city.init_cs($m.s_arr2,city);
     });
 }
 //格式化省市自治区
@@ -1283,7 +1340,7 @@ function aboutInfo(func){
 function setPrice(txt1,txt2,type){
     var a=$(".js_call_type_box").children("p").eq(0);
     var arr={"startName":txt1,"endName":txt2,"type":type};
-    subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
+    subAjax(arr,$m.ajax_link+"getLineBookPrice",function(re){
         var lineid=re["data"]["lineid"]?re["data"]["lineid"]:0;
         var price=re["data"]["bookprice"]?re["data"]["bookprice"]:0.00;
         $m.return_arr["lineId"]=lineid;
@@ -1308,7 +1365,8 @@ function setPrice(txt1,txt2,type){
             }
             
         }
-        $(".page1 .js_nprice").text(price);
+        var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
+        $(".page1 .js_nprice").text(price*num);
         $m.return_arr["can_order"]=true;
     },function(){
         if(type==1){
@@ -1329,7 +1387,6 @@ function setOrderDom(data){
 // 生成订单详情
 function setMyTripDetail(arr){
     var arr=arr["data"];
-    console.log(arr);
     if(arr!=null && arr!="undefined"){
         $m.order_arr=arr;
     }
@@ -1377,25 +1434,31 @@ function setPayDom(arr){
     var orderid=arr["orderid"]?arr["orderid"]:"";
     var status=arr["status"]?arr["status"]:6;
     // var status=5;
-    var carno=arr["carno"]?arr["carno"]:"";
-    var days=arr["days"]?arr["days"]:0;
-    var personnumber=arr["personnumber"]?arr["personnumber"]:0;
-    var driver=arr["driverinfo"]?arr["driverinfo"]:{};
-    var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
-    var driverid=driver["driverid"]?driver["driverid"]:0;
-    var tel=driver["tel"]?driver["tel"]:"";
-    var drivername=driver["drivername"]?driver["drivername"]:"";
-    var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
-    var avgstar=driver["avgstar"]?driver["avgstar"]:0;
-    $(".page8 .js_driver_head_pic").attr("src",pic_src);
-    $(".page8 .car_number").text(carno);
-    $(".page8 .js_driver_name").text(drivername);
-    $(".page8 .js_service_num").text(servicecounts);
-    $(".page8 .js_driver_ranking").text(driverid);
-    $(".page8 .js_driver_mobile").attr("href","tel:"+tel);
-    var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
-    for(var i=0;i<driver_star;i++){
-        $(".page8 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+    var isdriverid=arr["driverid"]?arr["driverid"]:0;
+    if(isdriverid!=0){
+        var carno=arr["carno"]?arr["carno"]:"";
+        var days=arr["days"]?arr["days"]:0;
+        var personnumber=arr["personnumber"]?arr["personnumber"]:0;
+        var driver=arr["driverinfo"]?arr["driverinfo"]:{};
+        var pic_src=driver["img"]?driver["img"]:$m.img_url+$m.head_place;
+        var driverid=driver["driverid"]?driver["driverid"]:0;
+        var tel=driver["tel"]?driver["tel"]:"";
+        var drivername=driver["drivername"]?driver["drivername"]:"";
+        var servicecounts=driver["servicecounts"]?driver["servicecounts"]:0;
+        var avgstar=driver["avgstar"]?driver["avgstar"]:0;
+        $(".page8 .js_driver_head_pic").attr("src",pic_src);
+        $(".page8 .car_number").text(carno);
+        $(".page8 .js_driver_name").text(drivername);
+        $(".page8 .js_service_num").text(servicecounts);
+        $(".page8 .js_driver_ranking").text(driverid);
+        $(".page8 .js_driver_mobile").attr("href","tel:"+tel);
+        var driver_star=parseInt(avgstar)?parseInt(avgstar):0;
+        for(var i=0;i<driver_star;i++){
+            $(".page8 .js_driver_star>li").eq(i).children("img").attr("src",$m.img_url+"icon11.png");
+        }
+        $(".page8 .header_info").show();
+    }else{
+        $(".page8 .header_info").hide();
     }
     // 订单详情
     var addtime=arr["addtime"]?arr["addtime"]:"";
@@ -1403,7 +1466,7 @@ function setPayDom(arr){
     var endname=arr["endname"]?arr["endname"]:"";
     var isbag=arr["isbag"]?arr["isbag"]:0;
     var ischildren=arr["ischildren"]?arr["ischildren"]:0;
-    var totalprice=arr["totalprice"]?arr["totalprice"]:0;
+    var bookprice=arr["bookprice"]?arr["bookprice"]:0;
     var days=$m.return_arr["days"]?$m.return_arr["days"]:1;
     var scity=$(".js_get_city").eq(0).text()?$(".js_get_city").eq(0).text():"";
     var ecity=$(".js_get_city").eq(1).text()?$(".js_get_city").eq(1).text():"";
@@ -1429,7 +1492,7 @@ function setPayDom(arr){
         var _html='<li><img src="'+$m.img_url+'icon13.png" alt="icon"/><span>有小孩</span></li>';
         $(".page8 .js_additional_list").append(_html);
     }
-    $(".page8 .js_pay_price").text(totalprice);
+    $(".page8 .js_pay_price").text(bookprice);
 
 
     $("#atten_box").fadeOut(100);
@@ -1537,13 +1600,14 @@ function toSubPass(obj,func){
     var input_txt=[];
     var regx=/1[1-9]+[0-9]{9}/;
     var re_m = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-    $(".page22 .js_input_area").each(function(){
+    $(".page13 .js_input_area").each(function(){
         input_txt.push($(this).val());
         return input_txt;
     });
-    if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
-        msg("请填写姓名",800);
-    }else if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+    // if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+    //     msg("请填写姓名",800);
+    // }else 
+    if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
         msg("请填写手机号",800);
     }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
         msg("请填写正确手机号",800);
@@ -1561,27 +1625,23 @@ function toSubPass(obj,func){
         _this.off("click");
         _this.text("提交中...");
         // 赋值
-        $m.setPassword["name"]=input_txt[0];
+        // $m.setPassword["name"]=input_txt[0];
         $m.setPassword["phone"]=input_txt[1];
         $m.setPassword["code"]=input_txt[2];
-        $m.setPassword["password"]=input_txt[3];
+        $m.setPassword["user_pass"]=md5(input_txt[3]);
         $m.setPassword["user_id"]=user_id;
-        if(typeof func==="function" && func instanceof Function){
-            func();
-        }
-        console.log($m.setPassword);
-        return false;
+        console.log($m.setPassword)
         // 请求开始
         $.ajax({
             type: "POST",
-            url: "goFindPwd",
+            url: $m.ajax_link+"goFindPwd",
             dataType: "json",
             data: $m.setPassword,
             success: function(data){
                 if(data["status"]==1){
                     console.log("ok");
                     if(typeof func==="function" && func instanceof Function){
-                        func();
+                        func(data);
                     }
                     _this.text("确认修改");
                     _this.on("click",function(){

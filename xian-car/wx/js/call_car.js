@@ -154,7 +154,7 @@ var $m={
     now_city:"",           //当前定位城市
     // ajax 请求地址前缀
     ajax_link:"http://120.25.68.163/citytravel/index.php?g=admin&m=app&a=",
-    
+    set_order:{},
 }
 // 获取连接数据
 var link_obj=GetRequest();
@@ -371,6 +371,15 @@ $(function(){
         var arr={"startName":txt1,"endName":txt2};
         subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
             $m.return_arr["lineId"]=re["data"]["lineid"];
+            var nprice=re["data"]["lineprice"]?re["data"]["lineprice"]:0.00;
+            $m.set_order["lineprice"]=nprice;
+            $m.set_order["bookprice"]=re["data"]["bookprice"]?re["data"]["bookprice"]:0.00;
+            var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
+            $(".page1 .js_nprice_spn").text(nprice*num);
+        },function(){
+            $(".page1 .js_nprice_spn").text(0);
+            $m.set_order["lineprice"]=0;
+            $m.set_order["bookprice"]=0;
         });
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
@@ -394,6 +403,15 @@ $(function(){
         var arr={"startName":txt1,"endName":txt2};
         subAjax(arr,$m.ajax_link+"isOpenLine",function(re){
             $m.return_arr["lineId"]=re["data"]["lineid"];
+            var nprice=re["data"]["lineprice"]?re["data"]["lineprice"]:0.00;
+            $m.set_order["lineprice"]=nprice;
+            $m.set_order["bookprice"]=re["data"]["bookprice"]?re["data"]["bookprice"]:0.00;
+            var num=$(".page4 .js_num").val()?$(".page4 .js_num").val():1;
+            $(".page1 .js_nprice_spn").text(nprice*num);
+        },function(){
+            $(".page1 .js_nprice_spn").text(0);
+            $m.set_order["lineprice"]=0;
+            $m.set_order["bookprice"]=0;
         });
         $m.toPrev($(".page2"),function(){
             $m.active_scroll=1;
@@ -473,6 +491,8 @@ $(function(){
     });
     // 乘车人数
     $(".js_member").on("tap",function(){
+        // var num=$m.return_arr["personnumber"]?$m.return_arr["personnumber"]:1;
+        // $(".page4 .js_num").val(num);
         $m.toNext($(".page4"),function(){
             $m.active_scroll=4;
             $m.refreshPage();
@@ -484,6 +504,8 @@ $(function(){
         	var num=$(".js_num").val()?$(".js_num").val():1;
             $m.return_arr["personNumber"]=num;
         	$(".js_person_num").text(num);
+            var nprice=$m.set_order["lineprice"]?$m.set_order["lineprice"]:0;
+            $(".page1 .js_nprice_spn").text(num*nprice);
             $m.active_scroll=1;
         });
     });
@@ -502,18 +524,30 @@ $(function(){
     });
     // 提交帮人约车信息
     $(".js_sure_about_btn").on("tap",function(){
-        aboutInfo(function(){
+        var num=$(".js_num").val()?$(".js_num").val():1;
+        if($(".page4 .js_help_about").hasClass("js_now")){
+            aboutInfo(function(){
+                $m.toPrev($(".page4"),function(){
+                    
+                    $(".js_person_num").text(num);
+                    $m.return_arr["personNumber"]=num;
+                    $m.active_scroll=1;
+                });
+            });
+        }else{
+            $m.return_arr["isHelp"]=0;
             $m.toPrev($(".page4"),function(){
-                var num=$(".js_num").val()?$(".js_num").val():1;
+                
                 $(".js_person_num").text(num);
                 $m.return_arr["personNumber"]=num;
                 $m.active_scroll=1;
             });
-        });
+        }
+        var nprice=$m.set_order["lineprice"]?$m.set_order["lineprice"]:0;
+        $(".page1 .js_nprice_spn").text(num*nprice);
     });
     // 立即叫车
     $(".js_call_btn").on("tap",function(){
-        console.log($m.return_arr);
         var return_arr=$m.return_arr;
         if(return_arr["city"]==""){
             msg("请选择出发城市",800);
@@ -554,6 +588,13 @@ $(function(){
     });
     // 资费详情
     $(".js_get_detail").on("tap",function(){
+        var num=$(".page1 .js_person_num").text()?$(".page1 .js_person_num").text():1;
+        var nprice=$m.set_order["bookprice"]?$m.set_order["bookprice"]:0;
+        var price=$m.set_order["lineprice"]?$m.set_order["lineprice"]:0;
+        console.log(num,price,nprice)
+        $(".page5 .js_npay").text(price*num);
+        $(".page5 .js_all_price").text(price*num);
+        $(".page5 .js_order_price").text(nprice);
         $m.toNext($(".page5"),function(){
             $m.active_scroll=5;
             $m.refreshPage();
@@ -564,28 +605,33 @@ $(function(){
         $(".js_del_order_box").show().siblings(".bg_div").fadeIn(400);;
     });
     // 取消修改
-    $(".js_cancel_btn").on("tap",function(){
+    $(".js_cancel_btn").on("click",function(){
         $(this).parent().parent().fadeOut(200);
         $(".bg_div").fadeOut(400);
     });
+    // 选择取消订单原因
+    $(".js_del_reason>li").on("click",function(){
+        $(this).addClass("js_now").siblings("li").removeClass("js_now");
+        $(this).children("img").addClass("now_choice_img");
+        $(this).siblings("li").children("img").removeClass("now_choice_img");
+    });
     // 确认取消订单
     $(".js_order_btn").on("click",function(){
-        var txt=$(".js_order_area").val()?$(".js_order_area").val():"";
-        if(txt==""){
-            msg("内容不能为空。",800);
+        var a=$(".js_del_reason>li.js_now");
+        if(a.length==0){
+            msg("请先选择取消订单原因",800);
         }else{
-            var orderid=$(".page8 .js_del_order").attr("data-orderid");
-            var arr={"orderId":orderid,"user_id":user_id,"type":1};
+            var type=a.attr("data-id")?a.attr("data-id"):1;
+            var orderid=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+            var arr={"orderId":orderid,"user_id":user_id,"type":type};
             subAjax(arr,$m.ajax_link+"goCancelOrder",function(){
-                $(".js_cancel_div").show().siblings(".js_order_detail_box").hide();
-                $(".page8 .js_del_order").hide();
-                $(".p3_btn_div").hide();
-                $(".js_refund_div").hide();
-                $(".js_cancel_div").children("span").text(txt);
+                msg("取消订单成功",800);
                 $(".js_del_order_box").fadeOut(200);
                 $(".bg_div").fadeOut(400,function(){
-                    myScroll3.refresh();
+                    $m.toPrev($(".page6"),function(){
+                    });
                 });
+
             });
         }
     });
@@ -734,18 +780,19 @@ $(function(){
         $(this).siblings("li").children("a").children("span").removeClass("now_choice_spn");
     });
     // 确认支付按钮
-    // 确认支付按钮
     $(".js_pay_sure_btn").on("tap",function(){
         var type=$(".js_pay_list>li.js_now").attr("data-type")?$(".js_pay_list>li.js_now").attr("data-type"):2;
-        console.log(type)
+        var payType=1;
         if(type==2){
             // 余额支付
+            payType=5;
             $m.toNext($(".page12"),function(){
                 $m.active_scroll=12;
                 $m.refreshPage();
             });
         }else{
             // 微信支付
+            payType=3;
             var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
             // 商户id
             var partnerId=$m.order_arr["partnerId"]?$m.order_arr["partnerId"]:"";
@@ -764,6 +811,14 @@ $(function(){
                 }
             });
         }
+        var orderId=$m.order_arr["orderid"]?$m.order_arr["orderid"]:"";
+        var bonusId=0;
+        var arr={"orderId":orderId,"bonusId":bonusId,"payType":payType,"paypwd":"","user_id":user_id};
+        subAjax(arr,$m.ajax_link+"goPayOrder",function(re){
+            $m.order_arr["paysn"]=re["data"]["paysn"]?re["data"]["paysn"]:"";
+            $m.order_arr["payprice"]=re["data"]["payprice"]?re["data"]["payprice"]:0;
+            $(".page12 .js_payprice_spn").text($m.order_arr["payprice"]);
+        });
     });
     // 密码输入控制
     $(".js_pass_area").on("keyup",function(){
@@ -781,11 +836,12 @@ $(function(){
     });
     // 获取验证码
     $(".page13 .js_get_code").on("tap",function(){
-        checkpost($(this),"page13 .js_mobile");
+        checkpost($(this),"page13 .js_mobile",3);
     });
     // 确认修改密码
     $(".js_sure_resetpass").on("tap",function(){
-        toSubPass($(this),function(){
+        toSubPass($(this),function(re){
+            msg("修改成功！",800)
             $m.toPrev($(".page13"),function(){
                 $m.active_scroll=14;
                 $m.refreshPage();
@@ -800,20 +856,28 @@ $(function(){
     });
     // 余额支付
     $(".js_pay_balance_now").on("tap",function(){
-        var pass=$(".js_pass_area").val()?$(".js_pass_area").val():"";
+        var a=$(this);
+        var pass=$(".page12 .js_pass_area").val()?$(".page12 .js_pass_area").val():"";
         if(pass==""){
             msg("请输入支付密码",800);
         }else{
-            msg("支付成功",800);
-            $m.toNext($(".page14"),function(){
-                $m.active_scroll=14;
-                $m.refreshPage();
-            });
+            $("#atten_box").fadeIn(100);
+            $(".bg_div").fadeIn(200);
             // 开始提交
-            // var arr={"user_nicename":txt,"user_id":user_id};
-            // subAjax(arr,"goModifiedSelfInfo",function(){
-            //     $(".js_rename_txt").text(txt);
-            // });
+            var paysn=$m.order_arr["paysn"]?$m.order_arr["paysn"]:"";
+            var arr={"user_id":user_id,"paypwd":md5(pass),"paysn":paysn};
+            subAjax2(arr,$m.ajax_link+"goUseBalancePay",function(re){
+                $("#atten_box").fadeOut(100);
+                $(".bg_div").fadeOut(200);
+                msg("支付成功！","确定",function(){
+                    a.siblings(".js_pass_area").val("");
+                    $(".page").not(".page1,.page12").css({"left":"100%"});
+                    $m.toPrev($(".page12"),function(){
+                        $m.active_scroll=1;
+                        $m.refreshPage();
+                    });
+                },true);
+            });
         }
     });
     // 线下支付
@@ -1057,9 +1121,9 @@ function setCityDetail(){
         $m.search_arr["city"]=city;
         $m.search_arr["district"]=district;
         $m.search_arr["citycode"]=re.citycode;
-        $m.now_city=city;
+        // $m.now_city=city;
         // console.log(re);
-        new_city.init_cs($m.s_arr2,city);
+        // new_city.init_cs($m.s_arr2,city);
     });
 }
 // 请求数据
@@ -1318,6 +1382,7 @@ function aboutInfo(func){
 }
 // 生成订单详情
 function setOrderDom(data){
+    console.log(data);
     var orderId=data["data"];
     var arr={"orderId":orderId,"user_id":user_id};
     subAjax(arr,$m.ajax_link+"getOrderDetail",setMyTripDetail);
@@ -1428,7 +1493,7 @@ function setPayDom(arr){
 function setMyCoupon(arr){
     var arr=arr["data"];
     var len=arr.length;
-    if(len<0){
+    if(len>0){
         var bonusid,bonussn,bonusamount,condition,endtime;
         var _html='';
         for(i=0;i<len;i++){
@@ -1490,5 +1555,158 @@ function delLocalStorage(arr){
         }
     }else{
 
+    }
+}
+
+// 提交修改密码
+function toSubPass(obj,func){    
+    var _this=obj;
+    var input_txt=[];
+    var regx=/1[1-9]+[0-9]{9}/;
+    var re_m = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    $(".page13 .js_input_area").each(function(){
+        input_txt.push($(this).val());
+        return input_txt;
+    });
+    // if(input_txt[0]=="" || input_txt[0]==null || input_txt[0]=="undefined"){
+    //     msg("请填写姓名",800);
+    // }else 
+    if(input_txt[1]=="" || input_txt[1]==null || input_txt[1]=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt[1].length<11 || !regx.test(input_txt[1])){
+        msg("请填写正确手机号",800);
+    }else if(input_txt[2]=="" || input_txt[2]==null || input_txt[2]=="undefined"){
+        msg("请输入验证码",800);
+    }else if(input_txt[2]!=$m.setPassword["autocode"]){
+        msg("验证码错误",800);
+    }else if(input_txt[3]=="" || input_txt[3]==null || input_txt[3]=="undefined"){
+        msg("请设置新密码",800);
+    }else if(input_txt[4]=="" || input_txt[4]==null || input_txt[4]=="undefined"){
+        msg("请再次确认密码",800);
+    }else if(input_txt[3]!=input_txt[4]){
+        msg("前后设置的密码不一致",800);
+    }else{
+        _this.off("click");
+        _this.text("提交中...");
+        // 赋值
+        // $m.setPassword["name"]=input_txt[0];
+        $m.setPassword["phone"]=input_txt[1];
+        $m.setPassword["code"]=input_txt[2];
+        $m.setPassword["user_pass"]=md5(input_txt[3]);
+        $m.setPassword["user_id"]=user_id;
+        console.log($m.setPassword)
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: $m.ajax_link+"goFindPwd",
+            dataType: "json",
+            data: $m.setPassword,
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    if(typeof func==="function" && func instanceof Function){
+                        func(data);
+                    }
+                    _this.text("确认修改");
+                    _this.on("click",function(){
+                        toSub(_this);
+                    });
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    _this.text("确认修改");
+                    _this.on("click",function(){
+                        toSub(_this);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                _this.text("确认修改");
+                _this.on("click",function(){
+                    toSub(_this);
+                });
+            }
+        });
+        
+    }
+}
+// 验证码
+function checkpost(obj,input_class,type){
+    var input_txt="";
+    var regPartton=/1[1-9]+[0-9]{9}/;
+    input_txt=$("."+input_class).val();
+    if(input_txt=="" || input_txt==null || input_txt=="undefined"){
+        msg("请填写手机号",800);
+    }else if(input_txt.length<11 || !regPartton.test(input_txt)){
+        msg("请填写正确手机号",800);
+    }else{
+        obj.off("click");
+        // var timer=null;
+        // var seconds=59;
+        // // 发送验证码后台切入口
+        // obj.css({"color":"#acacac"});
+        // obj.text("已发送(60)");
+        // timer=setInterval(function(){
+        //     obj.text("已发送("+seconds+")");
+        //     seconds--;
+        //     if(seconds<0){
+        //         clearInterval(timer);
+        //         obj.text("重新发送");
+        //         obj.css({"color":"#fff"});
+        //         obj.on("click",function(){
+        //             checkpost(obj,input_class);
+        //         });
+        //     }
+        // },1000);
+        // return false;
+        // 请求开始
+        $.ajax({
+            type: "POST",
+            url: $m.ajax_link+"getVerifyCode",
+            dataType: "json",
+            data: {"phone":input_txt,"type":type},
+            success: function(data){
+                if(data["status"]==1){
+                    console.log("ok");
+                    var timer=null;
+                    var seconds=59;
+                    // 发送验证码后台切入口
+                    obj.css({"color":"#acacac"});
+                    obj.text("已发送(60)");
+                    timer=setInterval(function(){
+                        obj.text("已发送("+seconds+")");
+                        seconds--;
+                        if(seconds<0){
+                            clearInterval(timer);
+                            obj.text("重新发送");
+                            obj.css({"color":"#fff"});
+                            obj.on("click",function(){
+                                checkpost(obj,input_class,type);
+                            });
+                        }
+                    },1000);
+                    $m.setPassword["autocode"]=data["data"];
+                }else if(data["status"]==0){
+                    msg(data["data"],"确定");
+                    clearInterval(timer);
+                    obj.text("获取验证码");
+                    obj.css({"color":"#fff"});
+                    obj.on("click",function(){
+                        checkpost(obj,input_class,type);
+                    });
+                }
+            },
+            error: function(XMLHttpRequest,textStatus,errorThrown){
+                // 请求失败
+                msg("网络似乎出现了问题，请重试。","确定");
+                clearInterval(timer);
+                obj.text("获取验证码");
+                obj.css({"color":"#fff"});
+                obj.on("click",function(){
+                    checkpost(obj,input_class,type);
+                });
+            }
+        });
     }
 }

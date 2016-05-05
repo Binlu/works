@@ -72,7 +72,7 @@ textarea{
 }
 .p1_pos_spn{
     display: inline-block;
-    width: 75%;
+    max-width: 72%;
 }
 /*page2*/
 .tag{width:94%;padding:0 3%;line-height:2.3em;font-size:0.8em;color:#3b81c6}
@@ -256,7 +256,7 @@ textarea{
 }
 .detail_div>div{
     text-align: left;
-    margin-top: 2em;
+    margin-top: 1.5em;
 }
 .detail_div>span{
     display: inline-block;
@@ -358,7 +358,7 @@ textarea{
 }
 div.p6_form_change_div{
     padding: 1em;
-    height: 15em;
+    height: 18em;
 }
 .ab_div{
     position: fixed;
@@ -624,6 +624,20 @@ li.now_choice_li{
     margin-left: 0.5em;
     margin-top: 1em;
 }
+/*page12*/
+.p21_form{
+    width: 80%;
+    margin: 2em auto;
+    text-align: center;
+}
+.p21_form>input{
+    padding-left: 1.6em;
+    margin-bottom: 2em;
+    letter-spacing: 2.5em;
+}
+.p21_form .weui_btn_my1{
+    margin: auto;
+}
 /*page13*/
 .page13 .weui_label{
     width: 5em;
@@ -773,10 +787,6 @@ li.now_choice_li{
     background-color: #f7f7f7;
     border:1px solid #ccc;
 }
-div.p6_form_change_div{
-    padding: 1em;
-    height: 15em;
-}
 .page14 .evaluate_box>label{
     display: inline-block;
     margin-right: 1em;
@@ -789,3 +799,27 @@ div.p6_form_change_div{
 }
 
 .dis_ib{display: inline-block;}
+.del_reason{
+    margin-bottom: 1em;
+}
+.del_reason>li{
+    border-bottom: 1px solid #aaa;
+    padding: 0.3em 0.5em;
+    text-align: left;
+    font-size: 0.8em;
+    position: relative;
+}
+.del_reason>li>img{
+    position: absolute;
+    right: 0;
+    top: 0.7em;
+    display: inline-block;
+    width: 0.8em;
+    background-color: #ff4e00;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 10;
+}
+.del_reason img.now_choice_img{
+    opacity: 1;
+}
