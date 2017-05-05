@@ -175,7 +175,7 @@ $(function(){
         var phone=getLocalStorage("phone");
 
         if(id=="" || phone==""){
-            window.location.href="member_center.html?page_link=booking.html";
+            // window.location.href="member_center.html?page_link=booking.html";
         }else{
             $m.return_arr["user_id"]=id;
             user_id=id;

@@ -9,42 +9,62 @@
         <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
         <title>POP</title>
         <!-- css -->
-        <link rel="stylesheet" href="src/css/base.css?version=2017/04/21"/>
-        <link rel="stylesheet" href="src/css/pattern-list/pattern-list.css?version=2017/04/21"/>
+        <link rel="stylesheet" href="src/css/base.css?version=2017/05/05"/>
+        <link rel="stylesheet" href="src/css/index.css?version=2017/05/05"/>
     </head>
     <body>
         <!-- view -->
         <section id="view-section">
             <!-- header -->
             <div class="header">
-                <div class="search-div js-search-div">
-                    <div class="pic-search js-pic-search">
-                        <img class="js-img-source" src="../vote/src/images/vote-forecast/gongyingshang.jpg" alt="serach-pic">
-                        <button class="js-edit-btn" title="编辑图片">编辑图片</button>
-                        <label for="file-ele">重新拍照</label>
-                        <form class="hide js-form">
-                        	<input class="js-upload-ele" id="file-ele" name="file" type="file">
-                        </form>
-                    </div>
-                    <div class="word-search-area js-word-search-area">技术大牛发</div>
+                <div class="info-div">
+                    <label>查询主键：</label><span>rtjkfyujlk</span>
+                    <label>请求时间：</label><span>rtjkfyujlk</span>
+                    <label>相应时间：</label><span>rtjkfyujlk</span>
+                    <label>赟账户裸头寸：</label><span>-48</span>
+                    <label>绮账户裸头寸：</label><span>15</span>
+                    <label>赟2账户裸头寸：</label><span>12</span>
+                    <label>赟总账户裸头寸：</label><span>121</span>
                 </div>
-                <ul class="filter-list clear js-filter-list">
-                    <li>最新发布
-                        <span class="line-spn"></span>
-                    </li>
-                    <li>分类筛选</li>
-                </ul>
+                <div class="select-div">
+                    <select>
+                        <option data-id="11" name="请选择">水电费</option>
+                        <option data-id="11" name="请选择">请选择</option>
+                        <option data-id="11" name="请选择">地方</option>
+                    </select>
+                    <select>
+                        <option data-id="11" name="请选择">丹凤眼</option>
+                        <option data-id="11" name="请选择">听风雨</option>
+                        <option data-id="11" name="请选择">好</option>
+                    </select>
+                    <select>
+                        <option data-id="11" name="请选择">电饭锅</option>
+                        <option data-id="11" name="请选择"> 电饭锅</option>
+                        <option data-id="11" name="请选择">个</option>
+                    </select>
+                    <button title="查询">查询</button>
+                </div>
             </div>
             <!-- content -->
             <div class="content js-content">
-                <ul class="waterfall-list js-waterfall-list">
-                </ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>购12月</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1212</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <p class="js-no-list hide">亲，已经到底了！</p>
             </div>
             <!-- footer -->
-            <!-- <div class="footer">
+            <div class="footer">
                 我是底部
-            </div> -->
+            </div>
         </section>
         <!-- other -->
         <!-- 加载部分 -->
@@ -57,135 +77,11 @@
             </div>
             <div class="loading-bg"></div>
         </section>
-        <!-- edit pic -->
-        <section class="fixed-ele edit-pic-box js-edit-pic-box hide">
-            <h3>
-                <p>框出你想搜的图片主体，让搜索更精确！</p>
-                <div></div>
-            </h3>
-            <img class="js-edit-pic-ele" src="http://uliaobao.oss-cn-hangzhou.aliyuncs.com/orig/uliaobao/trend/2017/0413/0/prod-170125458-5398.jpg?x-oss-process=style/w210_375" alt="pic">
-            <div>
-                <button class="cancel-btn js-cancel-btn" title="取消">取消</button>
-                <button class="confirm-btn js-save-btn" title="确定">确定</button>
-            </div>
-        </section>
-        <!-- filter section -->
-        <section class="filter-section js-filter-section">
-            <!-- tab-list -->
-            <div class="filter-tab-div">
-                <ul class="filter-type-list js-filter-type-list">
-                    <li class="now-choice">最新发布
-                    </li>
-                    <li>最受欢迎</li>
-                </ul>
-            </div>
-            <div class="filter-tab-div filter-type-div js-scroll-box js-filter">
-                <ul class="type-list js-type-list">
-                   
-                </ul>
-                <!-- 按钮 -->
-                <div class="btn-div clear">
-                    <button class="btn-type1 js-reset" title="重置">重置</button>
-                    <button class="btn-type2 js-filter-btn" title="确定">确定</button>
-                </div>
-            </div>
-            <div class="float-bg"></div>
-        </section>
-        <!--文字选择下拉框-->
-        <div class="fixed-ele words-search js-words-search">
-            <div class="search-contain">
-                <div class="search-box">
-                    <form>
-                        <img src="src/images/search-icon.png" alt="icon" />
-                        <input class="js-sarch-key" type="text" name="" value="" placeholder="请输入关键字"/>
-                    </form>
-                    <span class="js-cancel">取消</span>
-                </div>
-                <div class="hot-list">
-                    <p>热门推荐</p>
-                    <ul class="clear">
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建花顺风车筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        
-                    </ul>
-                </div>
-                <div class="history-list">
-                    <p>历史搜索</p>
-                    <img class="js-histiry-delete" src="src/images/index/delete.png" alt="icon" />
-                    <ul class="clear">
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建花顺风车筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                    </ul>
-                </div>
-                <div class="hot-list">
-                    <p>热门推荐</p>
-                    <ul class="clear">
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建花顺风车筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                    </ul>
-                </div>
-                <div class="history-list">
-                    <p>历史搜索</p>
-                    <img class="js-histiry-delete" src="src/images/index/delete.png" alt="icon" />
-                    <ul class="clear">
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                    </ul>
-                </div>
-                <div class="history-list">
-                    <p>历史搜索</p>
-                    <img class="js-histiry-delete" src="src/images/index/delete.png" alt="icon" />
-                    <ul class="clear">
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                        <li><a href="###">建筑</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        
         <!-- bg -->
         <section class="bg-section fixed-ele js-bg-section"></section>
-        <!-- no list -->
-        <section class="no-search-section hide js-no-search-section">
-            <img src="src/images/nsearch.png" alt="not searched">
-            <p>没有搜索到合适的图片</p>
-        </section>
         <!-- js -->
-        <script type="text/javascript" src="src/js/lib/require.js"></script>
-        <script type="text/javascript" src='../sys/conf.do?vars=apiJavaDomain,imageDomain,uploadApi,mJavaDomain'></script>
-        <script type="text/javascript" src="src/js/common/main.js?version=2017/04/21"></script>
-        <script type="text/javascript" src="src/js/pattern-list/pattern-list.js?version=2017/04/28"></script>
+        <script type="text/javascript" src="src/js/lib/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="src/js/index.js?version=2017/05/05"></script>
     </body>
 </html>

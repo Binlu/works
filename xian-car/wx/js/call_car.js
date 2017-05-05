@@ -164,17 +164,17 @@ var user_phone=link_obj["phone"]?link_obj["phone"]:"";
 var map=null,new_city=null;
 $(function(){
     // 判断登录
-    (function(){
-        var id=getLocalStorage("id");
-        var phone=getLocalStorage("phone");
-        if(id=="" || phone==""){
-            window.location.href="member_center.html?page_link=call_car.html";
-        }else{
-            $m.return_arr["user_id"]=id;
-            user_id=id;
-            $m.return_arr["phone"]=phone;
-        }
-    })();
+    // (function(){
+    //     var id=getLocalStorage("id");
+    //     var phone=getLocalStorage("phone");
+    //     if(id=="" || phone==""){
+    //         window.location.href="member_center.html?page_link=call_car.html";
+    //     }else{
+    //         $m.return_arr["user_id"]=id;
+    //         user_id=id;
+    //         $m.return_arr["phone"]=phone;
+    //     }
+    // })();
     $m.rs();
 	// 绑定滚动
     myScroll1=new IScroll('.page1',{mouseWheel: true,hideScrollbar: true,click: true,bounce:false,tap:true});

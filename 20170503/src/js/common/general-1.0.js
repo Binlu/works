@@ -10,7 +10,7 @@ define(["jquery","msg"],function(){
         def:{
             golbal_path:"",
 //            api_link:"http://192.168.20.51:8080/uliaow-war-pop/v2/",
-            api_link:apiJavaDomain+"/",
+            api_link:"",
             o_golbal_path:"",
             img_href:"src/images/",
             img:{
