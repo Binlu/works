@@ -13,10 +13,35 @@ a{text-decoration: none;}
 button{border-style: none;background-color: transparent;outline: none;cursor: pointer;}
 li{list-style: none;}
 #view-section{
-	max-width: 720px;
-	margin: auto;
+    -webkit-box-sizing:border-box;-moz-box-sizing:border-box;
+    min-width: 720px;
+    padding:  1.5em 2rem;
 	background-color:#fff;
 }
+
+
+.info-list{margin-top: 1rem;}
+.info-list>li{float: left;width: 33%;margin-bottom: 0.5rem;}
+.info-list>li>label{display: inline-block;width: 8em}
+.select-div{padding-bottom: 1.5rem;border-bottom: 1px solid #dedede;text-align: center;}
+.select-div>select{font-size: 1rem;padding: 0.2em;margin-right: 0.5rem;}
+.select-div>button{font-size: 1rem;padding: 0.3em 1em;border-radius: 0.1em;background-color: #3FA5EC;color: #fff;}
+.select-div>button:hover{background-color: #196BFF;}
+
+
+
+.content{padding: 1rem 0}
+.table{width: 100%;border-collapse: collapse;border:1px solid #333;}
+.table td{padding: 0.3rem 0.5rem}
+.table thead{background-color: #CAC3C3}
+.table>thead td{padding: 0.5rem;border:1px solid #dedede;font-weight: 500;}
+.table>tbody td{border:1px solid #dedede;}
+
+
+
+
+
+
 .fixed-ele{z-index: 1000;position: fixed;left: 0;top: 0;right: 0;width: 100%;max-width: 720px;height: 100%;margin: auto;}
 .bg-section{display: none;z-index: 10;background: #000;opacity: 0.4}
 #atten-box{
@@ -25,7 +50,6 @@ li{list-style: none;}
     right: 0;
 	top: 0;
 	width: 100%;
-    max-width: 720px;
 	height: 100%;
     margin: auto;
 	z-index: 2000;
@@ -123,5 +147,27 @@ li{list-style: none;}
     }
     100%{
         -o-transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+/*媒体查询*/
+@media screen and (min-width: 720px) {
+    html {
+        font-size: 20px;
+    }
+}
+@media screen and (max-width: 720px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 16px;
     }
 }
