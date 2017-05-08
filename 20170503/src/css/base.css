@@ -19,9 +19,8 @@ li{list-style: none;}
 	background-color:#fff;
 }
 
-
 .info-list{margin-top: 1rem;}
-.info-list>li{float: left;width: 33%;margin-bottom: 0.5rem;}
+.info-list>li{float: left;width: 30%;margin-right: 2%;margin-bottom: 0.5rem;}
 .info-list>li>label{display: inline-block;width: 8em}
 .select-div{padding-bottom: 1.5rem;border-bottom: 1px solid #dedede;text-align: center;}
 .select-div>select{font-size: 1rem;padding: 0.2em;margin-right: 0.5rem;}
@@ -29,13 +28,12 @@ li{list-style: none;}
 .select-div>button:hover{background-color: #196BFF;}
 
 
-
 .content{padding: 1rem 0}
 .table{width: 100%;border-collapse: collapse;border:1px solid #333;}
 .table td{padding: 0.3rem 0.5rem}
-.table thead{background-color: #CAC3C3}
-.table>thead td{padding: 0.5rem;border:1px solid #dedede;font-weight: 500;}
-.table>tbody td{border:1px solid #dedede;}
+.table thead{background-color: #eaeaea}
+.table>thead td{padding: 0.5rem;border:1px solid #333;font-weight: 500;}
+.table>tbody td{border:1px solid #333;}
 
 
 
