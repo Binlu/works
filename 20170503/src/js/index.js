@@ -33,6 +33,14 @@ $(function(){
         type:"get",
         success:setSelectorDom
     });
+
+    $.ajax({
+        url:"http://m.pop136.com/api/apply/wxconfig/",
+        type:"POST",
+        success:function(data){
+            console.log(data);
+        }
+    });
     
     // 生成select
     function  setSelectorDom(data){
